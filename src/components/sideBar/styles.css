@@ -1,0 +1,204 @@
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background-color: black;
+    color: white;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+  }
+  /* .compressed {
+    width: 30px;
+  } */
+  /* .toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    cursor: pointer;
+    width: 100%;
+  } */
+  .toggle-btn {
+    /* position: inherit; */
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .ul-inicio {
+    list-style-type: none;
+    padding: 0;
+    padding-left: 5px;
+    width: 100%;
+    height: 90%;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .li-inicio {
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+  }
+  
+  .li-inicio:hover {
+    background-color: #333;
+  }
+
+  .div-sidebar{
+    width: 270px;
+    user-select: none;
+    /* position: relative; */
+  }
+
+  .div-table{
+    width: calc(80vw);
+    height: calc(60vh);
+  }
+  .cell-cedula{
+    width: 250px;
+  }
+  .cell-name{
+    width: 450px;
+  }
+  .h6-recovery{
+    width: 400px;
+  }
+
+  .div-separador{
+    height: 25%;
+  }
+
+  .radio-opcion{
+    width: 33%;
+  }
+
+  .tipo-usuario{
+    width: 66%;
+  }
+
+  .h1-login{
+    font-size: 50;
+  }
+
+  .div-buscar{
+    display: flex;
+    flex-direction: row;
+  }
+
+  @media (max-width: 1060px) {
+    .toggle-btn {
+      position: relative;
+      background-color: transparent;
+      border: none;
+      padding: 10px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .div-sidebar{
+      position: fixed;
+      z-index: 2;
+    }
+    .sidebar {
+      width: 25px; 
+      flex-direction: row;
+    }
+  
+    .sidebar.compressed {
+      width: 255px; 
+      /* flex-direction: column; */
+    }
+  
+    .sidebar li {
+      display: none;
+    }
+  
+    .sidebar.compressed li {
+      display: block;
+    }
+    .div-sidebar{
+      width: 7%;
+    }
+    .div-table{
+      /* max-height: 47vh; */
+      display: flex;
+      width: calc(86vw);
+      height: calc(100);
+
+    }
+    .cell-cedula{
+      width: 120px;
+    }
+    .cell-name{
+      width: 300px;
+    }
+    .h6-recovery{
+      width: 250px;
+    }
+    .radio-opcion{
+      width: 50%;
+    }
+    .ul-inicio{
+      height: 99%;
+      width: 100%;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .div-in{
+      display: flex;
+      flex-direction: column;
+    }
+    .h1-login{
+      font-size: 40;
+    }
+    .tipo-usuario{
+      width: 100%;
+    }
+    .div-buscar{
+      flex-direction: column;
+    }
+  }
+
+.boton-cambiante{
+  background-color: #ccc;
+  color: #333;
+  padding: 10px 20px;
+  margin: 5px;
+  text-decoration: none;
+}
+.boton-cambiante.active {
+  background-color: #007bff;
+  color: white;
+}
+/* @media (max-width: 3000px) {
+  .div-sidebar{
+    width: 300px;
+  }
+} */
+  /* @media (max-width: 768px) {
+    .sidebar {
+      width: 250px; 
+    }
+    .sidebar li {
+      display: none; 
+    }
+  
+    .sidebar li:first-child {
+      display: block; 
+    }
+
+  } */
+  

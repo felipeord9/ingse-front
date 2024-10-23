@@ -1,0 +1,16 @@
+.img-error{
+    display: flex;
+}
+
+.font-title{
+    font-size: 120px;
+}
+
+@media (max-width: 900px) {
+    .img-error{
+        display: none;
+    }
+    .font-title{
+        font-size: 50px;
+    }
+}
