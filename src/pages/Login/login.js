@@ -75,7 +75,7 @@ export default function Login() {
     
     return (
       <button
-        className="fw-bold"
+        className="fw-bold rounded rounded-3"
         style={buttonStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

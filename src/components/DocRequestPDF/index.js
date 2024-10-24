@@ -5,6 +5,7 @@ import cedBack from '../../assest/cedulaTrasera.png'
 import tpFront from '../../assest/tpFrntal.png'
 import tpBack from '../../assest/tpTrasera.png'
 import huella from '../../assest/huella.png'
+import Firma from '../../assest/firma.jpg'
 import "./styles.css";
 
 const styles = StyleSheet.create({
@@ -367,7 +368,7 @@ export default function DocRequestrPDF({ request }) {
                   >
                     <Image 
                       style={styles.imgDocumentos}
-                      src={tpFront}
+                      src={Firma}
                     />
                   </View>
                 </View>

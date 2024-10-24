@@ -13,6 +13,8 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 import { GiBlackBook } from "react-icons/gi";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { findUsers } from "../../services/userService"
+import { RiCheckboxMultipleLine } from "react-icons/ri";
+import ModalMultiple from "../../components/ModalMultiple";
 import './styles.css'
 
 export default function Registros() {
@@ -26,6 +28,8 @@ export default function Registros() {
   const [showSideBar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
   const [selectedRequest, setSelectedRequest] = useState(null);
+
+  const [showModalMultiple, setShowModalMultiple] = useState(false);
 
   useEffect(() => {
     getAllRegistros();
@@ -50,9 +54,7 @@ export default function Registros() {
     if(value !== "") {
       const filteredRegistros = registros.filter((elem) => {
         if(
-          elem.rowId.includes(value) ||
-          elem.name.toLowerCase().includes(value.toLowerCase()) ||
-          elem.role.toLowerCase().includes(value.toLowerCase())
+          elem.name.toLowerCase().includes(value.toLowerCase())
         ) {
           return elem
         }
@@ -71,6 +73,11 @@ export default function Registros() {
   return (
     <div>
       <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
+        <ModalMultiple
+          reloadInfo={getAllRegistros}
+          showModal={showModalMultiple}
+          setShowModal={setShowModalMultiple}
+        />
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             <div
               id="logo-header"
@@ -117,6 +124,12 @@ export default function Registros() {
                     <span>Solicitud placa</span>
                   </Link>
                 </li>
+                <li className='nav-text fw-bold'>
+                  <Link onClick={(e)=>setShowModalMultiple(!showModalMultiple)} style={{backgroundColor:(ruta==='/multiple') ? 'white' : 'black',color:(ruta==='/multiple') ? 'black' : 'white'}} >
+                    <RiCheckboxMultipleLine  />
+                    <span>Solicitud múltiple</span>
+                  </Link>
+                </li>
                 {(user.role === 'admin' || user.role === 'superadmin') &&
                   <li className='nav-text fw-bold'>
                     <Link to='/usuarios' style={{backgroundColor:(ruta==='/usuarios') ? 'white' : 'black',color:(ruta==='/usuarios') ? 'black' : 'white'}} >
@@ -150,14 +163,14 @@ export default function Registros() {
           <div className="lookfor justify-content-end mt-3 gap-3">
             <TextField id="outlined-basic" 
               className="d-flex w-100 mt-1 " size="small" 
-              label='Buscar por cédula ó nombre' variant='outlined'
+              label='Buscar por nombre' variant='outlined'
               type='search'
               value={search}
               onChange={searchRegistro}
             ></TextField>
             <button
               title="Nuevo usuario"
-              className="d-flex align-items-center text-nowrap  gap-1 pt-0 pb-0 mt-0 mb-0 fw-bold" 
+              className="d-flex align-items-center text-nowrap gap-1 pt-0 pb-0 mt-0 mb-0 fw-bold rounded-3" 
               style={{backgroundColor:'#E5BE01', color:'black'}}
               onClick={(e) => navigate('/formulario')}>
                 Nueva solicitud

@@ -10,6 +10,8 @@ import * as FaIcons from "react-icons/fa";
 import { TfiWrite } from "react-icons/tfi";
 import AuthContext from "../../context/authContext";
 import { PiUsersThreeFill } from "react-icons/pi";
+import { RiCheckboxMultipleLine } from "react-icons/ri";
+import ModalMultiple from "../../components/ModalMultiple";
 import "./styles.css";
 
 export default function Form() {
@@ -17,7 +19,7 @@ export default function Form() {
   const [showSideBar, setShowSidebar] = useState(false);
   const [ruta, setRuta] = useState('');
   const { user } = useContext(AuthContext);
-
+  const [showModalMultiple, setShowModalMultiple] = useState(false);
   const [agencia, setAgencia] = useState(null);
   const [sucursal, setSucursal] = useState(null);
   const [agencias, setAgencias] = useState([]);
@@ -119,6 +121,11 @@ export default function Form() {
     <div >
       {/* Navbar */}
       <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
+        <ModalMultiple
+          /* reloadInfo={window.location.reload()} */
+          showModal={showModalMultiple}
+          setShowModal={setShowModalMultiple}
+        />
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             <div
               id="logo-header"
@@ -162,6 +169,12 @@ export default function Form() {
                   <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                     <TfiWrite />
                     <span>Solicitud placa</span>
+                  </Link>
+                </li>
+                <li className='nav-text fw-bold'>
+                  <Link onClick={(e)=>setShowModalMultiple(!showModalMultiple)} style={{backgroundColor:(ruta==='/multiple') ? 'white' : 'black',color:(ruta==='/multiple') ? 'black' : 'white'}} >
+                    <RiCheckboxMultipleLine  />
+                    <span>Solicitud múltiple</span>
                   </Link>
                 </li>
                 {(user.role === 'admin' || user.role === 'superadmin') &&

@@ -13,6 +13,8 @@ import AuthContext from "../../context/authContext";
 import { TfiWrite } from "react-icons/tfi";
 import { PiUsersThreeFill } from "react-icons/pi";
 import TextField from '@mui/material/TextField';
+import { RiCheckboxMultipleLine } from "react-icons/ri";
+import ModalMultiple from "../../components/ModalMultiple";
 import "./styles.css";
 
 export default function Users() {
@@ -26,6 +28,8 @@ export default function Users() {
   const [loading, setLoading] = useState(false)
   const [showSideBar, setShowSidebar] = useState(false);
   const [ruta, setRuta] = useState('');
+
+  const [showModalMultiple, setShowModalMultiple] = useState(false);
 
   useEffect(() => {
     getAllUsers();
@@ -71,6 +75,11 @@ export default function Users() {
   return (
     <div>
       <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
+        <ModalMultiple
+          reloadInfo={getAllUsers}
+          showModal={showModalMultiple}
+          setShowModal={setShowModalMultiple}
+        />
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             <div
               id="logo-header"
@@ -116,6 +125,12 @@ export default function Users() {
                 <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                   <TfiWrite />
                     <span>Solicitud placa</span>
+                  </Link>
+                </li>
+                <li className='nav-text fw-bold'>
+                  <Link onClick={(e)=>setShowModalMultiple(!showModalMultiple)} style={{backgroundColor:(ruta==='/multiple') ? 'white' : 'black',color:(ruta==='/multiple') ? 'black' : 'white'}} >
+                    <RiCheckboxMultipleLine  />
+                    <span>Solicitud múltiple</span>
                   </Link>
                 </li>
                 {(user.role === 'admin' || user.role === 'superadmin') &&
