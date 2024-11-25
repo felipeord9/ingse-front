@@ -10,6 +10,7 @@ import * as FaIcons from "react-icons/fa";
 import { TfiWrite } from "react-icons/tfi";
 import AuthContext from "../../context/authContext";
 import { PiUsersThreeFill } from "react-icons/pi";
+import Webcam from 'react-webcam';
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
 import "./styles.css";
@@ -35,6 +36,73 @@ export default function Form() {
     observations: "",
     order: "",
   });
+
+  //constante de las imagenes
+  const [userPhoto, setUserPhoto] = useState(null);
+  const [frontCp, setFrontCp] = useState(null);
+  const [backCp, setBackCp] = useState(null);
+  const [frontTp, setFrontTp] = useState(null);
+  const [backTp, setBackTp] = useState(null);
+  const [frontCauth, setFrontCauth] = useState(null);
+  const [backCauth, setBackCauth] = useState(null);
+  const [activeField, setActiveField] = useState(null);
+  const [nameField, setNameField] = useState(null);
+  const webcamRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [previewPhoto, setPreviewPhoto] = useState(null); // Foto en previsualización
+  const [photos, setPhotos] = useState({
+    photoUser: null,
+    frontCp: null,
+    backCp: null,
+    frontTp: null,
+    backTp: null,
+    frontCauth: null,
+    backCauth: null,
+  });
+  // Abrir el modal para un campo específico
+  const openModal = (field,nameField) => {
+    setActiveField(field);
+    setNameField(nameField);
+    setShowModal(true);
+    setPreviewPhoto(null); // Resetear previsualización
+  };
+  // Cerrar el modal
+  const closeModal = () => {
+    setShowModal(false);
+    setNameField(null);
+    setActiveField(null);
+    setPreviewPhoto(null); // Resetear previsualización
+  };
+  // Capturar la foto y guardarla en el estado correspondiente
+  const capturePhoto = () => {
+    const photo = webcamRef.current.getScreenshot();
+    setPreviewPhoto(photo); // Mostrar previsualización
+  };
+  //descartar foto en el modal
+  const discardPhoto = () => {
+    setPreviewPhoto(null); // Mostrar previsualización
+    setNameField(null);
+  };
+  // Guardar la foto en el estado correspondiente
+  const savePhoto = () => {
+    setPhotos((prevPhotos) => ({
+      ...prevPhotos,
+      [activeField]: previewPhoto,
+    }));
+    closeModal();
+  };
+  // Subir una imagen desde el dispositivo
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreviewPhoto(event.target.result); // Mostrar previsualización
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [loading, setLoading] = useState(false);
   const [invoiceType, setInvoiceType] = useState(false);
   const selectBranchRef = useRef();
@@ -633,60 +701,200 @@ export default function Form() {
             {/* Foto de la cedula */}
             <div className="row row-cols-sm-2">
               <div className="d-flex flex-column align-items-start">
-                <label>Foto frontal de la cédula:</label>
-                <img
-                  className="border border-2"
-                  style={{width:'100%', height:200, borderRadius:25}}
-                />
+                <label style={{fontSize:12}}>Foto frontal de la cédula propietario:</label>
+                <div
+                  style={{
+                    width: "100%",
+                    height: 200,
+                    border: "2px solid #ccc",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    borderRadius:25
+                  }}
+                  onClick={() => openModal("frontCp","Cédula frontal propietario")}
+                >
+                  {photos.frontCp ? (
+                    <img 
+                      src={photos.frontCp} 
+                      alt="frontCp" 
+                      style={{ width: "100%", height: "100%"}} 
+                    />
+                  ):"Haz Click aquí para tomar la foto"}
+                </div>
               </div>
               <div className="d-flex flex-column align-items-start">
-                <label>Foto trasera de la cédula:</label>
-                <img
-                  className="border border-2"
-                  style={{width:'100%', height:200, borderRadius:25}}
-                />
+                <label style={{fontSize:12}}>Foto trasera de la cédula propietario:</label>
+                <div
+                  style={{
+                    width: "100%",
+                    height: 200,
+                    border: "2px solid #ccc",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    borderRadius:25
+                  }}
+                  onClick={() => openModal("backCp","Cédula trasera propietario")}
+                >
+                  {photos.backCp ? (
+                    <img 
+                      src={photos.backCp} 
+                      alt="backCp" 
+                      style={{ width: "100%", height: "100%"}} 
+                    />
+                  ):"Haz Click aquí para tomar la foto"}
+                </div>
               </div>
             </div>
 
             {/* Foto de la tarjeta de propiedad */}
-            <div className="row row-cols-sm-2">
+            <div className="row row-cols-sm-2 mt-2">
               <div className="d-flex flex-column align-items-start">
-                <label>Foto frontal de la tarjeta de propiedad:</label>
-                <img
-                  className="border border-2"
-                  style={{width:'100%', height:200, borderRadius:25}}
-                />
+                <label style={{fontSize:12}}>Foto frontal de la tarjeta de propiedad:</label>
+                <div
+                  style={{
+                    width: "100%",
+                    height: 200,
+                    border: "2px solid #ccc",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    borderRadius:25
+                  }}
+                  onClick={() => openModal("frontTp","Tarjeta de propiedad frontal")}
+                >
+                  {photos.frontTp ? (
+                    <img 
+                      src={photos.frontTp} 
+                      alt="frontTp" 
+                      style={{ width: "100%", height: "100%"}} 
+                    />
+                  ):"Haz Click aquí para tomar la foto"}
+                </div>
               </div>
               <div className="d-flex flex-column align-items-start">
-                <label>Foto trasera de la tarjeta de propiedad:</label>
-                <img
-                  className="border border-2"
-                  style={{width:'100%', height:200, borderRadius:25}}
-                />
+                <label style={{fontSize:12}}>Foto trasera de la tarjeta de propiedad:</label>
+                <div
+                  style={{
+                    width: "100%",
+                    height: 200,
+                    border: "2px solid #ccc",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    borderRadius:25
+                  }}
+                  onClick={() => openModal("backTp","Tarjeta de propiedad trasera")}
+                >
+                  {photos.backTp ? (
+                    <img 
+                      src={photos.backTp} 
+                      alt="backTp" 
+                      style={{ width: "100%", height: "100%"}} 
+                    />
+                  ):"Haz Click aquí para tomar la foto"}
+                </div>
               </div>
             </div>
 
+            {/* Foto cedula si es persona autorizada */}
+            { typeClient ==='autorizado' &&
+              <div className="row row-cols-sm-2 mt-2">
+                <div className="d-flex flex-column align-items-start">
+                  <label style={{fontSize:12}}>Foto frontal de la cédula persona autorizada:</label>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      border: "2px solid #ccc",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius:25
+                    }}
+                    onClick={() => openModal("frontCauth","Cédula frontal persona autorizada")}
+                  >
+                    {photos.frontCauth ? (
+                      <img 
+                        src={photos.frontCauth} 
+                        alt="frontCauth" 
+                        style={{ width: "100%", height: "100%"}} 
+                      />
+                    ):"Haz Click aquí para tomar la foto"}
+                  </div>
+                </div>
+                <div className="d-flex flex-column align-items-start">
+                  <label style={{fontSize:12}}>Foto trasera de la cédula persona autorizada:</label>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      border: "2px solid #ccc",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius:25
+                    }}
+                    onClick={() => openModal("backCauth","Cédula trasera persona autorizada")}
+                  >
+                    {photos.backCauth ? (
+                      <img 
+                        src={photos.backCauth} 
+                        alt="backCauth" 
+                        style={{ width: "100%", height: "100%"}} 
+                      />
+                    ):"Haz Click aquí para tomar la foto"}
+                  </div>
+                </div>
+              </div>
+            }
+
             {/* firma, huella y foto persona */}
-            <div className="row row-cols-sm-2">
+            <div className="row row-cols-sm-2 mt-2">
               <div>
                 <div className="d-flex flex-column align-items-start">
-                  <label className="w-100 d-flex test-center">Firma:</label>
+                  <label style={{fontSize:12}} className="w-100 d-flex test-center">Firma:</label>
                   <img
                     className="border border-2"
                     style={{width:'100%', height:200, borderRadius:25}}
                   />
                 </div>
               </div>
-              <div className="d-flex flex-row w-50 gap-5">
+              <div className="d-flex flex-row w-50 ">
                 <div className="d-flex flex-column align-items-center w-50">
-                  <label className="w-100 d-flex align-items-center justify-content-center">Foto del usuario:</label>
-                  <img
-                    className="border border-2 w-75"
-                    style={{width:'100%', height:200, borderRadius:25}}
-                  />
+                  <label style={{fontSize:12}} className="w-100 d-flex align-items-center justify-content-center">Foto del usuario:</label>
+                  <div
+                    className="w-75"
+                    style={{
+                      width: "100%",
+                      height: 200,
+                      border: "2px solid #ccc",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius:25
+                    }}
+                    onClick={() => openModal("photoUser","Usuario")}
+                  >
+                    {photos.photoUser ? (
+                      <img 
+                        src={photos.photoUser} 
+                        alt="photoUser" 
+                        style={{ width: "100%", height: "100%"}} 
+                      />
+                    ):"Haz Click aquí para tomar la foto"}
+                  </div>
                 </div>
                 <div className="d-flex flex-column align-items-center w-50">
-                  <label>HUella:</label>
+                  <label style={{fontSize:12}}>Huella:</label>
                   <img
                     className="border border-2 w-75"
                     style={{width:'100%', height:200, borderRadius:25}}
@@ -695,6 +903,101 @@ export default function Form() {
               </div>
             </div>
           </div>
+          {/* Modal para tomar fotos */}
+      <Modal show={showModal} onHide={closeModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Capturar Foto: {nameField}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        {!previewPhoto ? (
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            videoConstraints={{
+              width: 1280,
+              height: 720,
+              facingMode: "enviroment", // 'user' para camara delante O 'enviroment' para la cámara trasera
+            }}
+            style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+          />
+        ):(
+          <img
+            src={previewPhoto}
+            alt="Previsualización"
+            style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+          />
+        )}
+        </Modal.Body>
+          <Modal.Footer>
+          {!previewPhoto ? (
+          <>
+            <button
+              onClick={capturePhoto}
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Capturar
+            </button>
+            <label
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                backgroundColor: "#6c757d",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              Subir
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleUpload}
+                style={{ display: "none" }}
+              />
+            </label>
+          </>
+          ) : (
+            <>
+            <button
+              onClick={savePhoto}
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                backgroundColor: "#28a745",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                marginRight: "10px",
+              }}
+            >
+              Guardar
+            </button>
+            <button
+              onClick={() => discardPhoto()}
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                backgroundColor: "#dc3545",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Descartar
+            </button>
+          </>
+        )} 
+        </Modal.Footer>
+        </Modal>
           <Modal show={loading} centered>
             <Modal.Body>
               <div className="d-flex align-items-center">
