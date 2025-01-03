@@ -11,6 +11,7 @@ import { TfiWrite } from "react-icons/tfi";
 import AuthContext from "../../context/authContext";
 import { PiUsersThreeFill } from "react-icons/pi";
 import Webcam from 'react-webcam';
+import SigWebDemo from "../../components/ModalFirma";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
 import "./styles.css";
@@ -25,6 +26,8 @@ export default function Form() {
   const [sucursal, setSucursal] = useState(null);
   const [agencias, setAgencias] = useState([]);
   const [files, setFiles] = useState(null);
+  const [sigImageFirma, setSigImageFirma] = useState("");
+  const [showModalFirma, setShowModalFirma] = useState(false);
   const [productosAgr, setProductosAgr] = useState({
     agregados: [],
     total: "0",
@@ -48,6 +51,8 @@ export default function Form() {
   const [activeField, setActiveField] = useState(null);
   const [nameField, setNameField] = useState(null);
   const webcamRef = useRef(null);
+  const ImgFirmaRef = useRef(null);
+  const firmaRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState(null); // Foto en previsualización
   const [photos, setPhotos] = useState({
@@ -861,10 +866,33 @@ export default function Form() {
               <div>
                 <div className="d-flex flex-column align-items-start">
                   <label style={{fontSize:12}} className="w-100 d-flex test-center">Firma:</label>
-                  <img
+                  {/* <img
                     className="border border-2"
                     style={{width:'100%', height:200, borderRadius:25}}
-                  />
+                  /> */}
+                  <div
+                    className="w-100"
+                    style={{
+                      height: 200,
+                      border: "2px solid #ccc",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius:25
+                    }}
+                    onClick={() => setShowModalFirma(true)}
+                  >
+                    {sigImageFirma ? (
+                        <img 
+                          ref={ImgFirmaRef}
+                          src={`data:image/png;base64,${sigImageFirma}`} 
+                          alt="Firma" 
+                          style={{ width: "100%", height: "100%"}} 
+                        />
+                      ):"Haz Click aquí para hacer la firma"
+                    }
+                  </div>
                 </div>
               </div>
               <div className="d-flex flex-row w-50 ">
@@ -904,100 +932,108 @@ export default function Form() {
             </div>
           </div>
           {/* Modal para tomar fotos */}
-      <Modal show={showModal} onHide={closeModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Capturar Foto: {nameField}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        {!previewPhoto ? (
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{
-              width: 1280,
-              height: 720,
-              facingMode: "enviroment", // 'user' para camara delante O 'enviroment' para la cámara trasera
-            }}
-            style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
-          />
-        ):(
-          <img
-            src={previewPhoto}
-            alt="Previsualización"
-            style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
-          />
-        )}
-        </Modal.Body>
-          <Modal.Footer>
+          <Modal show={showModal} onHide={closeModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Capturar Foto: {nameField}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
           {!previewPhoto ? (
-          <>
-            <button
-              onClick={capturePhoto}
-              style={{
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#007bff",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{
+                width: 1280,
+                height: 720,
+                facingMode: "enviroment", // 'user' para camara delante O 'enviroment' para la cámara trasera
               }}
-            >
-              Capturar
-            </button>
-            <label
-              style={{
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#6c757d",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              Subir
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleUpload}
-                style={{ display: "none" }}
-              />
-            </label>
-          </>
-          ) : (
+              style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+            />
+          ):(
+            <img
+              src={previewPhoto}
+              alt="Previsualización"
+              style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+            />
+          )}
+          </Modal.Body>
+            <Modal.Footer>
+            {!previewPhoto ? (
             <>
-            <button
-              onClick={savePhoto}
-              style={{
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#28a745",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                marginRight: "10px",
-              }}
-            >
-              Guardar
-            </button>
-            <button
-              onClick={() => discardPhoto()}
-              style={{
-                padding: "10px 20px",
-                fontSize: "16px",
-                backgroundColor: "#dc3545",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-              }}
-            >
-              Descartar
-            </button>
-          </>
-        )} 
-        </Modal.Footer>
-        </Modal>
+              <button
+                onClick={capturePhoto}
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+              >
+                Capturar
+              </button>
+              <label
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#6c757d",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Subir
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUpload}
+                  style={{ display: "none" }}
+                />
+              </label>
+            </>
+            ) : (
+              <>
+              <button
+                onClick={savePhoto}
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#28a745",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  marginRight: "10px",
+                }}
+              >
+                Guardar
+              </button>
+              <button
+                onClick={() => discardPhoto()}
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#dc3545",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+              >
+                Descartar
+              </button>
+            </>
+          )} 
+          </Modal.Footer>
+          </Modal>
+          {/* Modal de la firma */}
+          <SigWebDemo
+            sigImage={sigImageFirma}
+            setSigImage={setSigImageFirma}
+            canvasRef={firmaRef}
+            showModal={showModalFirma}
+            setShowModal={setShowModalFirma}
+          />
           <Modal show={loading} centered>
             <Modal.Body>
               <div className="d-flex align-items-center">
