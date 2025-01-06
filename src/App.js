@@ -11,6 +11,7 @@ import Registros from './pages/registros';
 import Users from './pages/Users'
 import Page404 from "./pages/Page404"
 import Form from './pages/Form';
+import EditarRegistro from './pages/EditarRegistro';
 import Inactivity from "./components/Inactivity"
 import { CellarContextProvider } from "./context/cellarContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -78,8 +79,9 @@ function App() {
 
               {/* Paginas privadas */}
               <Route path='/usuarios' element={<PrivateRoute component={Users} />} />
-              <Route path='/registros' element={<PrivateRoute component={Registros} />} />
-              <Route path='/formulario' element={<PrivateRoute component={Form} />} />
+              <Route path='/registros' element={<Registros/>} /> {/* {<PrivateRoute component={Registros} />} */}
+              <Route path='/formulario' element={<Form/>} /> {/* /* {<PrivateRoute component={Form} />} */} {/* <Form/> */}
+              <Route path='/editar/registro/:id' element={<EditarRegistro/>} /> {/* /* {<PrivateRoute component={Form} />} */} {/* <EditarRegistro/> */}
 
               {/* Page not found */}
               <Route path='*' element={<Page404 />} />

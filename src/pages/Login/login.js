@@ -3,19 +3,15 @@ import AuthContext from "../../context/authContext";
 import useUser from '../../hooks/useUser';
 import * as Bs from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import Swal from "sweetalert2";
-import { RiArrowGoBackFill } from "react-icons/ri";
-import { findUserByEmail } from '../../services/userService';
 import { GiSandsOfTime } from "react-icons/gi";
 import Logo from '../../assest/Logo.png'
 import './login.css';
 
 export default function Login() {
-  const {login,isLoginLoading,hasLoginError,isLogged , logout}=useUser()
-  const { user, setUser } = useContext(AuthContext);
+  const {login,isLoginLoading,hasLoginError,isLogged}=useUser()
+  const { user } = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [denegado, setDenegado] = useState(false);
   const [cargando,setCargando] = useState(false);
   const [vacio,setVacio] = useState(false);
   const navigate =useNavigate()
@@ -24,22 +20,6 @@ export default function Login() {
     if(isLogged && user.role==='superadmin')navigate('/registros');
     if(isLogged && user.role==='usuario')navigate('/formulario');
   },[isLogged,navigate]);
-
-  const [info,setInfo]=useState({
-    usuario:'',
-    fechaIngreso: '',
-    accion:'0',
-    fechaSalida:null,
-    macEquipo:null,
-  })
-  useEffect(()=>{
-    if(isLogged && user){
-      setInfo({ 
-        usuario:user.name,      
-        fechaIngreso: new Date(),
-      })
-    }
-  },[isLogged])
 
   const handleLogin=async(e)=>{
     e.preventDefault();
@@ -134,8 +114,7 @@ export default function Login() {
           </form>
           {isLoginLoading && <div className='loading'>Cargando...</div>}
           {hasLoginError && <div className='text-danger text-center mt-2 fw-bold'>Credenciales Incorrectas</div>}
-          {denegado && <div className='text-danger text-center mt-2 fw-bold'>Acceso Denegado</div>}
-          {vacio && <div className='text-danger text-center mt-2 fw-bold'>Credenciales Inválidas</div>}
+          {vacio && <div className='text-danger text-center mt-2 fw-bold'>Sin Credenciales</div>}
         </div>
       </div>
     </div>

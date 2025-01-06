@@ -1,5 +1,4 @@
 import { useState, useEffect , useContext } from "react";
-import * as GoIcons from "react-icons/go"
 import TableRegistros from "../../components/TableRegistros";
 import { TfiWrite } from "react-icons/tfi";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +6,6 @@ import AuthContext from "../../context/authContext";
 import useUser from "../../hooks/useUser";
 import TextField from '@mui/material/TextField';
 import Logo from '../../assest/Logo.png'
-import * as FiIcons from "react-icons/fi";
 import * as FaIcons from "react-icons/fa";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { GiBlackBook } from "react-icons/gi";
@@ -19,7 +17,7 @@ import './styles.css'
 
 export default function Registros() {
   const { user } = useContext(AuthContext);
-  const { isLogged, logout } = useUser();
+  const { logout } = useUser();
   const [ruta, setRuta] = useState('');
   const [registros, setRegistros] = useState([]);
   const [suggestions, setSuggestions] = useState([])

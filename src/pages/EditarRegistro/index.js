@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import Swal from "sweetalert2";
 import { Modal } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link , useNavigate , useParams } from "react-router-dom";
 import { GiBlackBook } from "react-icons/gi";
 import useUser from "../../hooks/useUser";
 import { RiLogoutBoxLine } from "react-icons/ri";
@@ -15,41 +15,50 @@ import { GiSandsOfTime } from "react-icons/gi";
 import SigWebDemo from "../../components/ModalFirma";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
-import { createSolicitud } from "../../services/solicitudService";
+import { findOneSolicitud, updateSolicitud } from "../../services/solicitudService";
 import "./styles.css";
 
-export default function Form() {
-  const { isLogged, logout } = useUser();
+export default function EditarRegistro() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    findOneSolicitud(id)
+    .then(({data})=>{
+      setSearch(data)
+      setPhotos({
+        ...photos,
+        fotoUsuario:data.fotoUsuario,
+        cedulaPropietarioFrontal:data.cedulaPropietarioFrontal,
+        cedulaPropietarioTrasera:data.cedulaPropietarioTrasera,
+        tarjetaPropiedadFrontal:data.tarjetaPropiedadFrontal,
+        tarjetaPropiedadTrasera:data.tarjetaPropiedadTrasera,
+        cedulaPersonAuthFrontal:data.cedulaPersonAuthFrontal,
+        cedulaPersonAuthTrasera:data.cedulaPersonAuthTrasera,
+      })
+      setSigImageFirma(data.firma)
+    })
+    .catch(()=>{
+      Swal.fire({
+        icon:'error',
+        title:'¡ERROR!',
+        text:'Ha ocurrido un error al momento de cargar la información de la solicitud para editarla. vuelve a intentarlo mas tarde.',
+        confirmButtonColor:'red'
+      })
+      .then(()=>{
+        navigate('/registros')
+      })
+    })
+  },[])
+
+  const { logout } = useUser();
   const [showSideBar, setShowSidebar] = useState(false);
   const [ruta, setRuta] = useState('');
   const { user } = useContext(AuthContext);
   const [showModalMultiple, setShowModalMultiple] = useState(false);
   const [sigImageFirma, setSigImageFirma] = useState("");
   const [showModalFirma, setShowModalFirma] = useState(false);
-  const [search, setSearch] = useState({
-    cedulaPropietario:'',
-    primerApellidoPropietario:'',
-    segundoApellidoPropietario:'',
-    primerNombrePropietario:'',
-    segundoNombrePropietario:'',
-    direccionPropietario:'',
-    municipioPropietario:'',
-    celularPropietario:'',
-    correoPropietario:'',
-    licenciaTransito:'',
-    placa:'',
-    marca:'',
-    tipo:'',
-    cedulaPersonAuth:'',
-    primerApellidoPersonAuth:'',
-    segundoApellidoPersonAuth:'',
-    primerNombrePersonAuth:'',
-    segundoNombrePersonAuth:'',
-    direccionPersonAuth:'',
-    municipioPersonAuth:'',
-    celularPersonAuth:'',
-    correoPersonAuth:'',
-  });
+  const [search, setSearch] = useState({});
 
   //constante de las imagenes
   const [activeField, setActiveField] = useState(null);
@@ -60,13 +69,13 @@ export default function Form() {
   const [showModal, setShowModal] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState(null); // Foto en previsualización
   const [photos, setPhotos] = useState({
-    photoUser: null,
-    frontCp: null,
-    backCp: null,
-    frontTp: null,
-    backTp: null,
-    frontCauth: null,
-    backCauth: null,
+    fotoUsuario: null,
+    cedulaPropietarioFrontal: null,
+    cedulaPropietarioTrasera: null,
+    tarjetaPropiedadFrontal: null,
+    tarjetaPropiedadTrasera: null,
+    cedulaPersonAuthFrontal: null,
+    cedulaPersonAuthTrasera: null,
   });
   // Abrir el modal para un campo específico
   const openModal = (field,nameField) => {
@@ -187,30 +196,33 @@ export default function Form() {
         celularPersonAuth: search.celularPersonAuth,
         correoPersonAuth: search.correoPersonAuth !== '' ? toString(search.correoPersonAuth).toLowerCase():'',
   
-        fotoUsuario: photos.photoUser,
-        cedulaPropietarioFrontal: photos.frontCp,
-        cedulaPropietarioTrasera: photos.backCp,
-        tarjetaPropiedadFrontal: photos.frontTp,
-        tarjetaPropiedadTrasera: photos.backTp,
-        cedulaPersonAuthFrontal: photos.frontCauth,
-        cedulaPersonAuthTrasera: photos.backCauth,
+        fotoUsuario: photos.fotoUsuario,
+        cedulaPropietarioFrontal: photos.cedulaPropietarioFrontal,
+        cedulaPropietarioTrasera: photos.cedulaPropietarioTrasera,
+        tarjetaPropiedadFrontal: photos.tarjetaPropiedadFrontal,
+        tarjetaPropiedadTrasera: photos.tarjetaPropiedadTrasera,
+        cedulaPersonAuthFrontal: photos.cedulaPersonAuthFrontal,
+        cedulaPersonAuthTrasera: photos.cedulaPersonAuthTrasera,
   
         firma: sigImageFirma !== '' ? `data:image/png;base64,${sigImageFirma}` : '',
   
         createdAt: new Date(),
         createdBy: user.name,
       }
-      createSolicitud(body)
+      updateSolicitud(id, body)
       .then(()=>{
         setLoading(false)
         handleClear()
         Swal.fire({
           icon:'success',
           title:'¡FELICIDADES!',
-          text:'Se ha registrado la solicitud de forma exitosa',
+          text:'Se ha editado el registrado de solicitud de forma exitosa',
           showConfirmButton:true,
           showCancelButton:false,
           confirmButtonColor:'green'
+        })
+        .then(()=>{
+          navigate('/registros')
         })
       })
       .catch(()=>{
@@ -218,7 +230,7 @@ export default function Form() {
         Swal.fire({
           icon:'error',
           title:'¡ERROR!',
-          text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
+          text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
           showConfirmButton:true,
           showCancelButton:false,
           confirmButtonColor:'red'
@@ -269,13 +281,13 @@ export default function Form() {
     setPreviewPhoto(null);
     setShowModal(false);
     setPhotos({
-      photoUser: null,
-      frontCp: null,
-      backCp: null,
-      frontTp: null,
-      backTp: null,
-      frontCauth: null,
-      backCauth: null,
+      fotoUsuario: null,
+      cedulaPropietarioFrontal: null,
+      cedulaPropietarioTrasera: null,
+      tarjetaPropiedadFrontal: null,
+      tarjetaPropiedadTrasera: null,
+      cedulaPersonAuthFrontal: null,
+      cedulaPersonAuthTrasera: null,
     })
     setTypeClient('propietario')
   }
@@ -795,12 +807,12 @@ export default function Form() {
                     cursor: "pointer",
                     borderRadius:25
                   }}
-                  onClick={() => openModal("frontCp","Cédula frontal propietario")}
+                  onClick={() => openModal("cedulaPropietarioFrontal","Cédula frontal propietario")}
                 >
-                  {photos.frontCp ? (
+                  {photos.cedulaPropietarioFrontal ? (
                     <img 
-                      src={photos.frontCp} 
-                      alt="frontCp" 
+                      src={photos.cedulaPropietarioFrontal} 
+                      alt="cedulaPropietarioFrontal" 
                       style={{ width: "100%", height: "100%"}} 
                     />
                   ):"Haz Click aquí para tomar la foto"}
@@ -819,12 +831,12 @@ export default function Form() {
                     cursor: "pointer",
                     borderRadius:25
                   }}
-                  onClick={() => openModal("backCp","Cédula trasera propietario")}
+                  onClick={() => openModal("cedulaPropietarioTrasera","Cédula trasera propietario")}
                 >
-                  {photos.backCp ? (
+                  {photos.cedulaPropietarioTrasera ? (
                     <img 
-                      src={photos.backCp} 
-                      alt="backCp" 
+                      src={photos.cedulaPropietarioTrasera} 
+                      alt="cedulaPropietarioTrasera" 
                       style={{ width: "100%", height: "100%"}} 
                     />
                   ):"Haz Click aquí para tomar la foto"}
@@ -847,12 +859,12 @@ export default function Form() {
                     cursor: "pointer",
                     borderRadius:25
                   }}
-                  onClick={() => openModal("frontTp","Tarjeta de propiedad frontal")}
+                  onClick={() => openModal("tarjetaPropiedadFrontal","Tarjeta de propiedad frontal")}
                 >
-                  {photos.frontTp ? (
+                  {photos.tarjetaPropiedadFrontal ? (
                     <img 
-                      src={photos.frontTp} 
-                      alt="frontTp" 
+                      src={photos.tarjetaPropiedadFrontal} 
+                      alt="tarjetaPropiedadFrontal" 
                       style={{ width: "100%", height: "100%"}} 
                     />
                   ):"Haz Click aquí para tomar la foto"}
@@ -871,12 +883,12 @@ export default function Form() {
                     cursor: "pointer",
                     borderRadius:25
                   }}
-                  onClick={() => openModal("backTp","Tarjeta de propiedad trasera")}
+                  onClick={() => openModal("tarjetaPropiedadTrasera","Tarjeta de propiedad trasera")}
                 >
-                  {photos.backTp ? (
+                  {photos.tarjetaPropiedadTrasera ? (
                     <img 
-                      src={photos.backTp} 
-                      alt="backTp" 
+                      src={photos.tarjetaPropiedadTrasera} 
+                      alt="tarjetaPropiedadTrasera" 
                       style={{ width: "100%", height: "100%"}} 
                     />
                   ):"Haz Click aquí para tomar la foto"}
@@ -900,12 +912,12 @@ export default function Form() {
                       cursor: "pointer",
                       borderRadius:25
                     }}
-                    onClick={() => openModal("frontCauth","Cédula frontal persona autorizada")}
+                    onClick={() => openModal("cedulaPersonAuthFrontal","Cédula frontal persona autorizada")}
                   >
-                    {photos.frontCauth ? (
+                    {photos.cedulaPersonAuthFrontal ? (
                       <img 
-                        src={photos.frontCauth} 
-                        alt="frontCauth" 
+                        src={photos.cedulaPersonAuthFrontal} 
+                        alt="cedulaPersonAuthFrontal" 
                         style={{ width: "100%", height: "100%"}} 
                       />
                     ):"Haz Click aquí para tomar la foto"}
@@ -924,12 +936,12 @@ export default function Form() {
                       cursor: "pointer",
                       borderRadius:25
                     }}
-                    onClick={() => openModal("backCauth","Cédula trasera persona autorizada")}
+                    onClick={() => openModal("cedulaPersonAuthTrasera","Cédula trasera persona autorizada")}
                   >
-                    {photos.backCauth ? (
+                    {photos.cedulaPersonAuthTrasera ? (
                       <img 
-                        src={photos.backCauth} 
-                        alt="backCauth" 
+                        src={photos.cedulaPersonAuthTrasera} 
+                        alt="cedulaPersonAuthTrasera" 
                         style={{ width: "100%", height: "100%"}} 
                       />
                     ):"Haz Click aquí para tomar la foto"}
@@ -987,12 +999,12 @@ export default function Form() {
                       cursor: "pointer",
                       borderRadius:25
                     }}
-                    onClick={() => openModal("photoUser","Usuario")}
+                    onClick={() => openModal("fotoUsuario","Usuario")}
                   >
-                    {photos.photoUser ? (
+                    {photos.fotoUsuario ? (
                       <img 
-                        src={photos.photoUser} 
-                        alt="photoUser" 
+                        src={photos.fotoUsuario} 
+                        alt="fotoUsuario" 
                         style={{ width: "100%", height: "100%"}} 
                       />
                     ):"Haz Click aquí para tomar la foto"}

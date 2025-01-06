@@ -63,6 +63,26 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       width: "50px",
     },
     {
+      id: "editar",
+      name: "",
+      center: true,
+      cell: (row, index, column, id) => (
+        <div className='d-flex gap-2 p-1'>
+          <button 
+            title="Editar registro" className='btn btn-sm'
+            style={{color:'white',backgroundColor:'black'}} 
+            onClick={(e) => {
+              setSelected(row)
+              navigate(`/editar/registro/${row.id}`)
+            }}
+          >
+            <FaUserEdit />
+          </button>
+        </div>
+      ),
+      width: '60px'
+    },
+    {
       id: "name",
       name: "Nombre",
       selector: (row) => row?.name,

@@ -1,10 +1,9 @@
 import { useState, useEffect , useRef } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import Swal from 'sweetalert2'
-import { createUser, findUserByEmail, updateUser } from "../../services/userService";
-import { FiEdit3 } from "react-icons/fi";
-/* import bcrypt from 'bcrypt';
- */
+import { createMultipleSolicitud } from "../../services/solicitudService";
+import { GiSandsOfTime } from "react-icons/gi";
+
 export default function ModalMultiple({
   showModal,
   setShowModal,
@@ -22,6 +21,8 @@ export default function ModalMultiple({
   const input2Ref = useRef(null);
   const input3Ref = useRef(null);
   const [error, setError] = useState('')
+
+  const [enviando, setEnviando] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -75,7 +76,7 @@ export default function ModalMultiple({
         type='submit'
         /* onClick={(e)=>handleCancelar(e)} */
         onClick={(e) => {
-          cleanForm()
+          handleClear()
           setShowModal(false)
         }}
       >
@@ -97,6 +98,77 @@ export default function ModalMultiple({
         [id]:''
       })
     }
+  }
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    
+    if(multiple.name !== '' && multiple.cedula !== '',
+      multiple.cantidad !== '' && multiple.letras !== '',
+      multiple.noDesde !== '' && multiple.noHasta !== ''
+    ){
+      const total = multiple.noHasta -  multiple.noDesde + 1;
+      if(total !== multiple.cantidad){
+        Swal.fire({
+          icon:'error',
+          title:'¡ERROR!',
+          text:'La cantidad ingresada debe coincidir con la cantidad entre el numero desde y el numero hasta de las placas solicitadas. Verifique la información suministrada.',
+          confirmButtonColor:'red'
+        })
+      }else{
+        setEnviando(true)
+        const body = {
+          cedulaPropietario: multiple.cedula,
+          nombrePropietario: multiple.name,
+          cantidad: multiple.cantidad,
+          letras:multiple.letras,
+          desde: parseInt(multiple.noDesde),
+          hasta: parseInt(multiple.noHasta),
+        }
+        createMultipleSolicitud(body)
+        .then(()=>{
+          setEnviando(false);
+          Swal.fire({
+            icon:'success',
+            title:'¡FELICIDADES!',
+            text:'Se ha hecho el registro de la solicitud de todas las placas de manera satisfactoria.',
+            confirmButtonColor:'green',
+          })
+          .then(()=>{
+            handleClear()
+            setShowModal(false)
+          })
+        })
+        .catch(()=>{
+          setEnviando(false);
+          Swal.fire({
+            icon:'error',
+            title:'¡ERROR!',
+            text:'Ha ocurrido un error al momento de hacer el registro de las solicitudes. Vuelve a intentarlo mas tarde.',
+            confirmButtonColor:'red',
+          })
+        })
+      }
+    }else{
+      Swal.fire({
+        icon:'warning',
+        title:'¡ATENCION!',
+        text:'En este formulario todos los campos deben ser diligenciados para poder hacer el registro de la solicitudes. Verifique la información suministrada.',
+        confirmButtonColor:'red'
+      })
+    }
+  }
+
+  const handleClear = () =>{
+    setMultiple({
+      cantidad:'',
+      cedula:'',
+      letras:'',
+      name:'',
+      noDesde:'',
+      noHasta:'',
+    })
+    setEnviando(false);
   }
 
   return (
@@ -198,6 +270,8 @@ export default function ModalMultiple({
                       className="form-control form-control-sm"
                       onChange={(e)=> (handleChange(e),handleLimit(e))}
                       autoComplete="off"
+                      disabled={multiple?.noDesde === ''}
+                      min={multiple.noDesde}
                       required
                       ref={input3Ref}
                     />
@@ -224,8 +298,9 @@ export default function ModalMultiple({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             type='submit'
-            >
-            Enviar
+            onSubmit={(e)=>handleSubmit(e)}
+          >
+            {enviando ? <strong>REGISTRANDO...<GiSandsOfTime /></strong>: 'REGISTRAR'}
           </button>
           <BotonCaancelar>
             Cancelar
