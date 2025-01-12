@@ -15,7 +15,7 @@ import { GiSandsOfTime } from "react-icons/gi";
 import SigWebDemo from "../../components/ModalFirma";
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
-import { createSolicitud } from "../../services/solicitudService";
+import { createSolicitud, updateSolicitud } from "../../services/solicitudService";
 import "./styles.css";
 
 export default function Form() {
@@ -26,6 +26,7 @@ export default function Form() {
   const [showModalMultiple, setShowModalMultiple] = useState(false);
   const [sigImageFirma, setSigImageFirma] = useState("");
   const [showModalFirma, setShowModalFirma] = useState(false);
+  const navigate = useNavigate()
   const [search, setSearch] = useState({
     cedulaPropietario:'',
     primerApellidoPropietario:'',
@@ -141,7 +142,10 @@ export default function Form() {
       showCancelButton: true,
       cancelButtonText: "Cancelar",
     }).then(({ isConfirmed }) => {
-      if (isConfirmed) window.location.reload();
+      if (isConfirmed){
+        handleClear()
+        navigate('/registros')
+      }
     });
   };
 
@@ -162,62 +166,90 @@ export default function Form() {
       const body = {
         cedulaPropietario: search.cedulaPropietario,
         /* nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`, */
-        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():'' ,
-        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():'',
-        primerNombrePropietario: search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():'',
-        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():'',
+        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
+        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
+        primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
+        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
 
-        direccionPropietario: search.direccionPropietario !== '' ? toString(search.direccionPropietario).toUpperCase():'',
-        municipioPropietario: search.municipioPropietario !== '' ? toString(search.municipioPropietario).toUpperCase():'',
+        direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
+        municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
         celularPropietario: search.celularPropietario,
-        correoPropietario: search.correoPropietario !== '' ? toString(search.correoPropietario).toLowerCase():'',
+        correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
         licenciaTransito: search.licenciaTransito,
-        placa: search.placa !== '' ? toString(search.placa).toUpperCase():'',
-        marca: search.marca !== '' ? toString(search.marca).toUpperCase():'',
-        tipo: search.tipo !== '' ? toString(search.tipo).toUpperCase():'',
+        placa: search.placa !== '' ? search.placa.toUpperCase():'',
+        marca: search.marca !== '' ? search.marca.toUpperCase():'',
+        tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
         cedulaPersonAuth: search.cedulaPersonAuth,
         /* nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`, */
-        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():'',
-        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():'',
-        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():'',
-        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():'',
+        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
+        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
+        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
+        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
 
-        direccionPersonAuth: search.direccionPersonAuth !== '' ? toString(search.direccionPersonAuth).toUpperCase():'',
-        municipioPersonAuth: search.municipioPersonAuth !== '' ? toString(search.municipioPersonAuth).toUpperCase():'',
+        direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
+        municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
         celularPersonAuth: search.celularPersonAuth,
-        correoPersonAuth: search.correoPersonAuth !== '' ? toString(search.correoPersonAuth).toLowerCase():'',
+        correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
   
         fotoUsuario: photos.photoUser,
         cedulaPropietarioFrontal: photos.frontCp,
         cedulaPropietarioTrasera: photos.backCp,
-        tarjetaPropiedadFrontal: photos.frontTp,
-        tarjetaPropiedadTrasera: photos.backTp,
-        cedulaPersonAuthFrontal: photos.frontCauth,
-        cedulaPersonAuthTrasera: photos.backCauth,
-  
-        firma: sigImageFirma !== '' ? `data:image/png;base64,${sigImageFirma}` : '',
   
         createdAt: new Date(),
-        createdBy: user.name,
+        userId: user.id,
       }
       createSolicitud(body)
-      .then(()=>{
-        setLoading(false)
-        handleClear()
-        Swal.fire({
-          icon:'success',
-          title:'¡FELICIDADES!',
-          text:'Se ha registrado la solicitud de forma exitosa',
-          showConfirmButton:true,
-          showCancelButton:false,
-          confirmButtonColor:'green'
+      .then(({data})=>{
+        const info = {
+          tarjetaPropiedadFrontal: photos.frontTp,
+          tarjetaPropiedadTrasera: photos.backTp,
+          cedulaPersonAuthFrontal: photos.frontCauth,
+        }
+        updateSolicitud(data.id,info)
+        .then(()=>{
+          const info2 = {
+            cedulaPersonAuthTrasera: photos.backCauth,
+      
+            firma: sigImageFirma !== '' ? sigImageFirma : '',
+          }
+          updateSolicitud(data.id,info2)
+          .then(()=>{
+            setLoading(false)
+            handleClear()
+            Swal.fire({
+              title:'¡FELICIDADES!',
+              text:'Se ha registrado la solicitud de forma exitosa',
+              showConfirmButton:true,
+              showCancelButton:false,
+              confirmButtonColor:'green'
+            })
+          })
+          .catch((error)=>{
+            setLoading(false)
+            Swal.fire({
+              title:`¡ERROR!`, 
+              text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
+              showConfirmButton:true,
+              showCancelButton:false,
+              confirmButtonColor:'red'
+            })
+          })
+        })
+        .catch((error)=>{
+          setLoading(false)
+          Swal.fire({
+            title:`¡ERROR!`, 
+            text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
+            showConfirmButton:true,
+            showCancelButton:false,
+            confirmButtonColor:'red'
+          })
         })
       })
-      .catch(()=>{
+      .catch((error)=>{
         setLoading(false)
         Swal.fire({
-          icon:'error',
-          title:'¡ERROR!',
+          title:`¡ERROR!`, 
           text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
           showConfirmButton:true,
           showCancelButton:false,
@@ -225,12 +257,12 @@ export default function Form() {
         })
       })
     }else{
+      setLoading(false)
       Swal.fire({
         icon:'warning',
         title:'¡ATENCION!',
         text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.',
         showConfirmButton:true,
-        showCancelButton:false,
         confirmButtonColor:'blue'
       })
     }
@@ -321,13 +353,13 @@ export default function Form() {
                 className="nav-menu-items"
                 onClick={(e) => setShowSidebar(!showSideBar)}
               >
-                {/* {(user.role==='admin' || user.role==='superadmin') &&
+                {(user.role==='admin' || user.role==='superadmin') &&
                   <li className='nav-text fw-bold'>
                   <Link to='/registros' style={{backgroundColor:(ruta==='/registros') ? 'white' : 'black',color:(ruta==='/registros') ? 'black' : 'white'}} >
                     <GiBlackBook />
                     <span>Bitácora</span>
                   </Link>
-                </li>} */}
+                </li>}
                 <li className='nav-text fw-bold'>
                   <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                     <TfiWrite />
@@ -340,14 +372,14 @@ export default function Form() {
                     <span>Solicitud múltiple</span>
                   </Link>
                 </li>
-                {/* {(user.role === 'admin' || user.role === 'superadmin') &&
+                {(user.role === 'admin' || user.role === 'superadmin') &&
                   <li className='nav-text fw-bold'>
                     <Link to='/usuarios' style={{backgroundColor:(ruta==='/usuarios') ? 'white' : 'black',color:(ruta==='/usuarios') ? 'black' : 'white'}} >
                       <PiUsersThreeFill  />
                       <span>Usuarios</span>
                     </Link>
                   </li>
-                } */}
+                }
               </ul>
               
               <ul
@@ -437,6 +469,7 @@ export default function Form() {
                       }}
                       min={0}
                       required
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -446,7 +479,7 @@ export default function Form() {
                         value={search.primerApellidoPropietario}
                         type="text"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -460,7 +493,7 @@ export default function Form() {
                         value={search.segundoApellidoPropietario}
                         type="text"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -474,7 +507,7 @@ export default function Form() {
                         value={search.primerNombrePropietario}
                         type="text"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -496,6 +529,7 @@ export default function Form() {
                         handlerChangeSearch(e);
                       }}
                       style={{textTransform:'uppercase'}}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -505,7 +539,7 @@ export default function Form() {
                       value={search.direccionPropietario}
                       type="text"
                       className="form-control form-control-sm"
-                      /* placeholder="*Campo obligatorio*" */
+                      autoComplete="off"
                       onChange={(e) => {
                         handlerChangeSearch(e);
                       }}
@@ -515,11 +549,11 @@ export default function Form() {
                   <div className="d-flex flex-column align-items-start">
                     <label>Municipio de residencia:</label>
                     <input
-                        id="MunicipioPropietario"
+                        id="municipioPropietario"
                         value={search.municipioPropietario}
                         type="text"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -537,7 +571,7 @@ export default function Form() {
                       value={search.celularPropietario}
                       type="number"
                       className="form-control form-control-sm"
-                      /* placeholder="*Campo obligatorio*" */
+                      autoComplete="off"
                       onChange={(e) => {
                         handlerChangeSearch(e);
                       }}
@@ -551,7 +585,7 @@ export default function Form() {
                       value={search.correoPropietario}
                       type="email"
                       className="form-control form-control-sm"
-                      /* placeholder="*Campo obligatorio*" */
+                      autoComplete="off"
                       onChange={(e) => {
                         handlerChangeSearch(e);
                       }}
@@ -574,7 +608,7 @@ export default function Form() {
                           value={search.licenciaTransito}
                           type="number"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -588,7 +622,7 @@ export default function Form() {
                             value={search.placa}
                             type="text"
                             className="form-control form-control-sm"
-                            /* placeholder="*Campo obligatorio*" */
+                            autoComplete="off"
                             onChange={(e) => {
                               handlerChangeSearch(e);
                             }}
@@ -602,7 +636,7 @@ export default function Form() {
                           value={search.marca}
                           type="text"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -616,7 +650,7 @@ export default function Form() {
                             value={search.tipo}
                             type="text"
                             className="form-control form-control-sm"
-                            /* placeholder="*Campo obligatorio*" */
+                            autoComplete="off"
                             onChange={(e) => {
                               handlerChangeSearch(e);
                             }}
@@ -642,7 +676,7 @@ export default function Form() {
                         value={search.cedulaPersonAuth}
                         type="number"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -656,7 +690,7 @@ export default function Form() {
                           value={search.primerApellidoPersonAuth}
                           type="text"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -670,7 +704,7 @@ export default function Form() {
                           value={search.segundoApellidoPersonAuth}
                           type="text"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -684,7 +718,7 @@ export default function Form() {
                           value={search.primerNombrePersonAuth}
                           type="text"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -707,6 +741,7 @@ export default function Form() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -716,7 +751,7 @@ export default function Form() {
                         value={search.direccionPersonAuth}
                         type="text"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -730,7 +765,7 @@ export default function Form() {
                           value={search.municipioPersonAuth}
                           type="text"
                           className="form-control form-control-sm"
-                          /* placeholder="*Campo obligatorio*" */
+                          autoComplete="off"
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
@@ -749,7 +784,7 @@ export default function Form() {
                         value={search.celularPersonAuth}
                         type="number"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -763,7 +798,7 @@ export default function Form() {
                         value={search.correoPersonAuth}
                         type="email"
                         className="form-control form-control-sm"
-                        /* placeholder="*Campo obligatorio*" */
+                        autoComplete="off"
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
@@ -1126,9 +1161,9 @@ export default function Form() {
           </Modal>
           <div className="d-flex flex-row gap-3 mb-3 w-100 justify-content-end align-items-end pt-3">
             <button
-              type="submit"
+              /* type="submit" */
               className="btn btn-sm btn-success fw-bold w-100"
-              onSubmit={(e)=>handleSubmit(e)}
+              onClick={(e)=>handleSubmit(e)}
             >
               {loading ? <strong>REGISTRANDO...<GiSandsOfTime /></strong>: 'REGISTRAR'}
             </button>

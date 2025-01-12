@@ -83,39 +83,39 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       width: '60px'
     },
     {
-      id: "name",
+      id: "cedulaPropietario",
+      name: "No. documento",
+      selector: (row) => row?.cedulaPropietario,
+      sortable: true,
+      width: '160px'
+    },
+    {
+      id: "nombre",
       name: "Nombre",
-      selector: (row) => row?.name,
+      selector: (row) => `${row.primerApellidoPropietario} ${row.segundoApellidoPropietario} ${row.primerNombrePropietario} ${row.segundoNombrePropietario}`,
       sortable: true,
       width:'cell-name'
     },
     {
-      id: "username",
-      name: "Username",
-      selector: (row) => row?.username,
+      id: "celularPropietario",
+      name: "No. celular",
+      selector: (row) => row?.celularPropietario,
       sortable: true,
-      width:'cell-name'
+      width: '160px'
     },
     {
-      id: "email",
-      name: "Gmail",
-      selector: (row) => row?.email,
-      sortable: true,
-      width:'cell-name'
-    },
-    {
-      id: "password",
-      name: "Contraseña",
-      selector: (row) => '**************',
+      id: "correoPropietario",
+      name: "Correo Electrónico",
+      selector: (row) => row.correoPropietario,
       sortable: true,
       class: 'cell-name'
     },
     {
-      id: "role",
-      name: "Cargo",
-      selector: (row) => row?.role,
+      id: "placa",
+      name: "Placa",
+      selector: (row) => row?.placa,
       sortable: true,
-      width: '150px'
+      width: '130px'
     }
   ]
 

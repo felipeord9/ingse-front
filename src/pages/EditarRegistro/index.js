@@ -150,7 +150,10 @@ export default function EditarRegistro() {
       showCancelButton: true,
       cancelButtonText: "Cancelar",
     }).then(({ isConfirmed }) => {
-      if (isConfirmed) window.location.reload();
+      if (isConfirmed){
+        handleClear()
+        navigate('/registros')
+      }
     });
   };
 
@@ -171,64 +174,85 @@ export default function EditarRegistro() {
       const body = {
         cedulaPropietario: search.cedulaPropietario,
         /* nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`, */
-        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():'' ,
-        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():'',
-        primerNombrePropietario: search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():'',
-        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():'',
+        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
+        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
+        primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
+        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
 
-        direccionPropietario: search.direccionPropietario !== '' ? toString(search.direccionPropietario).toUpperCase():'',
-        municipioPropietario: search.municipioPropietario !== '' ? toString(search.municipioPropietario).toUpperCase():'',
+        direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
+        municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
         celularPropietario: search.celularPropietario,
-        correoPropietario: search.correoPropietario !== '' ? toString(search.correoPropietario).toLowerCase():'',
+        correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
         licenciaTransito: search.licenciaTransito,
-        placa: search.placa !== '' ? toString(search.placa).toUpperCase():'',
-        marca: search.marca !== '' ? toString(search.marca).toUpperCase():'',
-        tipo: search.tipo !== '' ? toString(search.tipo).toUpperCase():'',
+        placa: search.placa !== '' ? search.placa.toUpperCase():'',
+        marca: search.marca !== '' ? search.marca.toUpperCase():'',
+        tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
         cedulaPersonAuth: search.cedulaPersonAuth,
         /* nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`, */
-        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():'',
-        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():'',
-        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():'',
-        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():'',
+        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
+        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
+        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
+        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
 
-        direccionPersonAuth: search.direccionPersonAuth !== '' ? toString(search.direccionPersonAuth).toUpperCase():'',
-        municipioPersonAuth: search.municipioPersonAuth !== '' ? toString(search.municipioPersonAuth).toUpperCase():'',
+        direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
+        municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
         celularPersonAuth: search.celularPersonAuth,
-        correoPersonAuth: search.correoPersonAuth !== '' ? toString(search.correoPersonAuth).toLowerCase():'',
+        correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
   
         fotoUsuario: photos.fotoUsuario,
         cedulaPropietarioFrontal: photos.cedulaPropietarioFrontal,
         cedulaPropietarioTrasera: photos.cedulaPropietarioTrasera,
-        tarjetaPropiedadFrontal: photos.tarjetaPropiedadFrontal,
-        tarjetaPropiedadTrasera: photos.tarjetaPropiedadTrasera,
-        cedulaPersonAuthFrontal: photos.cedulaPersonAuthFrontal,
-        cedulaPersonAuthTrasera: photos.cedulaPersonAuthTrasera,
-  
-        firma: sigImageFirma !== '' ? `data:image/png;base64,${sigImageFirma}` : '',
-  
-        createdAt: new Date(),
-        createdBy: user.name,
       }
       updateSolicitud(id, body)
       .then(()=>{
+        const info = {
+          tarjetaPropiedadFrontal: photos.tarjetaPropiedadFrontal,
+          tarjetaPropiedadTrasera: photos.tarjetaPropiedadTrasera,
+          cedulaPersonAuthFrontal: photos.cedulaPersonAuthFrontal,
+        }
+        updateSolicitud(id,info)
+        .then(()=>{
+          const info2 = {
+            cedulaPersonAuthTrasera: photos.cedulaPersonAuthTrasera,
+      
+            firma: sigImageFirma !== '' ? sigImageFirma : '',
+          }
+          updateSolicitud(id,info2)
+          .then(()=>{
+            setLoading(false)
+            handleClear()
+            Swal.fire({
+              title:'¡FELICIDADES!',
+              text:'Se ha editado el editado la solicitud de forma exitosa',
+              showConfirmButton:true,
+              showCancelButton:false,
+              confirmButtonColor:'green'
+            })
+            .then(()=>{
+              navigate('/registros')
+            })
+          })
+          setLoading(false)
+          Swal.fire({
+            title:'¡ERROR!',
+            text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
+            showConfirmButton:true,
+            showCancelButton:false,
+            confirmButtonColor:'red'
+          })
+        })
         setLoading(false)
-        handleClear()
         Swal.fire({
-          icon:'success',
-          title:'¡FELICIDADES!',
-          text:'Se ha editado el registrado de solicitud de forma exitosa',
+          title:'¡ERROR!',
+          text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
           showConfirmButton:true,
           showCancelButton:false,
-          confirmButtonColor:'green'
-        })
-        .then(()=>{
-          navigate('/registros')
+          confirmButtonColor:'red'
         })
       })
       .catch(()=>{
         setLoading(false)
         Swal.fire({
-          icon:'error',
           title:'¡ERROR!',
           text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
           showConfirmButton:true,
@@ -237,6 +261,7 @@ export default function EditarRegistro() {
         })
       })
     }else{
+      setLoading(false)
       Swal.fire({
         icon:'warning',
         title:'¡ATENCION!',
@@ -333,13 +358,13 @@ export default function EditarRegistro() {
                 className="nav-menu-items"
                 onClick={(e) => setShowSidebar(!showSideBar)}
               >
-                {/* {(user.role==='admin' || user.role==='superadmin') &&
+                {(user.role==='admin' || user.role==='superadmin') &&
                   <li className='nav-text fw-bold'>
                   <Link to='/registros' style={{backgroundColor:(ruta==='/registros') ? 'white' : 'black',color:(ruta==='/registros') ? 'black' : 'white'}} >
                     <GiBlackBook />
                     <span>Bitácora</span>
                   </Link>
-                </li>} */}
+                </li>}
                 <li className='nav-text fw-bold'>
                   <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                     <TfiWrite />
@@ -352,14 +377,14 @@ export default function EditarRegistro() {
                     <span>Solicitud múltiple</span>
                   </Link>
                 </li>
-                {/* {(user.role === 'admin' || user.role === 'superadmin') &&
+                {(user.role === 'admin' || user.role === 'superadmin') &&
                   <li className='nav-text fw-bold'>
                     <Link to='/usuarios' style={{backgroundColor:(ruta==='/usuarios') ? 'white' : 'black',color:(ruta==='/usuarios') ? 'black' : 'white'}} >
                       <PiUsersThreeFill  />
                       <span>Usuarios</span>
                     </Link>
                   </li>
-                } */}
+                }
               </ul>
               
               <ul
@@ -396,7 +421,7 @@ export default function EditarRegistro() {
           <div className="d-flex flex-column align-items-center">
             <h1 className="fs-5 fw-bold ">ASUNTO: <label>DECLARACIÓN JURAMENTADA</label></h1>
             <h1 className="text-center fs-6 fw-bold">Documento Solicitud Copia Placa(s) Vehiculares</h1>
-            <h1 className="fs-6 fw-bold">Fecha: <label>{JSON.stringify(new Date().getDate())}/{JSON.stringify(new Date().getMonth()+1)}/{JSON.stringify(new Date().getFullYear())}</label></h1>
+            <h1 className="fs-6 fw-bold">Fecha: <label>{JSON.stringify(new Date(search.createdAt).getDate())}/{JSON.stringify(new Date(search.createdAt).getMonth()+1)}/{JSON.stringify(new Date(search.createdAt).getFullYear())}</label></h1>
             {/* <h1 className="fs-6 fw-bold me-5">Hora: {JSON.stringify(new Date().getHours())}:{JSON.stringify(new Date().getMinutes())}:{JSON.stringify(new Date().getSeconds())}</h1> */}
             {/* Logica para saber si es el propietario o es persona autorizada */}
             <div className="d-flex flex-column align-items-center">
@@ -449,6 +474,7 @@ export default function EditarRegistro() {
                       }}
                       min={0}
                       required
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -463,6 +489,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -477,6 +504,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -491,6 +519,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                   </div>
                 </div>
@@ -508,6 +537,7 @@ export default function EditarRegistro() {
                         handlerChangeSearch(e);
                       }}
                       style={{textTransform:'uppercase'}}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -522,12 +552,13 @@ export default function EditarRegistro() {
                         handlerChangeSearch(e);
                       }}
                       style={{textTransform:'uppercase'}}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
                     <label>Municipio de residencia:</label>
                     <input
-                        id="MunicipioPropietario"
+                        id="municipioPropietario"
                         value={search.municipioPropietario}
                         type="text"
                         className="form-control form-control-sm"
@@ -536,6 +567,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                   </div>
                 </div>
@@ -554,6 +586,7 @@ export default function EditarRegistro() {
                         handlerChangeSearch(e);
                       }}
                       min={0}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="d-flex flex-column align-items-start">
@@ -568,6 +601,7 @@ export default function EditarRegistro() {
                         handlerChangeSearch(e);
                       }}
                       style={{textTransform:'lowercase'}}
+                      autoComplete="off"
                     />
                   </div>
                 </div>
@@ -591,6 +625,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           min={0}
+                          autoComplete="off"
                         />
                       </div>
                       <div className="d-flex flex-column align-items-start">
@@ -605,6 +640,7 @@ export default function EditarRegistro() {
                               handlerChangeSearch(e);
                             }}
                             style={{textTransform:'uppercase'}}
+                            autoComplete="off"
                           />
                       </div>
                       <div className="d-flex flex-column align-items-start">
@@ -619,6 +655,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          autoComplete="off"
                         />
                       </div>
                       <div className="d-flex flex-column align-items-start">
@@ -633,6 +670,7 @@ export default function EditarRegistro() {
                               handlerChangeSearch(e);
                             }}
                             style={{textTransform:'uppercase'}}
+                            autoComplete="off"
                           />
                       </div>
                     </div>
@@ -659,6 +697,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         min={0}
+                        autoComplete="off"
                       />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -673,6 +712,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          autoComplete="off"
                         />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -687,6 +727,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          autoComplete="off"
                         />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -701,6 +742,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          autoComplete="off"
                         />
                     </div>
                   </div>
@@ -719,6 +761,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -733,6 +776,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'uppercase'}}
+                        autoComplete="off"
                       />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -747,6 +791,7 @@ export default function EditarRegistro() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          autoComplete="off"
                         />
                     </div>
                   </div>
@@ -766,6 +811,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         min={0}
+                        autoComplete="off"
                       />
                     </div>
                     <div className="d-flex flex-column align-items-start">
@@ -780,6 +826,7 @@ export default function EditarRegistro() {
                           handlerChangeSearch(e);
                         }}
                         style={{textTransform:'lowercase'}}
+                        autoComplete="off"
                       />
                     </div>
                   </div>
@@ -1138,11 +1185,11 @@ export default function EditarRegistro() {
           </Modal>
           <div className="d-flex flex-row gap-3 mb-3 w-100 justify-content-end align-items-end pt-3">
             <button
-              type="submit"
+              /* type="submit" */
               className="btn btn-sm btn-success fw-bold w-100"
-              onSubmit={(e)=>handleSubmit(e)}
+              onClick={(e)=>handleSubmit(e)}
             >
-              {loading ? <strong>REGISTRANDO...<GiSandsOfTime /></strong>: 'REGISTRAR'}
+              {loading ? <strong>EDITANDO...<GiSandsOfTime /></strong>: 'EDITAR'}
             </button>
             <button
               type="button"

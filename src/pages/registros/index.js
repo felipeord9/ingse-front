@@ -10,10 +10,11 @@ import * as FaIcons from "react-icons/fa";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { GiBlackBook } from "react-icons/gi";
 import { PiUsersThreeFill } from "react-icons/pi";
-import { findUsers } from "../../services/userService"
+import { findSolicitudes } from "../../services/solicitudService"
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
 import './styles.css'
+import Swal from "sweetalert2";
 
 export default function Registros() {
   const { user } = useContext(AuthContext);
@@ -36,7 +37,7 @@ export default function Registros() {
 
   const getAllRegistros = () => {
     setLoading(true)
-    findUsers()
+    findSolicitudes()
       .then(({ data }) => {
         setRegistros(data)
         setSuggestions(data)
@@ -51,8 +52,11 @@ export default function Registros() {
     const { value } = e.target
     if(value !== "") {
       const filteredRegistros = registros.filter((elem) => {
+        const name = `${elem.primerApellidoPropietario} ${elem.segundoApellidoPropietario} ${elem.primerNombrePropietario} ${elem.segundoNombrePropietario}`
         if(
-          elem.name.toLowerCase().includes(value.toLowerCase())
+          elem.placa.toLowerCase().includes(value.toLowerCase()) ||
+          name.toLowerCase().includes(value.toLowerCase()) ||
+          elem.cedulaPropietario.includes(value)
         ) {
           return elem
         }
@@ -161,7 +165,7 @@ export default function Registros() {
           <div className="lookfor justify-content-end mt-3 gap-3">
             <TextField id="outlined-basic" 
               className="d-flex w-100 mt-1 " size="small" 
-              label='Buscar por nombre' variant='outlined'
+              label='Buscar por cédula, nombre o placa' variant='outlined'
               type='search'
               value={search}
               onChange={searchRegistro}
