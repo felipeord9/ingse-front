@@ -179,6 +179,7 @@ export default function Registros() {
                 <TfiWrite style={{width: 15, height: 15}} />
             </button>
           </div>
+          {/* {JSON.stringify(suggestions.map((item)=>item?.firma))} */}
           <TableRegistros 
             registros={suggestions} 
             loading={loading} 

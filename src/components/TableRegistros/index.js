@@ -39,7 +39,7 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
           <div className="d-flex gap-2 p-1">
             <PDFDownloadLink
               document={<DocRequestrPDF request={row} />}
-              fileName={`${row?.nitClient}-PDV-${row?.nameClient}.pdf`}
+              fileName={`INGSE S.A.S - Factura No.${row?.id}.pdf`}
               onClick={(e) => {
                 e.download();
               }}

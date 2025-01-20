@@ -51,29 +51,33 @@ const styles = StyleSheet.create({
   image: {
     width: 60,
     height: 60,
-    border:'2px solid black'
+    border:'1px solid black'
   },
   imgDocumentos: {
     width: '100%',
-    height: 115,
-    border:'2px solid black',
+    height: 105,
+    border:'1px solid black',
     borderRadius:5,
+  },
+  input: {
+    borderBottom: "1 solid black",
+    width: "auto",
   }
 });
 
 export default function DocRequestrPDF({ request }) {
-  const idParser = (id) => {
-    let numeroComoTexto = id.toString();
-    while (numeroComoTexto.length < 8) {
+  /* const idParser = (id) => {
+    let numeroComoTexto = id?.toString();
+    while (numeroComoTexto?.length < 8) {
       numeroComoTexto = "0" + numeroComoTexto;
     }
     return numeroComoTexto;
-  };
+  }; */
 
   return (
     request && (
       <Document
-        title={`${request?.nitClient}-${(request?.nameClient)}`}
+        title={`${request?.cedulaPropietario}-${(request?.nombrePropietario)}`}
         author="Ingse S.A.S"
         subject="Documento Solicitud Copia Placa(s) Vehiculares"
         keywords="Documento Solicitud Copia Placa(s) Vehiculares - Ingese"
@@ -106,7 +110,7 @@ export default function DocRequestrPDF({ request }) {
                   </Text> */}
                   <Image 
                     style={styles.image}
-                    src={Foto}
+                    src={request?.fotoUsuario}
                   />
                 </View>
 
@@ -154,7 +158,7 @@ export default function DocRequestrPDF({ request }) {
                         padding: 5,
                       }}
                     >
-                      No.{request?.coId}-PDV-{idParser(request?.rowId)}
+                      INGSE S.A.S - Factura No.{request?.id}
                     </Text>
                     <Text style={{ ...styles.tableRow, padding: 3 }}>
                       <Text style={{ fontFamily: "Helvetica-Bold" }}>
@@ -185,9 +189,9 @@ export default function DocRequestrPDF({ request }) {
                   position: "relative",
                 }}
               >
-                <Text style={{padding: 7}}>
-                  Yo, {request?.name} identificado (a) con (C.C) No. {request?.nit}, con domiciliado (a) en la
-                  dirección {request?.direccion} del municipio {request?.municipio}, manifiesto de manera libre y voluntaria, bajo la
+                <Text style={{padding: 7, lineHeight: 1.2}}>
+                  Yo, ___{request?.primerApellidoPropietario} {request?.segundoApellidoPropietario} {request?.primerNombrePropietario} {request?.segundoNombrePropietario}___ identificado (a) con (C.C) No. ___<Text style={styles.input}>{request?.cedulaPropietario}</Text>___, con domiciliado (a) en la
+                  dirección ___<Text style={styles.input}>{request?.direccionPropietario}</Text>___ del municipio ___<Text style={styles.input}>{request?.municipioPropietario}___</Text>, manifiesto de manera libre y voluntaria, bajo la
                   gravedad del juramento que: 
                 </Text>
               </View>
@@ -198,10 +202,10 @@ export default function DocRequestrPDF({ request }) {
                   position: "relative",
                 }}
               >
-                <Text style={{padding: 7}}>
-                  Soy el(la) Propietario del vehículo o el(la) representante legal de la empresa {request?.empresa} con NIT {request?.nitEmpresa}
-                  según consta en la Cámara y Comercio adjunta, dueña del vehículo de PLACAS {request?.placas}, TIPO {request?.tipo}, MARCA {request?.marca},
-                  SERVICIO {request?.servicio}, MATRICULADO EN {request.ciudadMatricula}, LICENCIA DE TRÁNSITO NO. {request?.licenciaTransito}, En condición de propietario
+                <Text style={{padding: 7, lineHeight: 1.2}}>
+                  Soy el(la) Propietario del vehículo o el(la) representante legal de la empresa ___{request?.empresa}___ con NIT ___{request?.nitEmpresa}___
+                  según consta en la Cámara y Comercio adjunta, dueña del vehículo de PLACAS ___{request?.placa}___, TIPO ___{request?.tipo}___, MARCA ___{request?.marca}___,
+                  SERVICIO ___{request?.servicio}___, MATRICULADO EN ___{request.ciudadMatricula}___, LICENCIA DE TRÁNSITO NO. ___{request?.licenciaTransito}___, En condición de propietario
                   de este vehículo; Autorizo a la empresa INGSE S.A.S NIT 900773756, dociliada en Palmira Valle del cauca, en su condición de fabricante de la placa única 
                   Nacional para vehículos, fabrique y entregue bajo mi resposabilidad (1) (2) unidad(es) de placa(s) idénticas a la que identifican mi vehículo
                   por deterioro __(x)__, pérdida __(x)__. Que me comprometo a realizar los trámites a lugar como consecuencia de este cambio en el organismo de 
@@ -215,10 +219,10 @@ export default function DocRequestrPDF({ request }) {
                   position: "relative",
                 }}
               >
-                <Text style={{padding: 7}}>
-                  Propietario - Celular {request?.celular}, Email {request?.email}, AUTORIZO para que este trámite lo adelante en mi nombre
-                  el señor(a) {request?.autorizado}, identificado con la (C.C) (C.E) No. {request?.cedulaAuto} de {request?.cityAuto}, con 
-                  domicilio en la dirección {request?.direccionAuto} del municipio de {request?.municipioAuto}.
+                <Text style={{padding: 7, lineHeight: 1.2}}>
+                  Propietario - Celular ___{request?.celularPropietario}___, Email ___{request?.correoPropietario}___, AUTORIZO para que este trámite lo adelante en mi nombre
+                  el señor(a) ___{request?.primerApellidoPersonAuth} {request?.segundoApellidoPersonAuth} {request?.primerNombrePersonAuth} {request?.segundoNombrePersonAuth}___, identificado con la (C.C) (C.E) No. ___{request?.cedulaPersonAuth}___ de ___{request?.cityAuto}___, con 
+                  domicilio en la dirección ___{request?.direccionPersonAuth}___ del municipio de ___{request?.municipioPersonAuth}___.
                 </Text>
               </View>
 
@@ -228,8 +232,8 @@ export default function DocRequestrPDF({ request }) {
                   position: "relative",
                 }}
               >
-                <Text style={{padding: 7}}>
-                Autorizado - Celular {request?.celularAuto}, Correo electrónico {request?.emailAuto}  para lo cual estoy aportando copia de:
+                <Text style={{padding: 7, lineHeight: 1.2}}>
+                Autorizado - Celular ___<Text style={styles.input}>{request?.celularPersonAuth}</Text>___, Correo electrónico ___<Text>{request?.correoPersonAuth}</Text>___ para lo cual estoy aportando copia de:
                 Licencia de tránsito __(x)__ y cédula de ciudadanía __(x)__.
                 </Text>
               </View>
@@ -240,7 +244,7 @@ export default function DocRequestrPDF({ request }) {
                   position: "relative",
                 }}
               >
-                <Text style={{padding: 7}}>
+                <Text style={{padding: 7, lineHeight: 1.2}}>
                 Declaro que toda la información sumistrada es verídica, los documentos entregados son copia fiel del original y autorizo que 
                 por cualquier medio se verifiquen los datos aquí contenidos y en caso de falsedad se aplique las sanciones contempladas en la ley.
                 </Text>
@@ -288,10 +292,54 @@ export default function DocRequestrPDF({ request }) {
                     marginRighti:10,
                   }}
                 >
-                  <Image 
-                    style={styles.imgDocumentos}
-                    src={cedFron}
-                  />
+                  {(
+                    (request?.cedulaPersonAuthFrontal === null || 
+                    request?.cedulaPersonAuthFrontal === '') && 
+                    (request?.cedulaPropietarioFrontal === null || 
+                    request?.cedulaPropietarioFrontal === '')
+                  ) ?
+                    <View style={styles.imgDocumentos}></View>
+                    :
+                      (
+                        (request?.cedulaPersonAuthFrontal === null || 
+                        request?.cedulaPersonAuthFrontal === '') &&
+                        (request?.cedulaPropietarioFrontal !== null || 
+                          request?.cedulaPropietarioFrontal !== '')
+                      ) ?
+                        <Image 
+                          style={styles.imgDocumentos}
+                          src={request?.cedulaPropietarioFrontal}
+                        />
+                        :
+                          (
+                            (request?.cedulaPersonAuthFrontal !== null || 
+                            request?.cedulaPersonAuthFrontal !== '') &&
+                            (request?.cedulaPropietarioFrontal === null || 
+                              request?.cedulaPropietarioFrontal === '')
+                          ) ?
+                            <Image 
+                              style={styles.imgDocumentos}
+                              src={request?.cedulaPersonAuthFrontal}
+                            />
+                            :
+                            <Image 
+                              style={styles.imgDocumentos}
+                              src={request?.cedulaPersonAuthFrontal}
+                            />
+                  }
+                  {/* {(request?.cedulaPersonAuthFrontal !== null || request?.cedulaPersonAuthFrontal !== '' ) ?
+                    <Image 
+                      style={styles.imgDocumentos}
+                      src={request?.cedulaPersonAuthFrontal}
+                    /> 
+                      : (request?.cedulaPropietarioFrontal !== null || request?.cedulaPropietarioFrontal !== '') ?
+                        <Image 
+                          style={styles.imgDocumentos}
+                          src={request?.cedulaPropietarioFrontal}
+                        />
+                        : 
+                          <View style={styles.imgDocumentos}></View>
+                  } */}
                 </View>
                 <View
                   style={{
@@ -301,10 +349,41 @@ export default function DocRequestrPDF({ request }) {
                     marginLeft:10,
                   }}
                 >
-                  <Image 
-                    style={styles.imgDocumentos}
-                    src={cedBack}
-                  />
+                  {(
+                    (request?.cedulaPropietarioTrasera === null || 
+                    request?.cedulaPropietarioTrasera === '') && 
+                    (request?.cedulaPersonAuthTrasera === null || 
+                    request?.cedulaPersonAuthTrasera === '')
+                  ) ?
+                    <View style={styles.imgDocumentos}></View>
+                    :
+                      (
+                        (request?.cedulaPersonAuthTrasera === null || 
+                        request?.cedulaPersonAuthTrasera === '') &&
+                        (request?.cedulaPropietarioTrasera !== null || 
+                          request?.cedulaPropietarioTrasera !== '')
+                      ) ?
+                        <Image 
+                          style={styles.imgDocumentos}
+                          src={request?.cedulaPropietarioTrasera}
+                        />
+                        :
+                          (
+                            (request?.cedulaPersonAuthTrasera !== null || 
+                            request?.cedulaPersonAuthTrasera !== '') &&
+                            (request?.cedulaPropietarioTrasera === null || 
+                              request?.cedulaPropietarioTrasera === '')
+                          ) ?
+                            <Image 
+                              style={styles.imgDocumentos}
+                              src={request?.cedulaPersonAuthTrasera}
+                            />
+                            :
+                            <Image 
+                              style={styles.imgDocumentos}
+                              src={request?.cedulaPersonAuthTrasera}
+                            />
+                  }
                 </View>
               </View>
 
@@ -325,10 +404,14 @@ export default function DocRequestrPDF({ request }) {
                     marginRight:10,
                   }}
                 >
-                  <Image 
-                    style={styles.imgDocumentos}
-                    src={tpFront}
-                  />
+                  {(request?.tarjetaPropiedadFrontal === null || request?.tarjetaPropiedadFrontal === '') ?
+                    <View style={styles.imgDocumentos}></View>
+                    : 
+                    <Image 
+                      style={styles.imgDocumentos}
+                      src={request?.tarjetaPropiedadFrontal}
+                    /> 
+                  }
                 </View>
                 <View
                   style={{
@@ -338,10 +421,14 @@ export default function DocRequestrPDF({ request }) {
                     marginLeft:10,
                   }}
                 >
-                  <Image 
-                    style={styles.imgDocumentos}
-                    src={tpBack}
-                  />
+                  {(request?.tarjetaPropiedadTrasera === null || request?.tarjetaPropiedadTrasera === '') ?
+                    <View style={styles.imgDocumentos}></View>
+                    : 
+                    <Image 
+                      style={styles.imgDocumentos}
+                      src={request?.tarjetaPropiedadTrasera}
+                    /> 
+                  }
                 </View>
               </View>
 
@@ -359,22 +446,25 @@ export default function DocRequestrPDF({ request }) {
                   </Text>
                   <View
                     style={{
-                      
                       gap: 3,
                       fontSize:8,
                       marginRight:10,
                       width:'100%'
                     }}
                   >
-                    <Image 
-                      style={styles.imgDocumentos}
-                      src={Firma}
-                    />
+                    {(request?.firma === null || request?.firma === '') ?
+                      <View style={styles.imgDocumentos}></View>
+                      : 
+                      <Image 
+                        style={styles.imgDocumentos}
+                        src={`data:image/png;base64,${request?.firma}`}
+                      /> 
+                    }
                   </View>
                 </View>
 
                 {/* huella derecha */}
-                <View style={{...styles.columnWidth1, display:"flex", flexDirection:'column', alignItems:"center", gap:4 , marginLeft:10}}>
+                <View style={{...styles.columnWidth2, display:"flex", flexDirection:'column', alignItems:"center", gap:4 , marginLeft:10}}>
                   <Text 
                     style={{
                     fontFamily: "Helvetica-Bold",
@@ -383,32 +473,39 @@ export default function DocRequestrPDF({ request }) {
                   }}>
                     HUELA DIGITAL
                   </Text>
-                  <Text 
+                  {/* <Text 
                     style={{
                     fontFamily: "Helvetica-Bold",
                     fontWeight: "extrabold",
                     fontSize:9
                   }}>
                     INDICE DERECHO
-                  </Text>
+                  </Text> */}
                   
                   <View
                     style={{
                       gap: 3,
                       fontSize:8,
                       marginRight:10,
-                      width:'75%'
+                      width:'45%',
+                      display:'flex',
+                      alignItems: 'center',
+                      alignContent:'center'
                     }}
                   >
-                    <Image 
-                      style={styles.imgDocumentos}
-                      src={huella}
-                    />
+                    {(request?.huella === null || request?.huella === '') ?
+                      <View style={styles.imgDocumentos}></View>
+                      : 
+                      <Image 
+                        style={styles.imgDocumentos}
+                        src={request?.huella}
+                      />
+                    }
                   </View>
                 </View>
 
                 {/* huella izquierda */}
-                <View style={{...styles.columnWidth1, display:"flex", flexDirection:'column', alignItems:"center", gap:4 , marginLeft:10 }}>
+                {/* <View style={{...styles.columnWidth1, display:"flex", flexDirection:'column', alignItems:"center", gap:4 , marginLeft:10 }}>
                   <Text 
                     style={{
                     fontFamily: "Helvetica-Bold",
@@ -439,7 +536,7 @@ export default function DocRequestrPDF({ request }) {
                       src={huella}
                     />
                   </View>
-                </View>
+                </View> */}
               </View>
 
             </View>
