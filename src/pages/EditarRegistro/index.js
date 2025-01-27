@@ -173,7 +173,7 @@ export default function EditarRegistro() {
     if(search.cedulaPropietario){
       const body = {
         cedulaPropietario: search.cedulaPropietario,
-        /* nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`, */
+        nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`,
         primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
         segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
         primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
@@ -183,12 +183,17 @@ export default function EditarRegistro() {
         municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
         celularPropietario: search.celularPropietario,
         correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
+
         licenciaTransito: search.licenciaTransito,
         placa: search.placa !== '' ? search.placa.toUpperCase():'',
+        vin: search.vin !== '' ? search.vin.toUpperCase():'',
+        chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
         marca: search.marca !== '' ? search.marca.toUpperCase():'',
         tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
+        servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
+        
         cedulaPersonAuth: search.cedulaPersonAuth,
-        /* nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`, */
+        nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
         primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
         segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
         primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
@@ -612,7 +617,7 @@ export default function EditarRegistro() {
                 <div className="d-flex flex-column gap-1 mt-1">
                   <div>
                     <h6 className="fw-bold">Información de la tarjeta de propiedad:</h6>
-                    <div className="row row-cols-sm-4">
+                    <div className="row row-cols-sm-3">
                       <div className="d-flex flex-column align-items-start">
                         <label>No. licencia de transito:</label>
                         <input
@@ -642,6 +647,36 @@ export default function EditarRegistro() {
                             style={{textTransform:'uppercase'}}
                             autoComplete="off"
                           />
+                      </div>
+                      <div className="d-flex flex-column align-items-start">
+                        <label>No. Vin:</label>
+                        <input
+                          id="vin"
+                          value={search.vin}
+                          type="text"
+                          className="form-control form-control-sm"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            handlerChangeSearch(e);
+                          }}
+                          style={{textTransform:'uppercase'}}
+                        />
+                      </div>
+                    </div>
+                    <div className="row row-cols-sm-3">
+                      <div className="d-flex flex-column align-items-start">
+                        <label>No. Chasis:</label>
+                        <input
+                          id="chasis"
+                          value={search.chasis}
+                          type="text"
+                          className="form-control form-control-sm"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            handlerChangeSearch(e);
+                          }}
+                          style={{textTransform:'uppercase'}}
+                        />
                       </div>
                       <div className="d-flex flex-column align-items-start">
                         <label>Marca:</label>

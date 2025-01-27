@@ -168,6 +168,7 @@ export default function Registros() {
               label='Buscar por cédula, nombre o placa' variant='outlined'
               type='search'
               value={search}
+              style={{textTransform:'uppercase'}}
               onChange={searchRegistro}
             ></TextField>
             <button

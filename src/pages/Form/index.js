@@ -39,8 +39,11 @@ export default function Form() {
     correoPropietario:'',
     licenciaTransito:'',
     placa:'',
+    vin:'',
+    chasis:'',
     marca:'',
     tipo:'',
+    servicio:'',
     cedulaPersonAuth:'',
     primerApellidoPersonAuth:'',
     segundoApellidoPersonAuth:'',
@@ -165,7 +168,7 @@ export default function Form() {
     if(search.cedulaPropietario){
       const body = {
         cedulaPropietario: search.cedulaPropietario,
-        /* nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`, */
+        nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`,
         primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
         segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
         primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
@@ -175,12 +178,17 @@ export default function Form() {
         municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
         celularPropietario: search.celularPropietario,
         correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
+
         licenciaTransito: search.licenciaTransito,
+        vin: search.vin !== '' ? search.vin.toUpperCase():'',
+        chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
         placa: search.placa !== '' ? search.placa.toUpperCase():'',
         marca: search.marca !== '' ? search.marca.toUpperCase():'',
         tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
+        servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
+
         cedulaPersonAuth: search.cedulaPersonAuth,
-        /* nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`, */
+        nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
         primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
         segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
         primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
@@ -600,7 +608,7 @@ export default function Form() {
                 <div className="d-flex flex-column gap-1 mt-1">
                   <div>
                     <h6 className="fw-bold">Información de la tarjeta de propiedad:</h6>
-                    <div className="row row-cols-sm-4">
+                    <div className="row row-cols-sm-3">
                       <div className="d-flex flex-column align-items-start">
                         <label>No. licencia de transito:</label>
                         <input
@@ -630,6 +638,36 @@ export default function Form() {
                           />
                       </div>
                       <div className="d-flex flex-column align-items-start">
+                        <label>No. Vin:</label>
+                        <input
+                          id="vin"
+                          value={search.vin}
+                          type="text"
+                          className="form-control form-control-sm"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            handlerChangeSearch(e);
+                          }}
+                          style={{textTransform:'uppercase'}}
+                        />
+                      </div>
+                    </div>
+                    <div className="row row-cols-sm-4">
+                      <div className="d-flex flex-column align-items-start">
+                        <label>No. Chasis:</label>
+                        <input
+                          id="chasis"
+                          value={search.chasis}
+                          type="text"
+                          className="form-control form-control-sm"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            handlerChangeSearch(e);
+                          }}
+                          style={{textTransform:'uppercase'}}
+                        />
+                      </div>
+                      <div className="d-flex flex-column align-items-start">
                         <label>Marca:</label>
                         <input
                           id="marca"
@@ -644,10 +682,24 @@ export default function Form() {
                         />
                       </div>
                       <div className="d-flex flex-column align-items-start">
-                        <label>Tipo:</label>
+                        <label>Tipo vehículo:</label>
                         <input
                             id="tipo"
                             value={search.tipo}
+                            type="text"
+                            className="form-control form-control-sm"
+                            autoComplete="off"
+                            onChange={(e) => {
+                              handlerChangeSearch(e);
+                            }}
+                            style={{textTransform:'uppercase'}}
+                          />
+                      </div>
+                      <div className="d-flex flex-column align-items-start">
+                        <label>Servicio:</label>
+                        <input
+                            id="servicio"
+                            value={search.servicio}
                             type="text"
                             className="form-control form-control-sm"
                             autoComplete="off"
@@ -1045,98 +1097,98 @@ export default function Form() {
           </div>
           {/* Modal para tomar fotos */}
           <Modal show={showModal} onHide={closeModal} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Capturar Foto: {nameField}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          {!previewPhoto ? (
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={{
-                width: 1280,
-                height: 720,
-                facingMode: "enviroment", // 'user' para camara delante O 'enviroment' para la cámara trasera
-              }}
-              style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
-            />
-          ):(
-            <img
-              src={previewPhoto}
-              alt="Previsualización"
-              style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
-            />
-          )}
-          </Modal.Body>
-            <Modal.Footer>
+            <Modal.Header closeButton>
+              <Modal.Title>Capturar Foto: {nameField}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
             {!previewPhoto ? (
-            <>
-              <button
-                onClick={capturePhoto}
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  backgroundColor: "#007bff",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                videoConstraints={{
+                  width: 1280,
+                  height: 720,
+                  facingMode: "enviroment", // 'user' para camara delante O 'enviroment' para la cámara trasera
                 }}
-              >
-                Capturar
-              </button>
-              <label
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  backgroundColor: "#6c757d",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Subir
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleUpload}
-                  style={{ display: "none" }}
-                />
-              </label>
-            </>
-            ) : (
+                style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+              />
+            ):(
+              <img
+                src={previewPhoto}
+                alt="Previsualización"
+                style={{ width: '100%', height: '100%', border: '2px solid #ccc', borderRadius: '10px' }}
+              />
+            )}
+            </Modal.Body>
+            <Modal.Footer>
+              {!previewPhoto ? (
               <>
-              <button
-                onClick={savePhoto}
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  backgroundColor: "#28a745",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  marginRight: "10px",
-                }}
-              >
-                Guardar
-              </button>
-              <button
-                onClick={() => discardPhoto()}
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  backgroundColor: "#dc3545",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-              >
-                Descartar
-              </button>
-            </>
-          )} 
-          </Modal.Footer>
+                <button
+                  onClick={capturePhoto}
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Capturar
+                </button>
+                <label
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    backgroundColor: "#6c757d",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Subir
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleUpload}
+                    style={{ display: "none" }}
+                  />
+                </label>
+              </>
+              ) : (
+              <>
+                <button
+                  onClick={savePhoto}
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    backgroundColor: "#28a745",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    marginRight: "10px",
+                  }}
+                >
+                  Guardar
+                </button>
+                <button
+                  onClick={() => discardPhoto()}
+                  style={{
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    backgroundColor: "#dc3545",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Descartar
+                </button>
+              </>
+              )} 
+            </Modal.Footer>
           </Modal>
           {/* Modal de la firma */}
           <SigWebDemo

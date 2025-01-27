@@ -92,7 +92,7 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
     {
       id: "nombre",
       name: "Nombre",
-      selector: (row) => `${row.primerApellidoPropietario} ${row.segundoApellidoPropietario} ${row.primerNombrePropietario} ${row.segundoNombrePropietario}`,
+      selector: (row) => row.nombrePropietario === null ? `${row.primerApellidoPropietario} ${row.segundoApellidoPropietario} ${row.primerNombrePropietario} ${row.segundoNombrePropietario}` : `${row.nombrePropietario}`,
       sortable: true,
       width:'cell-name'
     },
@@ -122,11 +122,11 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
   return (
   <div
       className="d-flex flex-column rounded m-0 p-0"
-      style={{ height: "calc(100% - 60px)", width: "100%" }}
+      style={{ height: "calc(100vh - 140px)", width: "100%" }}
     >      
       <DataTable
         className="bg-light text-center border border-2 h-100"
-        style={{fontSize:20 , height:450}}
+        style={{fontSize:20 /* , height:450 */}}
         columns={columns}
         data={registros}
         fixedHeaderScrollHeight={200}
