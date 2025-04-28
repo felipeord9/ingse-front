@@ -165,71 +165,86 @@ export default function Form() {
   const handleSubmit = (e) =>{
     e.preventDefault();
     setLoading(true)
-    if(search.cedulaPropietario){
-      const body = {
-        cedulaPropietario: search.cedulaPropietario,
-        nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`,
-        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
-        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
-        primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
-        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
-
-        direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
-        municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
-        celularPropietario: search.celularPropietario,
-        correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
-
-        licenciaTransito: search.licenciaTransito,
-        vin: search.vin !== '' ? search.vin.toUpperCase():'',
-        chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-        placa: search.placa !== '' ? search.placa.toUpperCase():'',
-        marca: search.marca !== '' ? search.marca.toUpperCase():'',
-        tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
-        servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
-
-        cedulaPersonAuth: search.cedulaPersonAuth,
-        nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
-        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
-        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
-        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
-        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
-
-        direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
-        municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
-        celularPersonAuth: search.celularPersonAuth,
-        correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
+    if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
+        search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
+        search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+    ){
+      if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
+        const body = {
+          cedulaPropietario: search.cedulaPropietario,
+          nombrePropietario: `${search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():''} ${search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():''} ${search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():''}`,
+          primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
+          segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
+          primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
+          segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
   
-        fotoUsuario: photos.photoUser,
-        cedulaPropietarioFrontal: photos.frontCp,
-        cedulaPropietarioTrasera: photos.backCp,
+          direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
+          municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
+          celularPropietario: search.celularPropietario,
+          correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
   
-        createdAt: new Date(),
-        userId: user.id,
-      }
-      createSolicitud(body)
-      .then(({data})=>{
-        const info = {
-          tarjetaPropiedadFrontal: photos.frontTp,
-          tarjetaPropiedadTrasera: photos.backTp,
-          cedulaPersonAuthFrontal: photos.frontCauth,
+          licenciaTransito: search.licenciaTransito,
+          vin: search.vin !== '' ? search.vin.toUpperCase():'',
+          chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
+          placa: search.placa !== '' ? search.placa.toUpperCase():'',
+          marca: search.marca !== '' ? search.marca.toUpperCase():'',
+          tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
+          servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
+  
+          cedulaPersonAuth: search.cedulaPersonAuth,
+          nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
+          primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
+          segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
+          primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
+          segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
+  
+          direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
+          municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
+          celularPersonAuth: search.celularPersonAuth,
+          correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
+    
+          fotoUsuario: photos.photoUser,
+          cedulaPropietarioFrontal: photos.frontCp,
+          cedulaPropietarioTrasera: photos.backCp,
+    
+          createdAt: new Date(),
+          userId: user.id,
         }
-        updateSolicitud(data.id,info)
-        .then(()=>{
-          const info2 = {
-            cedulaPersonAuthTrasera: photos.backCauth,
-      
-            firma: sigImageFirma !== '' ? sigImageFirma : '',
+        createSolicitud(body)
+        .then(({data})=>{
+          const info = {
+            tarjetaPropiedadFrontal: photos.frontTp,
+            tarjetaPropiedadTrasera: photos.backTp,
+            cedulaPersonAuthFrontal: photos.frontCauth,
           }
-          updateSolicitud(data.id,info2)
+          updateSolicitud(data.id,info)
           .then(()=>{
-            setLoading(false)
-            handleClear()
-            Swal.fire({
-              title:'¡FELICIDADES!',
-              text:'Se ha registrado la solicitud de forma exitosa',
-              showConfirmButton:true,
-              showCancelButton:false,
-              confirmButtonColor:'green'
+            const info2 = {
+              cedulaPersonAuthTrasera: photos.backCauth,
+        
+              firma: sigImageFirma !== '' ? sigImageFirma : '',
+            }
+            updateSolicitud(data.id,info2)
+            .then(()=>{
+              setLoading(false)
+              handleClear()
+              Swal.fire({
+                title:'¡FELICIDADES!',
+                text:'Se ha registrado la solicitud de forma exitosa',
+                showConfirmButton:true,
+                showCancelButton:false,
+                confirmButtonColor:'green'
+              })
+            })
+            .catch((error)=>{
+              setLoading(false)
+              Swal.fire({
+                title:`¡ERROR!`, 
+                text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
+                showConfirmButton:true,
+                showCancelButton:false,
+                confirmButtonColor:'red'
+              })
             })
           })
           .catch((error)=>{
@@ -253,23 +268,24 @@ export default function Form() {
             confirmButtonColor:'red'
           })
         })
-      })
-      .catch((error)=>{
+      }else{
         setLoading(false)
         Swal.fire({
-          title:`¡ERROR!`, 
-          text:'Ha ocurrido un error al momento de hacer el registro de la solicitud. Vuelve a intentarlo mas tarde.',
+          icon:'warning',
+          title:'¡CORREO INVALIDO!',
+          /* text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.', */
+          text:'Revisa que el correo este bien escrito. Es importante que esté bien digilenciado este campo.',
           showConfirmButton:true,
-          showCancelButton:false,
-          confirmButtonColor:'red'
+          confirmButtonColor:'blue'
         })
-      })
+      }
     }else{
       setLoading(false)
       Swal.fire({
         icon:'warning',
         title:'¡ATENCION!',
-        text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.',
+        /* text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.', */
+        text:'Por favor ingresa por lo menos los datos del propietario para llevar a cabo el registro de la solicitud.',
         showConfirmButton:true,
         confirmButtonColor:'blue'
       })
@@ -300,6 +316,9 @@ export default function Form() {
       municipioPersonAuth:'',
       celularPersonAuth:'',
       correoPersonAuth:'',
+      chasis:'',
+      servicio:'',
+      vin:'',
     })
     setSigImageFirma('')
     setShowModalMultiple(false);
@@ -320,6 +339,47 @@ export default function Form() {
     setTypeClient('propietario')
   }
 
+  const handleCedula = (e) => {
+    let { id, value } = e.target;
+
+    // Si el primer carácter es 0, lo eliminamos
+    if (value.length === 1 && value === "0") {
+      value = "";
+    }
+
+    // También puedes evitar múltiples ceros al principio
+    if (value.length > 1 && value.startsWith("0")) {
+      value = value.replace(/^0+/, "");
+    }
+
+    setSearch({
+      ...search,
+      [id]: value
+    });
+  };
+
+  //funcion para limitar el numero de caracteres de el campo celular 
+  const handleMaxCel = (e) => {
+    let { id, value } = e.target;
+    // ✅ Permitir solo números
+    value = value.replace(/[^0-9]/g, '');
+    if (/^\d{0,12}$/.test(value)) {
+        /* setPlazo(inputValue); */
+        setSearch({
+            ...search,
+            [id]: value
+        })
+    }
+  };
+
+  const handleClickImg = (e) => {
+    if(user.role==='admin'){
+      return navigate('/registros')
+    }else{
+      return navigate('/formulario')
+    }
+  }
+
   return (
     <div >
       {/* Navbar */}
@@ -333,15 +393,17 @@ export default function Form() {
             <div
               id="logo-header"
               className="d-flex flex-row align-items-center gap-2"
+              onClick={(e)=>handleClickImg(e)}
+              style={{cursor:'pointer'}}
             >
                 <img
                 src={Logo}
                 
                 unselectable="false"
                 aria-invalid
-                
+                onClick={(e)=>handleClickImg(e)}
                 alt=""
-                style={{ height:45, width:50 , userSelect:'none'}}
+                style={{ height:45, width:50 , userSelect:'none', cursor:'pointer'}}
               />
               <h2 style={{color:'white'}} className='mt-1 text-head'> INGSE</h2>   
               
@@ -473,7 +535,8 @@ export default function Form() {
                       className="form-control form-control-sm"
                       placeholder="*Campo obligatorio*"
                       onChange={(e) => {
-                        handlerChangeSearch(e);
+                        /* handlerChangeSearch(e); */
+                        handleCedula(e)
                       }}
                       min={0}
                       required
@@ -581,7 +644,7 @@ export default function Form() {
                       className="form-control form-control-sm"
                       autoComplete="off"
                       onChange={(e) => {
-                        handlerChangeSearch(e);
+                        handleMaxCel(e);
                       }}
                       min={0}
                     />
@@ -730,7 +793,7 @@ export default function Form() {
                         className="form-control form-control-sm"
                         autoComplete="off"
                         onChange={(e) => {
-                          handlerChangeSearch(e);
+                          handleCedula(e);
                         }}
                         min={0}
                       />
@@ -838,7 +901,7 @@ export default function Form() {
                         className="form-control form-control-sm"
                         autoComplete="off"
                         onChange={(e) => {
-                          handlerChangeSearch(e);
+                          handleMaxCel(e);
                         }}
                         min={0}
                       />
@@ -866,9 +929,9 @@ export default function Form() {
           </div>
           {/* observaciones */}
           <div className="d-flex flex-column mb-3 ms-5 me-5">
-            <h6 className="fw-bold">Archivos Adjuntos:</h6>
+            <h6 className="fw-bold ms-5 me-5">Archivos Adjuntos:</h6>
             {/* Foto de la cedula */}
-            <div className="row row-cols-sm-2">
+            <div className="row row-cols-sm-2 ms-5 me-5">
               <div className="d-flex flex-column align-items-start">
                 <label style={{fontSize:12}}>Foto frontal de la cédula propietario:</label>
                 <div
@@ -880,7 +943,8 @@ export default function Form() {
                     justifyContent: "center",
                     alignItems: "center",
                     cursor: "pointer",
-                    borderRadius:25
+                    borderRadius:25,
+                    alignContent:'center'
                   }}
                   onClick={() => openModal("frontCp","Cédula frontal propietario")}
                 >
@@ -920,7 +984,7 @@ export default function Form() {
             </div>
 
             {/* Foto de la tarjeta de propiedad */}
-            <div className="row row-cols-sm-2 mt-2">
+            <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
               <div className="d-flex flex-column align-items-start">
                 <label style={{fontSize:12}}>Foto frontal de la tarjeta de propiedad:</label>
                 <div
@@ -973,7 +1037,7 @@ export default function Form() {
 
             {/* Foto cedula si es persona autorizada */}
             { typeClient ==='autorizado' &&
-              <div className="row row-cols-sm-2 mt-2">
+              <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
                 <div className="d-flex flex-column align-items-start">
                   <label style={{fontSize:12}}>Foto frontal de la cédula persona autorizada:</label>
                   <div
@@ -1026,7 +1090,7 @@ export default function Form() {
             }
 
             {/* firma, huella y foto persona */}
-            <div className="row row-cols-sm-2 mt-2">
+            <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
               <div>
                 <div className="d-flex flex-column align-items-start">
                   <label style={{fontSize:12}} className="w-100 d-flex test-center">Firma:</label>

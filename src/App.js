@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes,Route,Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { AuthContextProvider } from './context/authContext';
 import Login from '../src/pages/Login/login'
@@ -49,6 +49,9 @@ function App() {
     }
   };
 
+  //const rutaServidor = "/"; //local
+  const rutaServidor = "/ingse-placas"; //produccion
+
   return(
     <AuthContextProvider>
       <CellarContextProvider>
@@ -71,17 +74,17 @@ function App() {
           >
             <Routes>
               {/* Paginas de login y reestablacion de contraseña */}
-              <Route path='/' element={<Login/>}/>
-              <Route path='/login' element={<Login/>}/>
-              <Route path='/send/recovery' element={<SendRecovery/>}/>
-              <Route path='/recuperacion/contrasena//:token' element={<RecoveryPassword/>} />
+              <Route exact path="/" element={<Login/>}/* element={<Login/>} *//>
+              <Route exact path="/login" element={<Login/>}/* element={<Login/>} *//>
+              <Route exact path="/send/recovery" element={<SendRecovery/>}/* element={<SendRecovery/>} *//>
+              <Route exact path="/recuperacion/contrasena//:token" element={<RecoveryPassword/>}/* element={<RecoveryPassword/>} */ />
               <Route path='/change/password' element={<PrivateRoute component={ChangePassword}/>}/>
 
               {/* Paginas privadas */}
               <Route path='/usuarios' element={<PrivateRoute component={Users} />} />
-              <Route path='/registros' element={<Registros/>} /> {/* {<PrivateRoute component={Registros} />} */}
-              <Route path='/formulario' element={<Form/>} /> {/* /* {<PrivateRoute component={Form} />} */} {/* <Form/> */}
-              <Route path='/editar/registro/:id' element={<EditarRegistro/>} /> {/* /* {<PrivateRoute component={Form} />} */} {/* <EditarRegistro/> */}
+              <Route path='/registros' element={<PrivateRoute component={Registros}/>} />
+              <Route path='/formulario' element={<PrivateRoute component={Form} />} />
+              <Route path='/editar/registro/:id' element={<PrivateRoute component={EditarRegistro} />} />
 
               {/* Page not found */}
               <Route path='*' element={<Page404 />} />

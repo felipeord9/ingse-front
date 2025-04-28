@@ -74,13 +74,16 @@ export default function DocRequestrPDF({ request }) {
     return numeroComoTexto;
   }; */
 
+  const namePerson = `${request?.primerApellidoPropietario} ${request?.segundoApellidoPropietario} ${request?.primerNombrePropietario} ${request?.segundoNombrePropietario}`
+
   return (
     request && (
       <Document
         title={`${request?.cedulaPropietario}-${(request?.nombrePropietario)}`}
+        /* title={`request`} */
         author="Ingse S.A.S"
         subject="Documento Solicitud Copia Placa(s) Vehiculares"
-        keywords="Documento Solicitud Copia Placa(s) Vehiculares - Ingese"
+        keywords="Documento Solicitud Copia Placa(s) Vehiculares - Ingse"
         creator="Ingse S.A.S"
         producer="Ingse S.A.S"
         pageMode="fullScreen"
@@ -108,10 +111,18 @@ export default function DocRequestrPDF({ request }) {
                   {/* <Text style={{ fontFamily: "Helvetica-Bold" }}>
                     Foto Usuario:
                   </Text> */}
-                  <Image 
+                  {/* <Image 
                     style={styles.image}
                     src={request?.fotoUsuario}
-                  />
+                  /> */}
+                  {(request?.fotoUsuario === null || request?.fotoUsuario === '') ?
+                    <View style={styles.image}></View>
+                    : 
+                    <Image 
+                      style={styles.image}
+                      src={request?.fotoUsuario}
+                    /> 
+                  }
                 </View>
 
                 {/* Vista de asunto */}
@@ -188,7 +199,7 @@ export default function DocRequestrPDF({ request }) {
                 }}
               >
                 <Text style={{padding: 7, lineHeight: 1.2}}>
-                  Yo, ___{request?.primerApellidoPropietario} {request?.segundoApellidoPropietario} {request?.primerNombrePropietario} {request?.segundoNombrePropietario}___ identificado (a) con (C.C) No. ___<Text style={styles.input}>{request?.cedulaPropietario}</Text>___, con domiciliado (a) en la
+                  Yo, ___{request?.nombrePropietario}___ identificado (a) con (C.C) No. ___<Text style={styles.input}>{request?.cedulaPropietario}</Text>___, con domiciliado (a) en la
                   dirección: ___<Text style={styles.input}>{request?.direccionPropietario}</Text>___ del municipio: ___<Text style={styles.input}>{request?.municipioPropietario}___</Text>, manifiesto de manera libre y voluntaria, bajo la
                   gravedad del juramento que: 
                 </Text>
@@ -327,19 +338,6 @@ export default function DocRequestrPDF({ request }) {
                               src={request?.cedulaPersonAuthFrontal}
                             />
                   }
-                  {/* {(request?.cedulaPersonAuthFrontal !== null || request?.cedulaPersonAuthFrontal !== '' ) ?
-                    <Image 
-                      style={styles.imgDocumentos}
-                      src={request?.cedulaPersonAuthFrontal}
-                    /> 
-                      : (request?.cedulaPropietarioFrontal !== null || request?.cedulaPropietarioFrontal !== '') ?
-                        <Image 
-                          style={styles.imgDocumentos}
-                          src={request?.cedulaPropietarioFrontal}
-                        />
-                        : 
-                          <View style={styles.imgDocumentos}></View>
-                  } */}
                 </View>
                 <View
                   style={{
@@ -473,14 +471,6 @@ export default function DocRequestrPDF({ request }) {
                   }}>
                     HUELA DIGITAL
                   </Text>
-                  {/* <Text 
-                    style={{
-                    fontFamily: "Helvetica-Bold",
-                    fontWeight: "extrabold",
-                    fontSize:9
-                  }}>
-                    INDICE DERECHO
-                  </Text> */}
                   
                   <View
                     style={{
@@ -503,40 +493,6 @@ export default function DocRequestrPDF({ request }) {
                     }
                   </View>
                 </View>
-
-                {/* huella izquierda */}
-                {/* <View style={{...styles.columnWidth1, display:"flex", flexDirection:'column', alignItems:"center", gap:4 , marginLeft:10 }}>
-                  <Text 
-                    style={{
-                    fontFamily: "Helvetica-Bold",
-                    fontWeight: "extrabold",
-                    fontSize:9
-                  }}>
-                    HUELA DIGITAL
-                  </Text>
-                  <Text 
-                    style={{
-                    fontFamily: "Helvetica-Bold",
-                    fontWeight: "extrabold",
-                    fontSize:9
-                  }}>
-                    INDICE IUZQUIERDA
-                  </Text>
-                  
-                  <View
-                    style={{
-                      gap: 3,
-                      fontSize:8,
-                      marginRight:10,
-                      width:'75%'
-                    }}
-                  >
-                    <Image 
-                      style={styles.imgDocumentos}
-                      src={huella}
-                    />
-                  </View>
-                </View> */}
               </View>
 
             </View>
@@ -546,3 +502,4 @@ export default function DocRequestrPDF({ request }) {
     )
   );
 }
+

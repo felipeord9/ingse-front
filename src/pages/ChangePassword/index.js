@@ -46,7 +46,7 @@ export default function ChangePassword() {
               showConfirmButton: false,
               timer: 2500,
             }).then(() => {
-              navigate("/inicio");
+              navigate("/registros");
             });
           }).catch((err)=>{
             Swal.fire({
@@ -60,7 +60,7 @@ export default function ChangePassword() {
       }else if(result.isDenied){
         Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
         .then(() => {
-          navigate("/inicio");
+          navigate("/registros");
         });
       }
   })

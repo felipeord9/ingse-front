@@ -22,7 +22,7 @@ export default function RecoveryPassword() {
     const [cargando,setCargando] = useState(false);
     const [noCoincede, setNoCoincide] = useState(false);
     useEffect(() => {
-      if (isLogged) navigate('/inicio');
+      if (isLogged) navigate('/registros');
     }, [isLogged, navigate]);
 
   const handleSubmit = (e) => {

@@ -16,7 +16,7 @@ export default function SendRecoveryPassword() {
   const [cargando,setCargando] = useState(false)
   const [invalid, setInvalid] = useState(false)
   useEffect(() => {
-    if (isLogged) navigate('/inicio');
+    if (isLogged) navigate('/registros');
   }, [isLogged, navigate]);
 
   const handleSubmit = (e) => {
@@ -68,7 +68,7 @@ export default function SendRecoveryPassword() {
     };
     return (
       <button
-        className="fw-bold mb-2"
+        className="fw-bold mb-2 rounded rounded-3"
         style={buttonStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

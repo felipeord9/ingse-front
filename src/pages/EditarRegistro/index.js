@@ -170,73 +170,98 @@ export default function EditarRegistro() {
   const handleSubmit = (e) =>{
     e.preventDefault();
     setLoading(true)
-    if(search.cedulaPropietario){
-      const body = {
-        cedulaPropietario: search.cedulaPropietario,
-        nombrePropietario: `${search.primerApellidoPropietario !== '' ? toString(search.primerApellidoPropietario).toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? toString(search.segundoApellidoPropietario).toUpperCase():''} ${search.primerNombrePropietario !== '' ? toString(search.primerNombrePropietario).toUpperCase():''} ${search.segundoNombrePropietario !== '' ? toString(search.segundoNombrePropietario).toUpperCase():''}`,
-        primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
-        segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
-        primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
-        segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
-
-        direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
-        municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
-        celularPropietario: search.celularPropietario,
-        correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
-
-        licenciaTransito: search.licenciaTransito,
-        placa: search.placa !== '' ? search.placa.toUpperCase():'',
-        vin: search.vin !== '' ? search.vin.toUpperCase():'',
-        chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-        marca: search.marca !== '' ? search.marca.toUpperCase():'',
-        tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
-        servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
-        
-        cedulaPersonAuth: search.cedulaPersonAuth,
-        nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
-        primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
-        segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
-        primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
-        segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
-
-        direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
-        municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
-        celularPersonAuth: search.celularPersonAuth,
-        correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
+    if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
+      search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
+      search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+    ){
+      if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
+        const body = {
+          cedulaPropietario: search.cedulaPropietario,
+          nombrePropietario: `${search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():''} ${search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():''} ${search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():''} ${search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():''}`,
+          primerApellidoPropietario: search.primerApellidoPropietario !== '' ? search.primerApellidoPropietario.toUpperCase():'' ,
+          segundoApellidoPropietario: search.segundoApellidoPropietario !== '' ? search.segundoApellidoPropietario.toUpperCase():'',
+          primerNombrePropietario: search.primerNombrePropietario !== '' ? search.primerNombrePropietario.toUpperCase():'',
+          segundoNombrePropietario: search.segundoNombrePropietario !== '' ? search.segundoNombrePropietario.toUpperCase():'',
   
-        fotoUsuario: photos.fotoUsuario,
-        cedulaPropietarioFrontal: photos.cedulaPropietarioFrontal,
-        cedulaPropietarioTrasera: photos.cedulaPropietarioTrasera,
-      }
-      updateSolicitud(id, body)
-      .then(()=>{
-        const info = {
-          tarjetaPropiedadFrontal: photos.tarjetaPropiedadFrontal,
-          tarjetaPropiedadTrasera: photos.tarjetaPropiedadTrasera,
-          cedulaPersonAuthFrontal: photos.cedulaPersonAuthFrontal,
+          direccionPropietario: search.direccionPropietario !== '' ? search.direccionPropietario.toUpperCase():'',
+          municipioPropietario: search.municipioPropietario !== '' ? search.municipioPropietario.toUpperCase():'',
+          celularPropietario: search.celularPropietario,
+          correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
+  
+          licenciaTransito: search.licenciaTransito,
+          placa: search.placa !== '' ? search.placa.toUpperCase():'',
+          vin: search.vin !== '' ? search.vin.toUpperCase():'',
+          chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
+          marca: search.marca !== '' ? search.marca.toUpperCase():'',
+          tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
+          servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
+          
+          cedulaPersonAuth: search.cedulaPersonAuth,
+          nombrePersonAuth: `${search.primerApellidoPersonAuth !== '' ? toString(search.primerApellidoPersonAuth).toUpperCase():''} ${search.segundoApellidoPersonAuth !== '' ? toString(search.segundoApellidoPersonAuth).toUpperCase():''} ${search.primerNombrePersonAuth !== '' ? toString(search.primerNombrePersonAuth).toUpperCase():''} ${search.segundoNombrePersonAuth !== '' ? toString(search.segundoNombrePersonAuth).toUpperCase():''}`,
+          primerApellidoPersonAuth: search.primerApellidoPersonAuth !== '' ? search.primerApellidoPersonAuth.toUpperCase():'',
+          segundoApellidoPersonAuth: search.segundoApellidoPersonAuth !== '' ? search.segundoApellidoPersonAuth.toUpperCase():'',
+          primerNombrePersonAuth: search.primerNombrePersonAuth !== '' ? search.primerNombrePersonAuth.toUpperCase():'',
+          segundoNombrePersonAuth: search.segundoNombrePersonAuth !== '' ? search.segundoNombrePersonAuth.toUpperCase():'',
+  
+          direccionPersonAuth: search.direccionPersonAuth !== '' ? search.direccionPersonAuth.toUpperCase():'',
+          municipioPersonAuth: search.municipioPersonAuth !== '' ? search.municipioPersonAuth.toUpperCase():'',
+          celularPersonAuth: search.celularPersonAuth,
+          correoPersonAuth: search.correoPersonAuth !== '' ? search.correoPersonAuth.toLowerCase():'',
+    
+          fotoUsuario: photos.fotoUsuario,
+          cedulaPropietarioFrontal: photos.cedulaPropietarioFrontal,
+          cedulaPropietarioTrasera: photos.cedulaPropietarioTrasera,
         }
-        updateSolicitud(id,info)
+        updateSolicitud(id, body)
         .then(()=>{
-          const info2 = {
-            cedulaPersonAuthTrasera: photos.cedulaPersonAuthTrasera,
-      
-            firma: sigImageFirma !== '' ? sigImageFirma : '',
+          const info = {
+            tarjetaPropiedadFrontal: photos.tarjetaPropiedadFrontal,
+            tarjetaPropiedadTrasera: photos.tarjetaPropiedadTrasera,
+            cedulaPersonAuthFrontal: photos.cedulaPersonAuthFrontal,
           }
-          updateSolicitud(id,info2)
+          updateSolicitud(id,info)
           .then(()=>{
+            const info2 = {
+              cedulaPersonAuthTrasera: photos.cedulaPersonAuthTrasera,
+        
+              firma: sigImageFirma !== '' ? sigImageFirma : '',
+            }
+            updateSolicitud(id,info2)
+            .then(()=>{
+              setLoading(false)
+              handleClear()
+              Swal.fire({
+                title:'¡FELICIDADES!',
+                text:'Se ha editado el editado la solicitud de forma exitosa',
+                showConfirmButton:true,
+                showCancelButton:false,
+                confirmButtonColor:'green'
+              })
+              .then(()=>{
+                navigate('/registros')
+              })
+            }) .catch(()=>{
+              setLoading(false)
+              Swal.fire({
+                title:'¡ERROR!',
+                text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
+                showConfirmButton:true,
+                showCancelButton:false,
+                confirmButtonColor:'red'
+              })
+            })
+          }).catch(()=>{
             setLoading(false)
-            handleClear()
             Swal.fire({
-              title:'¡FELICIDADES!',
-              text:'Se ha editado el editado la solicitud de forma exitosa',
+              title:'¡ERROR!',
+              text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
               showConfirmButton:true,
               showCancelButton:false,
-              confirmButtonColor:'green'
-            })
-            .then(()=>{
-              navigate('/registros')
+              confirmButtonColor:'red'
             })
           })
+        })
+        .catch(()=>{
           setLoading(false)
           Swal.fire({
             title:'¡ERROR!',
@@ -246,31 +271,23 @@ export default function EditarRegistro() {
             confirmButtonColor:'red'
           })
         })
+      }else{
         setLoading(false)
         Swal.fire({
-          title:'¡ERROR!',
-          text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
+          icon:'warning',
+          title:'¡CORREO INVALIDO!',
+          /* text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.', */
+          text:'Revisa que el correo este bien escrito. Es importante que esté bien digilenciado este campo.',
           showConfirmButton:true,
-          showCancelButton:false,
-          confirmButtonColor:'red'
+          confirmButtonColor:'blue'
         })
-      })
-      .catch(()=>{
-        setLoading(false)
-        Swal.fire({
-          title:'¡ERROR!',
-          text:'Ha ocurrido un error al momento de hacer la edición del registro de la solicitud. Vuelve a intentarlo mas tarde.',
-          showConfirmButton:true,
-          showCancelButton:false,
-          confirmButtonColor:'red'
-        })
-      })
+      }
     }else{
       setLoading(false)
       Swal.fire({
         icon:'warning',
         title:'¡ATENCION!',
-        text:'Por favor ingresa por lo menos el número de cédula del propietario para llevar a cabo el registro de la solicitud.',
+        text:'Por favor ingresa por lo menos los datos del propietario para llevar a cabo el registro de la solicitud.',
         showConfirmButton:true,
         showCancelButton:false,
         confirmButtonColor:'blue'
@@ -302,6 +319,9 @@ export default function EditarRegistro() {
       municipioPersonAuth:'',
       celularPersonAuth:'',
       correoPersonAuth:'',
+      chasis:'',
+      servicio:'',
+      vin:'',
     })
     setSigImageFirma('')
     setShowModalMultiple(false);
@@ -322,6 +342,46 @@ export default function EditarRegistro() {
     setTypeClient('propietario')
   }
 
+  const handleCedula = (e) => {
+    let { id, value } = e.target;
+
+    // Si el primer carácter es 0, lo eliminamos
+    if (value.length === 1 && value === "0") {
+      value = "";
+    }
+
+    // También puedes evitar múltiples ceros al principio
+    if (value.length > 1 && value.startsWith("0")) {
+      value = value.replace(/^0+/, "");
+    }
+
+    setSearch({
+      ...search,
+      [id]: value
+    });
+  };
+
+  const handleMaxCel = (e) => {
+    let { id, value } = e.target;
+    // ✅ Permitir solo números
+    value = value.replace(/[^0-9]/g, '');
+    if (/^\d{0,12}$/.test(value)) {
+        /* setPlazo(inputValue); */
+        setSearch({
+            ...search,
+            [id]: value
+        })
+    }
+  };
+
+  const handleClickImg = (e) => {
+    if(user.role==='admin'){
+      return navigate('/registros')
+    }else{
+      return navigate('/formulario')
+    }
+  }
+
   return (
     <div >
       {/* Navbar */}
@@ -335,15 +395,17 @@ export default function EditarRegistro() {
             <div
               id="logo-header"
               className="d-flex flex-row align-items-center gap-2"
+              onClick={(e)=>handleClickImg(e)}
+              style={{cursor:'pointer'}}
             >
                 <img
                 src={Logo}
                 
                 unselectable="false"
                 aria-invalid
-                
+                onClick={(e)=>handleClickImg(e)}
                 alt=""
-                style={{ height:45, width:50 , userSelect:'none'}}
+                style={{ height:45, width:50 , userSelect:'none', cursor:'pointer'}}
               />
               <h2 style={{color:'white'}} className='mt-1 text-head'> INGSE</h2>   
               
@@ -475,7 +537,7 @@ export default function EditarRegistro() {
                       className="form-control form-control-sm"
                       placeholder="*Campo obligatorio*"
                       onChange={(e) => {
-                        handlerChangeSearch(e);
+                        handleCedula(e);
                       }}
                       min={0}
                       required
@@ -588,7 +650,7 @@ export default function EditarRegistro() {
                       className="form-control form-control-sm"
                       /* placeholder="*Campo obligatorio*" */
                       onChange={(e) => {
-                        handlerChangeSearch(e);
+                        handleMaxCel(e);
                       }}
                       min={0}
                       autoComplete="off"
@@ -729,7 +791,7 @@ export default function EditarRegistro() {
                         className="form-control form-control-sm"
                         /* placeholder="*Campo obligatorio*" */
                         onChange={(e) => {
-                          handlerChangeSearch(e);
+                          handleCedula(e);
                         }}
                         min={0}
                         autoComplete="off"
@@ -843,7 +905,7 @@ export default function EditarRegistro() {
                         className="form-control form-control-sm"
                         /* placeholder="*Campo obligatorio*" */
                         onChange={(e) => {
-                          handlerChangeSearch(e);
+                          handleMaxCel(e);
                         }}
                         min={0}
                         autoComplete="off"
@@ -873,9 +935,9 @@ export default function EditarRegistro() {
           </div>
           {/* observaciones */}
           <div className="d-flex flex-column mb-3 ms-5 me-5">
-            <h6 className="fw-bold">Archivos Adjuntos:</h6>
+            <h6 className="fw-bold ms-5 me-5">Archivos Adjuntos:</h6>
             {/* Foto de la cedula */}
-            <div className="row row-cols-sm-2">
+            <div className="row row-cols-sm-2 ms-5 me-5">
               <div className="d-flex flex-column align-items-start">
                 <label style={{fontSize:12}}>Foto frontal de la cédula propietario:</label>
                 <div
@@ -927,7 +989,7 @@ export default function EditarRegistro() {
             </div>
 
             {/* Foto de la tarjeta de propiedad */}
-            <div className="row row-cols-sm-2 mt-2">
+            <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
               <div className="d-flex flex-column align-items-start">
                 <label style={{fontSize:12}}>Foto frontal de la tarjeta de propiedad:</label>
                 <div
@@ -980,7 +1042,7 @@ export default function EditarRegistro() {
 
             {/* Foto cedula si es persona autorizada */}
             { typeClient ==='autorizado' &&
-              <div className="row row-cols-sm-2 mt-2">
+              <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
                 <div className="d-flex flex-column align-items-start">
                   <label style={{fontSize:12}}>Foto frontal de la cédula persona autorizada:</label>
                   <div
@@ -1033,7 +1095,7 @@ export default function EditarRegistro() {
             }
 
             {/* firma, huella y foto persona */}
-            <div className="row row-cols-sm-2 mt-2">
+            <div className="row row-cols-sm-2 mt-2 ms-5 me-5">
               <div>
                 <div className="d-flex flex-column align-items-start">
                   <label style={{fontSize:12}} className="w-100 d-flex test-center">Firma:</label>
