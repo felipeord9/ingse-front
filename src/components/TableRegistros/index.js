@@ -31,18 +31,15 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
   const columns = [
     {
       id: "ver",
-      name: "ver",
+      name: "",
       center: true,
       sortable: true,
       cell: (row, index, column, id) =>
         isMobile ? (
-          <div className="d-flex gap-2 p-1">
+          <div className="d-flex gap-0 p-0">
             <PDFDownloadLink
               document={<DocRequestrPDF request={row} />}
-              fileName={`INGSE S.A.S - Factura No.${row?.id}.pdf`}
-              onClick={(e) => {
-                e.download();
-              }}
+              fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placa)}`}
             >
               <FaIcons.FaDownload />
             </PDFDownloadLink>
@@ -58,9 +55,16 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
             >
               <FaIcons.FaEye />
             </button>
+            {/* <PDFDownloadLink
+              className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
+              document={<DocRequestrPDF request={row} />}
+              fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placa)}`}
+            >
+              <FaIcons.FaDownload />
+            </PDFDownloadLink> */}
           </div>
         ),
-      width: "50px",
+      width: "80px",
     },
     {
       id: "editar",

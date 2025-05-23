@@ -1,0 +1,9 @@
+.bt-add{
+    width: 50%;
+}
+
+@media (max-width: 900px) {
+    .bt-add{
+        width: 100%;
+    }
+}

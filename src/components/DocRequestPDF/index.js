@@ -79,7 +79,7 @@ export default function DocRequestrPDF({ request }) {
   return (
     request && (
       <Document
-        title={`${request?.cedulaPropietario}-${(request?.nombrePropietario)}`}
+        title={`${request?.numeroFactura}-${new Date(request?.createdAt).getDay()}/${new Date(request?.createdAt).getMonth()}/${new Date(request?.createdAt).getFullYear()}-${(request?.placa)}`}
         /* title={`request`} */
         author="Ingse S.A.S"
         subject="Documento Solicitud Copia Placa(s) Vehiculares"

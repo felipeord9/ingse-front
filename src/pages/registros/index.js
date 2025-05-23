@@ -13,6 +13,10 @@ import { PiUsersThreeFill } from "react-icons/pi";
 import { findSolicitudes } from "../../services/solicitudService"
 import { RiCheckboxMultipleLine } from "react-icons/ri";
 import ModalMultiple from "../../components/ModalMultiple";
+import { TbReportSearch } from "react-icons/tb";
+import { FcDataBackup } from "react-icons/fc";
+import ModalBackUpBD from "../../components/ModalBackUpBD";
+import { FaListOl } from "react-icons/fa6";
 import './styles.css'
 import Swal from "sweetalert2";
 
@@ -29,6 +33,7 @@ export default function Registros() {
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   const [showModalMultiple, setShowModalMultiple] = useState(false);
+  const [modalBackUp, setModalBackUp] = useState(false);
 
   useEffect(() => {
     getAllRegistros();
@@ -79,6 +84,11 @@ export default function Registros() {
           reloadInfo={getAllRegistros}
           showModal={showModalMultiple}
           setShowModal={setShowModalMultiple}
+        />
+        <ModalBackUpBD
+          /* reloadInfo={window.location.reload()} */
+          showModal={modalBackUp}
+          setShowModal={setModalBackUp}
         />
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             <div
@@ -132,13 +142,33 @@ export default function Registros() {
                     <span>Solicitud múltiple</span>
                   </Link>
                 </li>
+                <li className='nav-text fw-bold'>
+                  <Link to='/placas/diferentes' style={{backgroundColor:(ruta==='/placas/diferentes') ? 'white' : 'black',color:(ruta==='/placas/diferentes') ? 'black' : 'white'}} >
+                    <FaListOl />
+                    <span>MultiSolicitud con diferente placa</span>
+                  </Link>
+                </li>
                 {(user.role === 'admin' || user.role === 'superadmin') &&
+                <div>
+                  <li className='nav-text fw-bold'>
+                      <Link to='/informe' style={{backgroundColor:(ruta==='/informe') ? 'white' : 'black',color:(ruta==='/informe') ? 'black' : 'white'}} >
+                        <TbReportSearch  />
+                        <span>Informe de ventas</span>
+                      </Link>
+                  </li>
+                  <li className='nav-text fw-bold'>
+                      <Link onClick={(e)=>setModalBackUp(!modalBackUp)}  >
+                        <FcDataBackup  />
+                        <span>BackUp BD</span>
+                      </Link>
+                  </li>
                   <li className='nav-text fw-bold'>
                     <Link to='/usuarios' style={{backgroundColor:(ruta==='/usuarios') ? 'white' : 'black',color:(ruta==='/usuarios') ? 'black' : 'white'}} >
                       <PiUsersThreeFill  />
                       <span>Usuarios</span>
                     </Link>
                   </li>
+                </div>
                 }
               </ul>
               

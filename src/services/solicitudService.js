@@ -43,6 +43,16 @@ export const createMultipleSolicitud = async (body) => {
   return data
 }
 
+export const createWithDiffPlaca = async (body) => {
+  const token = JSON.parse(localStorage.getItem("token"))
+  const { data } = await axios.post(`${url}/placas/diferentes`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return data
+}
+
 export const updateSolicitud = async (id, body) => {
   const token = JSON.parse(localStorage.getItem("token"))
   const { data } = await axios.patch(`${url}/${id}`, body, {

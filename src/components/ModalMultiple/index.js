@@ -9,14 +9,23 @@ import Swal from "sweetalert2";
 
 export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
   const [multiple, setMultiple] = useState({
-    cedula: "",
+    /* cedula: "",
     name: "",
     cantidad: "",
     letras: "",
     noDesde: "",
     noHasta: "",
     tipo: "",
+    letraFinal: "", */
+    cedula: "",
+    name: "",
+    cantidad: "",
+    letrasDesde: "",
+    noDesde: "",
     letraFinal: "",
+    letrasHasta: "",
+    noHasta: "",
+    tipo: "",
   });
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -159,22 +168,22 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
       multiple.cantidad !== "" && multiple.letras !== "",
       multiple.noDesde !== "" && multiple.noHasta !== "")
     ) {
-      const total = Number(multiple.noHasta) - Number(multiple.noDesde) + 1 ;
+      /* const total = Number(multiple.noHasta) - Number(multiple.noDesde) + 1 ;
       if (total !== Number(multiple.cantidad)) {
         Swal.fire({
           icon: "warning",
-          /* title: `${total} - ${multiple.cantidad} - ${multiple.letras.toUpperCase()}`, */
           title: "¡ERROR!",
           text: "La cantidad ingresada debe coincidir con la cantidad entre el numero desde y el numero hasta de las placas solicitadas. Verifique la información suministrada.",
           confirmButtonColor: "red",
         });
-      } else {
+      } else { */
         setEnviando(true);
         const body = {
           cedulaPropietario: multiple.cedula,
           nombrePropietario: multiple.name.toUpperCase(),
           cantidad: multiple.cantidad,
-          letras: multiple.letras.toUpperCase(),
+          letrasDesde: multiple.letrasDesde.toUpperCase(),
+          letrasHasta: multiple.letrasHasta.toUpperCase(),
           tipo: multiple.tipo.toUpperCase(),
           desde: parseInt(multiple.noDesde),
           hasta: parseInt(multiple.noHasta),
@@ -206,7 +215,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
               confirmButtonColor: "red",
             });
           });
-      }
+      /* } */
     } else {
       Swal.fire({
         icon: "warning",
@@ -278,7 +287,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       required
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <label className="fw-bold">Cantidad</label>
                     <input
                       id="cantidad"
@@ -289,168 +298,266 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       autoComplete="off"
                       required
                     />
-                  </div>
+                  </div> */}
                   <div>
                     <label className="fw-bold">intervalo de placas</label>
-                    <div className="d-flex w-100 justify-content-center align-items-center gap-3">
-                      <FormControlLabel
-                        sx={{
-                          "& .MuiFormControlLabel-label": {
-                            fontSize: "1rem", // Cambia el tamaño del texto del label
-                          },
-                        }}
-                        label="Motocicleta"
-                        control={
-                          <Checkbox
-                            placeholder="Motocicleta"
-                            color="warning"
-                            checked={multiple.tipo === 'Moto'}
-                            onChange={() => handleTipoVehiculo("Moto")}
-                            className="mt-0 t-0 pe-2"
-                            sx={{
-                              "& .MuiSvgIcon-root": { fontSize: 21 }, // Cambia el tamaño del ícono del checkbox
-                            }}
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        sx={{
-                          "& .MuiFormControlLabel-label": {
-                            fontSize: "1rem", // Cambia el tamaño del texto del label
-                          },
-                        }}
-                        label="Automóvil"
-                        control={
-                          <Checkbox
-                            placeholder="Automovil"
-                            color="warning"
-                            className="pe-2"
-                            checked={multiple.tipo === 'Automovil'}
-                            onChange={() => handleTipoVehiculo("Automovil")}
-                            sx={{
-                              "& .MuiSvgIcon-root": { fontSize: 21 }, // Cambia el tamaño del ícono del checkbox
-                            }}
-                          />
-                        }
-                      />
-                    </div>
-                    {(multiple.tipo === 'Automovil') &&
-                      <div className="row justify-content-center align-items-center">
-                        <div className="col col-12 col-lg-3 colmd-12">
-                          <label>Letras</label>
-                          <input
-                            id="letras"
-                            type="text"
-                            value={multiple?.letras}
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimit(e))}
-                            autoComplete="off"
-                            style={{ textTransform: "uppercase" }}
-                            required
-                            ref={input1Ref}
-                          />
+                    <select
+                      className="form-select form-select-sm w-100"
+                      value={multiple.tipo}
+                      id="tipo"
+                      required
+                      onChange={(e) => handleChange(e)}
+                    >
+                      <option selected value="" disabled>
+                        -- Seleccione el tipo vehículo --
+                      </option>
+                      <option id="AUTOMOVILES PERSONALES" value="AUTOMOVILES PERSONALES">
+                        AUTOMOVILES PERSONALES
+                      </option>
+                      <option id="MOTOCICLETAS" value="MOTOCICLETAS">
+                        MOTOCICLETAS
+                      </option>
+                      <option id="TAXIS Y VEHICULOS DE CARGA" value="TAXIS Y VEHICULOS DE CARGA">
+                        TAXIS Y VEHICULOS DE CARGA
+                      </option>
+                      <option id="BUSES Y MICROBUSES" value="BUSES Y MICROBUSES">
+                        BUSES Y MICROBUSES
+                      </option>
+                      <option id="MOTOCARRO" value="MOTOCARRO">
+                        MOTOCARRO
+                      </option>
+                    </select>
+                    {(multiple.tipo === 'AUTOMOVILES PERSONALES' || multiple.tipo === 'TAXIS Y VEHICULOS DE CARGA' || multiple.tipo === 'BUSES Y MICROBUSES' ) &&
+                      <div>
+                        <div className="row row-cols-sm-2 justify-content-center align-items-center">
+                          <div className="">
+                            <label>Desde</label>
+                            <input
+                              id="letrasDesde"
+                              type="text"
+                              placeholder="LETRAS"
+                              value={multiple?.letrasDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label></label>
+                            <input
+                              id="noDesde"
+                              type="number"
+                              value={multiple?.noDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              placeholder="Desde"
+                              required
+                              ref={input2Ref}
+                            />
+                          </div>
                         </div>
-                        <div className="col col-12 col-lg-3 col-md-12">
-                          <label>Números</label>
-                          <input
-                            id="noDesde"
-                            type="number"
-                            value={multiple?.noDesde}
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimit(e))}
-                            autoComplete="off"
-                            placeholder="Desde"
-                            required
-                            ref={input2Ref}
-                          />
-                        </div>
-                        <label className="fw-bold col col-12 col-lg-1 col-md-1 mt-4">
-                          {" "}
-                          -{" "}
-                        </label>
-                        <div className="col col-12 col-lg-3 col-md-12">
-                          <label></label>
-                          <input
-                            id="noHasta"
-                            type="number"
-                            value={multiple?.noHasta}
-                            placeholder="Hasta"
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimit(e))}
-                            autoComplete="off"
-                            disabled={multiple?.noDesde === ""}
-                            min={multiple.noDesde}
-                            required
-                            ref={input3Ref}
-                          />
+                        <div className="row row-cols-sm-2 justify-content-center align-items-center">
+                          <div className="">
+                            <label>Hasta</label>
+                            <input
+                              id="letrasHasta"
+                              type="text"
+                              placeholder="LETRAS"
+                              value={multiple?.letrasHasta}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label></label>
+                            <input
+                              id="noHasta"
+                              type="number"
+                              value={multiple?.noHasta}
+                              placeholder="Hasta"
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              disabled={multiple?.noDesde === ""}
+                              min={multiple.noDesde}
+                              required
+                              ref={input3Ref}
+                            />
+                          </div>
                         </div>
                       </div>
                     }
-                    {(multiple.tipo === 'Moto') &&
-                      <div className="row justify-content-center align-items-center">
-                        <div className="col col-12 col-lg-3 col-md-12">
-                          <label>Letras</label>
-                          <input
-                            id="letras"
-                            type="text"
-                            value={multiple?.letras}
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimit(e))}
-                            autoComplete="off"
-                            style={{ textTransform: "uppercase" }}
-                            required
-                            ref={input1Ref}
-                          />
+                    {(multiple.tipo === 'MOTOCICLETAS') &&
+                      <div>
+                        <div className="row row-cols-sm-3 justify-content-center align-items-center">
+                          <div className="">
+                            <label>Desde</label>
+                            <input
+                              id="letrasDesde"
+                              type="text"
+                              placeholder="Letras"
+                              value={multiple?.letrasDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label> </label>
+                            <input
+                              id="noDesde"
+                              type="number"
+                              placeholder="Desde"
+                              value={multiple?.noDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimitMoto(e))}
+                              autoComplete="off"
+                              required
+                              ref={input2Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label> </label>
+                            <input
+                              id="letraFinal"
+                              type="text"
+                              value={multiple?.letraFinal}
+                              className="form-control form-control-sm"
+                              style={{textTransform:'uppercase'}}
+                              onChange={(e) => (handleChange(e), handleLimitLetraFinal(e))}
+                              autoComplete="off"
+                              /* disabled={multiple?.noDesde === ""}
+                              min={multiple.noDesde} */
+                              required
+                              /* ref={input3Ref} */
+                            />
+                          </div>
                         </div>
-                        <div className="col col-12 col-lg-3 col-md-12">
-                          <label>Números</label>
-                          <input
-                            id="noDesde"
-                            type="number"
-                            value={multiple?.noDesde}
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimitMoto(e))}
-                            autoComplete="off"
-                            placeholder="Desde"
-                            required
-                            ref={input2Ref}
-                          />
+                        <div className="row row-cols-sm-3 justify-content-center align-items-center">
+                          <div className="">
+                            <label>Hasta</label>
+                            <input
+                              id="letrasHasta"
+                              type="text"
+                              placeholder="Letras"
+                              value={multiple?.letrasHasta}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label> </label>
+                            <input
+                              id="noHasta"
+                              type="number"
+                              placeholder="Hasta"
+                              value={multiple?.noHasta}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimitMoto(e))}
+                              autoComplete="off"
+                              required
+                              ref={input2Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label> </label>
+                            <input
+                              id="letraFinal"
+                              type="text"
+                              value={multiple?.letraFinal}
+                              className="form-control form-control-sm"
+                              style={{textTransform:'uppercase'}}
+                              onChange={(e) => (handleChange(e), handleLimitLetraFinal(e))}
+                              autoComplete="off"
+                              disabled
+                              required
+                            />
+                          </div>
                         </div>
-                        <label className="fw-bold col col-12 col-lg-1 col-md-1 mt-4">
-                          {/* {" "} */}
-                          -{/* {" "} */}
-                        </label>
-                        <div className="col col-12 col-lg-3 col-md-12">
-                          <label></label>
-                          <input
-                            id="noHasta"
-                            type="number"
-                            value={multiple?.noHasta}
-                            placeholder="Hasta"
-                            className="form-control form-control-sm"
-                            onChange={(e) => (handleChange(e), handleLimitMoto(e))}
-                            autoComplete="off"
-                            disabled={multiple?.noDesde === ""}
-                            min={multiple.noDesde}
-                            required
-                            ref={input3Ref}
-                          />
+                      </div>
+                    }
+                    {(multiple.tipo === 'MOTOCARRO') &&
+                      <div>
+                        <div className="row row-cols-sm-2 justify-content-center align-items-center">
+                        <div className="">
+                            <label>Desde</label>
+                            <input
+                              id="noDesde"
+                              type="number"
+                              value={multiple?.noDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              placeholder="NUMEROS"
+                              required
+                              ref={input2Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label></label>
+                            <input
+                              id="letrasDesde"
+                              type="text"
+                              placeholder="LETRAS"
+                              value={multiple?.letrasDesde}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          
                         </div>
-                        <div className="col col-12 col-lg-2 col-md-12">
-                          <label>Letra</label>
-                          <input
-                            id="letraFinal"
-                            type="text"
-                            value={multiple?.letraFinal}
-                            className="form-control form-control-sm"
-                            style={{textTransform:'uppercase'}}
-                            onChange={(e) => (handleChange(e), handleLimitLetraFinal(e))}
-                            autoComplete="off"
-                            /* disabled={multiple?.noDesde === ""}
-                            min={multiple.noDesde} */
-                            required
-                            /* ref={input3Ref} */
-                          />
+                        <div className="row row-cols-sm-2 justify-content-center align-items-center">
+                        <div className="">
+                            <label>Hasta</label>
+                            <input
+                              id="noHasta"
+                              type="number"
+                              value={multiple?.noHasta}
+                              placeholder="NUMEROS"
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              disabled={multiple?.noDesde === ""}
+                              min={multiple.noDesde}
+                              required
+                              ref={input3Ref}
+                            />
+                          </div>
+                          <div className="">
+                            <label></label>
+                            <input
+                              id="letrasHasta"
+                              type="text"
+                              placeholder="LETRAS"
+                              value={multiple?.letrasHasta}
+                              className="form-control form-control-sm"
+                              onChange={(e) => (handleChange(e), handleLimit(e))}
+                              autoComplete="off"
+                              style={{ textTransform: "uppercase" }}
+                              required
+                              ref={input1Ref}
+                            />
+                          </div>
+                          
                         </div>
                       </div>
                     }

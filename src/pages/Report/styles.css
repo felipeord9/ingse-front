@@ -1,0 +1,33 @@
+.div-diagram{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.div-principal{
+    display: flex;
+    height: 100%;
+}
+.p-div{
+    padding-top: 10px;
+}
+.bt-fill{
+    width: 15%;
+}
+
+@media (max-width: 900px) {
+    .div-diagram{
+        flex-direction: column;
+        gap: 0px;
+    }
+    .div-principal{
+        display: block;
+    }
+    .p-div{
+        padding-top: 25%;
+    }
+    .bt-fill{
+        width: 100%;
+    }
+}
