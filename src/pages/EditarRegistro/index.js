@@ -172,6 +172,24 @@ export default function EditarRegistro() {
     });
   };
 
+  const handleChangeConcepto = (e) =>{
+    const { id, value } = e.target;
+    console.log(value);
+    if(value === 'NUEVA'){
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas: 2
+      });
+    }else{
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas:''
+      });
+    }
+  }
+
   const refreshForm = () => {
     Swal.fire({
       title: "¿Está seguro?",
@@ -203,7 +221,7 @@ export default function EditarRegistro() {
     e.preventDefault();
     //funcion para comparar las placas, vin y chasis
     const filtroPorPlaca= clientes.filter((item)=>{
-      if(item.placa === search.placa.toUpperCase()){
+      if(item.placaDesde === search.placaDesde.toUpperCase()){
         return item
       }
     })
@@ -233,7 +251,7 @@ export default function EditarRegistro() {
           if(filtroPorPlaca.length > 0 && filtroPorPlaca[0].vin === search.vin && filtroPorPlaca[0].chasis === search.chasis){
             Swal.fire({
               title:'AVISO',
-              text:`La placa: "${search.placa.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
+              text:`La placa: "${search.placaDesde.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
               con las fechas: ${devolverLista(filtroPorPlaca)}. ¿Desea continuar?`,
               showConfirmButton: true,
               showDenyButton: true,
@@ -245,7 +263,8 @@ export default function EditarRegistro() {
                 setLoading(true)
                 if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                   search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                  search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                  search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                  search.placaDesde !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
                 ){
                   if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                     const body = {
@@ -262,7 +281,7 @@ export default function EditarRegistro() {
                       correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
               
                       licenciaTransito: search.licenciaTransito,
-                      placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                      placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
                       vin: search.vin !== '' ? search.vin.toUpperCase():'',
                       chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
                       marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -381,7 +400,7 @@ export default function EditarRegistro() {
             Swal.fire({
               icon:'warning',
               title:'AVISO',
-              text:`La placa: "${search.placa.toUpperCase()}" ya se encuentra registrada en nuestra base de datos,
+              text:`La placa: "${search.placaDesde.toUpperCase()}" ya se encuentra registrada en nuestra base de datos,
               pero el número vin (Registrado: ${filtroPorPlaca[0].vin} - Actual: ${search.vin}) o 
               número de chasis (Registrado: ${filtroPorPlaca[0].chasis} - Actual: ${search.chasis}) es diferente. ¿Desea continuar?`,
               showConfirmButton: true,
@@ -394,7 +413,8 @@ export default function EditarRegistro() {
                 setLoading(true)
                 if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                   search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                  search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                  search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                    search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
                 ){
                   if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                     const body = {
@@ -411,7 +431,7 @@ export default function EditarRegistro() {
                       correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
               
                       licenciaTransito: search.licenciaTransito,
-                      placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                      placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
                       vin: search.vin !== '' ? search.vin.toUpperCase():'',
                       chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
                       marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -529,7 +549,8 @@ export default function EditarRegistro() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
               search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+              search.placaDesde !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -546,7 +567,7 @@ export default function EditarRegistro() {
                   correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
           
                   licenciaTransito: search.licenciaTransito,
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -665,7 +686,7 @@ export default function EditarRegistro() {
       if(filtroPorPlaca.length > 0 && filtroPorPlaca[0].vin === search.vin && filtroPorPlaca[0].chasis === search.chasis){
         Swal.fire({
           title:'AVISO',
-          text:`La placa: "${search.placa.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
+          text:`La placa: "${search.placaDesde.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
           con las fechas: ${devolverLista(filtroPorPlaca)}. ¿Desea continuar?`,
           showConfirmButton: true,
           showDenyButton: true,
@@ -677,7 +698,8 @@ export default function EditarRegistro() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
               search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+              search.placaDesde !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -694,7 +716,7 @@ export default function EditarRegistro() {
                   correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
           
                   licenciaTransito: search.licenciaTransito,
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -813,7 +835,7 @@ export default function EditarRegistro() {
         Swal.fire({
           icon:'warning',
           title:'AVISO',
-          text:`La placa: "${search.placa.toUpperCase()}" ya se encuentra registrada en nuestra base de datos,
+          text:`La placa: "${search.placaDesde.toUpperCase()}" ya se encuentra registrada en nuestra base de datos,
           pero el número vin (Registrado: ${filtroPorPlaca[0].vin} - Actual: ${search.vin}) o 
           número de chasis (Registrado: ${filtroPorPlaca[0].chasis} - Actual: ${search.chasis}) es diferente. ¿Desea continuar?`,
           showConfirmButton: true,
@@ -826,7 +848,8 @@ export default function EditarRegistro() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
               search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+              search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+              search.placaDesde !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -843,7 +866,7 @@ export default function EditarRegistro() {
                   correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
           
                   licenciaTransito: search.licenciaTransito,
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -962,7 +985,8 @@ export default function EditarRegistro() {
         setLoading(true)
         if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
           search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-          search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+          search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+            search.placaDesde !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
         ){
           if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
             const body = {
@@ -979,7 +1003,7 @@ export default function EditarRegistro() {
               correoPropietario: search.correoPropietario !== '' ? search.correoPropietario.toLowerCase():'',
       
               licenciaTransito: search.licenciaTransito,
-              placa: search.placa !== '' ? search.placa.toUpperCase():'',
+              placaDesde: search.placaDesde !== '' ? search.placaDesde.toUpperCase():'',
               vin: search.vin !== '' ? search.vin.toUpperCase():'',
               chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
               marca: search.marca !== '' ? search.marca.toUpperCase():'',
@@ -1108,7 +1132,7 @@ export default function EditarRegistro() {
       celularPropietario:'',
       correoPropietario:'',
       licenciaTransito:'',
-      placa:'',
+      placaDesde:'',
       marca:'',
       tipo:'',
       cedulaPersonAuth:'',
@@ -1406,7 +1430,7 @@ export default function EditarRegistro() {
                         className="form-select form-select-sm w-100"
                         value={search.concepto}
                         id="concepto"
-                        onChange={(e) => handlerChangeSearch(e)}
+                        onChange={(e) => handleChangeConcepto(e)}
                       >
                         <option selected value="" disabled>
                           -- Seleccione el concepto de la solicitud --
@@ -1435,6 +1459,7 @@ export default function EditarRegistro() {
                         max="3"
                         className="form-control form-control-sm"
                         autoComplete="off"
+                        disabled = {search.concepto === 'NUEVA'}
                         /* onChange={(e) => {
                           handlerChangeSearch(e);
                         }} */
@@ -1655,13 +1680,15 @@ export default function EditarRegistro() {
                         <label>Placa:</label>
                         <input
                             id="placa"
-                            value={search.placa}
+                            value={search.placaDesde}
                             type="text"
                             className="form-control form-control-sm"
                             /* placeholder="*Campo obligatorio*" */
                             onChange={(e) => {
                               handlerChangeSearch(e);
                             }}
+                            required
+                            placeholder="*CAMPO OBLIGATORIO*"
                             style={{textTransform:'uppercase'}}
                             autoComplete="off"
                           />
@@ -1707,6 +1734,8 @@ export default function EditarRegistro() {
                           onChange={(e) => {
                             handlerChangeSearch(e);
                           }}
+                          required
+                          placeholder="*CAMPO OBLIGATORIO*"
                           style={{textTransform:'uppercase'}}
                         />
                       </div>
@@ -1737,20 +1766,17 @@ export default function EditarRegistro() {
                           <option selected value="" disabled>
                             -- Seleccione el tipo vehículo --
                           </option>
-                          <option id="AUTOMOVILES PERSONALES" value="AUTOMOVILES PERSONALES">
-                            AUTOMOVILES PERSONALES
+                          <option id="AUTOMOVILES" value="AUTOMOVILES">
+                            AUTOMOVILES
                           </option>
                           <option id="MOTOCICLETAS" value="MOTOCICLETAS">
                             MOTOCICLETAS
                           </option>
-                          <option id="TAXIS Y VEHICULOS DE CARGA" value="TAXIS Y VEHICULOS DE CARGA">
-                            TAXIS Y VEHICULOS DE CARGA
-                          </option>
-                          <option id="BUSES Y MICROBUSES" value="BUSES Y MICROBUSES">
-                            BUSES Y MICROBUSES
-                          </option>
                           <option id="MOTOCARRO" value="MOTOCARRO">
                             MOTOCARRO
+                          </option>
+                          <option id="TRACTOMULA" value="TRACTOMULA">
+                            TRACTOMULA
                           </option>
                         </select>
                       </div>
@@ -1772,11 +1798,11 @@ export default function EditarRegistro() {
                           <option id="PÚBLICO" value="PÚBLICO">
                             PÚBLICO
                           </option>
-                          <option id="DIPLOMÁTICO" value="DIPLOMÁTICO">
-                            DIPLOMÁTICO
+                          <option id="DIPLOMÁTICO - CONSULAR" value="DIPLOMÁTICO - CONSULAR">
+                            DIPLOMÁTICO - CONSULAR
                           </option>
-                          <option id="OFICIAL" value="OFICIAL">
-                            OFICIAL
+                          <option id="ANTIGUO - CLÁSICO" value="ANTIGUO - CLÁSICO">
+                            ANTIGUO - CLÁSICO
                           </option>
                         </select>
                       </div>

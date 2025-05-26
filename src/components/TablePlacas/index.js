@@ -68,10 +68,10 @@ function TablePlacas({ list, setList, formater }) {
           <tr>
             <th style={{width:180}}>No. identificación</th>
             <th>Nombre</th>
-            <th style={{width:150}}>Celular</th>
-            <th>Correo</th>
+            <th style={{width:200}}>Concepto</th>
             <th style={{width:150}}>Placa</th>
-            <th style={{width:180}}>Tipo</th>
+            <th style={{width:150}}>Tipo</th>
+            <th style={{width:200}}>Servicio</th>
             <th style={{ width: 49 }}>
               {list?.agregados?.length > 1 && (
                 <button
@@ -94,10 +94,10 @@ function TablePlacas({ list, setList, formater }) {
             <tr>
               <td>{elem.cedulaPropietario}</td>
               <td className="text-start">{elem.nombrePropietario}</td>
-              <td>{(elem.celularPropietario)}</td>
-              <td>{elem.correoPropietario}</td>
-              <td className="text-end">{elem.placa}</td>
-              <td className="text-end">{elem.tipo}</td>
+              <td>{(elem.concepto)}</td>
+              <td className="text-center">{elem.placaDesde}</td>
+              <td className="text-center">{elem.tipo}</td>
+              <td>{elem.servicio}</td>
               <td>
                 <button
                   id={index}
@@ -120,7 +120,7 @@ function TablePlacas({ list, setList, formater }) {
           <tr>
             <td className="fw-bold">CANTIDAD</td>
             <td colSpan={5}></td>
-            <td className="fw-bold text-end">{list.total}</td>
+            <td className="fw-bold text-center">{list.total}</td>
           </tr>
         </tfoot>
       </table>

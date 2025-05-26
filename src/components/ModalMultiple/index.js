@@ -26,6 +26,9 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
     letrasHasta: "",
     noHasta: "",
     tipo: "",
+    servicio: '',
+    concepto: '',
+    numPlacas: ''
   });
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -41,6 +44,24 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
       [id]: value,
     });
   };
+
+  /* logica del selecto concepto */
+  const handleChangeConcepto = (e) =>{
+    const { id, value } = e.target;
+    if(value === 'NUEVA'){
+      setMultiple({
+        ...multiple,
+        [id]: value,
+        numPlacas: 2
+      });
+    }else{
+      setMultiple({
+        ...multiple,
+        [id]: value,
+        numPlacas: 1
+      });
+    }
+  }
 
   const cleanForm = () => {
     setMultiple({});
@@ -164,9 +185,10 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
     e.preventDefault();
 
     if (
-      (multiple.name !== "" && multiple.cedula !== "",
-      multiple.cantidad !== "" && multiple.letras !== "",
-      multiple.noDesde !== "" && multiple.noHasta !== "")
+      multiple.name !== "" && multiple.cedula !== "" &&
+      multiple.letrasDesde !== "" && multiple.noDesde !== "" && multiple.noHasta !== "" &&
+      multiple.servicio !== "" && multiple.tipo !== "" && multiple.letrasHasta !== '' &&
+      multiple.numPlacas !== "" && multiple.concepto !== ""
     ) {
       /* const total = Number(multiple.noHasta) - Number(multiple.noDesde) + 1 ;
       if (total !== Number(multiple.cantidad)) {
@@ -188,6 +210,11 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
           desde: parseInt(multiple.noDesde),
           hasta: parseInt(multiple.noHasta),
           letraFinal: multiple.letraFinal.toUpperCase(),
+          placaDesde: `${multiple.letrasDesde.toUpperCase()}${multiple.noDesde}${multiple.letraFinal.toUpperCase()}`,
+          placaHasta: `${multiple.letrasHasta.toUpperCase()}${multiple.noHasta}${multiple.letraFinal.toUpperCase()}`,
+          numPlacas: multiple.numPlacas,
+          concepto: multiple.concepto.toUpperCase(),
+          servicio: multiple.servicio.toUpperCase(),
           createdAt: new Date(),
           userId: user.id,
         };
@@ -201,7 +228,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
               confirmButtonColor: "green",
             }).then(() => {
               handleClear();
-              reloadInfo();
+              /* reloadInfo(); */
               setShowModal(false);
             });
           })
@@ -236,6 +263,11 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
       noHasta: "",
       tipo: '',
       letraFinal: '',
+      concepto: '',
+      letrasDesde: '',
+      letrasHasta: '',
+      numPlacas: '',
+      servicio: ''
     });
     setEnviando(false);
   };
@@ -287,20 +319,56 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       required
                     />
                   </div>
-                  {/* <div>
-                    <label className="fw-bold">Cantidad</label>
-                    <input
-                      id="cantidad"
+                  <div>
+                    <label className="fw-bold">Concepto de la solicitud</label>
+                    <select
+                      className="form-select form-select-sm w-100 mt-2"
+                      value={multiple.concepto}
+                      id="concepto"
+                      onChange={(e) => handleChangeConcepto(e)}
+                    >
+                      <option selected value="" disabled>
+                        -- Seleccione el concepto de la solicitud --
+                      </option>
+                      <option id="NUEVA" value="NUEVA">
+                        NUEVA
+                      </option>
+                      <option id="DETERIORO" value="DETERIORO">
+                        DETERIORO
+                      </option>
+                      <option id="PERDIDA" value="PERDIDA">
+                        PERDIDA
+                      </option>
+                      <option id="ROBO" value="ROBO">
+                        ROBO
+                      </option>
+                    </select>
+                    {/* <input
+                      id="numPlacas"
                       type="text"
-                      value={multiple?.cantidad}
+                      value={multiple?.numPlacas}
+                      disabled = {multiple.concepto === 'NUEVA'}
                       className="form-control form-control-sm"
-                      onChange={(e) => handleChange(e)}
+                      onChange={(e) => {
+                        const newValue = parseInt(e.target.value, 10);
+                        if (newValue >= 1 && newValue <= 3) {
+                          setMultiple({
+                            ...multiple,
+                            numPlacas: newValue
+                          });
+                        } else if (e.target.value === '') {
+                          setMultiple({
+                            ...multiple,
+                            numPlacas: ''
+                          });
+                        }
+                      }}
                       autoComplete="off"
                       required
-                    />
-                  </div> */}
+                    /> */}
+                  </div>
                   <div>
-                    <label className="fw-bold">intervalo de placas</label>
+                    <label className="fw-bold">Intervalo de placas</label>
                     <select
                       className="form-select form-select-sm w-100"
                       value={multiple.tipo}
@@ -311,27 +379,24 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       <option selected value="" disabled>
                         -- Seleccione el tipo vehículo --
                       </option>
-                      <option id="AUTOMOVILES PERSONALES" value="AUTOMOVILES PERSONALES">
-                        AUTOMOVILES PERSONALES
+                      <option id="AUTOMOVILES" value="AUTOMOVILES">
+                        AUTOMOVILES
                       </option>
                       <option id="MOTOCICLETAS" value="MOTOCICLETAS">
                         MOTOCICLETAS
                       </option>
-                      <option id="TAXIS Y VEHICULOS DE CARGA" value="TAXIS Y VEHICULOS DE CARGA">
-                        TAXIS Y VEHICULOS DE CARGA
-                      </option>
-                      <option id="BUSES Y MICROBUSES" value="BUSES Y MICROBUSES">
-                        BUSES Y MICROBUSES
-                      </option>
                       <option id="MOTOCARRO" value="MOTOCARRO">
                         MOTOCARRO
                       </option>
+                      <option id="TRACTOMULA" value="TRACTOMULA">
+                        TRACTOMULA
+                      </option>
                     </select>
-                    {(multiple.tipo === 'AUTOMOVILES PERSONALES' || multiple.tipo === 'TAXIS Y VEHICULOS DE CARGA' || multiple.tipo === 'BUSES Y MICROBUSES' ) &&
+                    {(multiple.tipo === 'AUTOMOVILES' || multiple.tipo === 'TRACTOMULA') &&
                       <div>
                         <div className="row row-cols-sm-2 justify-content-center align-items-center">
                           <div className="">
-                            <label>Desde</label>
+                            <label className="fw-bold">Desde</label>
                             <input
                               id="letrasDesde"
                               type="text"
@@ -362,7 +427,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                         </div>
                         <div className="row row-cols-sm-2 justify-content-center align-items-center">
                           <div className="">
-                            <label>Hasta</label>
+                            <label className="fw-bold">Hasta</label>
                             <input
                               id="letrasHasta"
                               type="text"
@@ -399,7 +464,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       <div>
                         <div className="row row-cols-sm-3 justify-content-center align-items-center">
                           <div className="">
-                            <label>Desde</label>
+                            <label className="fw-bold">Desde</label>
                             <input
                               id="letrasDesde"
                               type="text"
@@ -446,7 +511,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                         </div>
                         <div className="row row-cols-sm-3 justify-content-center align-items-center">
                           <div className="">
-                            <label>Hasta</label>
+                            <label className="fw-bold">Hasta</label>
                             <input
                               id="letrasHasta"
                               type="text"
@@ -495,7 +560,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                       <div>
                         <div className="row row-cols-sm-2 justify-content-center align-items-center">
                         <div className="">
-                            <label>Desde</label>
+                            <label className="fw-bold">Desde</label>
                             <input
                               id="noDesde"
                               type="number"
@@ -527,7 +592,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                         </div>
                         <div className="row row-cols-sm-2 justify-content-center align-items-center">
                         <div className="">
-                            <label>Hasta</label>
+                            <label className="fw-bold">Hasta</label>
                             <input
                               id="noHasta"
                               type="number"
@@ -561,6 +626,30 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                         </div>
                       </div>
                     }
+                    <label className="fw-bold">Servicio del vehículo</label>
+                    <select
+                      className="form-select form-select-sm w-100 mt-2"
+                      value={multiple.servicio}
+                      id="servicio"
+                      required
+                      onChange={(e) => handleChange(e)}
+                    >
+                      <option selected value="" disabled>
+                        -- Seleccione el servicio del vehículo --
+                      </option>
+                      <option id="PARTICULAR" value="PARTICULAR">
+                        PARTICULAR
+                      </option>
+                      <option id="PÚBLICO" value="PÚBLICO">
+                        PÚBLICO
+                      </option>
+                      <option id="DIPLOMÁTICO - CONSULAR" value="DIPLOMÁTICO - CONSULAR">
+                        DIPLOMÁTICO - CONSULAR
+                      </option>
+                      <option id="ANTIGUO - CLÁSICO" value="ANTIGUO - CLÁSICO">
+                        ANTIGUO - CLÁSICO
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>

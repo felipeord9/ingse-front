@@ -71,13 +71,13 @@ function Report() {
         let cm = 0;
         await data.filter((item)=>{
             if(item.tipo==='AUTOMOVILES'){
-                car++
+              car = car + item.numPlacas
             }else if(item.tipo==='MOTOCICLETAS'){
-                mot++
+                mot = mot + item.numPlacas
             }else if(item.tipo==='MOTOCARRO'){
-                cm++
+                cm = cm + item.numPlacas
             }else if(item.tipo==='TRACTOMULA'){
-                tra++
+                tra = tra + item.numPlacas
           }
         })
         setInitialData([
@@ -165,14 +165,14 @@ function Report() {
         let tra = 0;
         let cm = 0;
         filtered.filter((item)=>{
-            if(item.tipo==='AUTOMOVILES PERSONALES'){
-                car++
-            }else if(item.tipo==='MOTOCICLETAS'){
-                mot++
-            }else if(item.tipo==='MOTOCARRO'){
-                cm++
-            }else if(item.tipo==='TRACTOMULA'){
-                tra++
+          if(item.tipo==='AUTOMOVILES'){
+            car = car + item.numPlacas
+          }else if(item.tipo==='MOTOCICLETAS'){
+              mot = mot + item.numPlacas
+          }else if(item.tipo==='MOTOCARRO'){
+              cm = cm + item.numPlacas
+          }else if(item.tipo==='TRACTOMULA'){
+              tra = tra + item.numPlacas
           }
         })
         setInitialData([

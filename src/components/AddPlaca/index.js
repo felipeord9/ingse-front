@@ -14,6 +14,9 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
     correoPropietario: "",
     placa: "",
     tipo:'',
+    concepto: '',
+    numPlacas: '',
+    servicio: '',
     observations:''
   });
   const [clientes, setClientes] = useState();
@@ -49,11 +52,29 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
     });
   };
 
+  const handleChangeConcepto = (e) =>{
+    const { id, value } = e.target;
+    console.log(value);
+    if(value === 'NUEVA'){
+      setDatos({
+        ...datos,
+        [id]: value,
+        numPlacas: 2
+      });
+    }else{
+      setDatos({
+        ...datos,
+        [id]: value,
+        numPlacas: 1
+      });
+    }
+  }
+
   const handlerSubmit = (e) => {
     e.preventDefault();
     //funcion para comparar las placas, vin y chasis
     const filtroPorPlaca= clientes.filter((item)=>{
-      if(item.placa === datos.placa.toUpperCase()){
+      if(item.placaDesde === datos.placa.toUpperCase()){
         return item
       }
     })
@@ -84,7 +105,7 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
           if(filtroPorPlaca.length > 0 ){
             Swal.fire({
               title:'AVISO',
-              text:`La placa: "${datos.placa.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
+              text:`La placa: "${datos.placaDesde.toUpperCase()}" ya se encuentra registrada en nuestra base de datos
               con las fechas: ${devolverLista(filtroPorPlaca)}. ¿Desea continuar?`,
               showConfirmButton: true,
               showDenyButton: true,
@@ -106,7 +127,10 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                   nombrePropietario: datos.nombrePropietario.toUpperCase(),
                   celularPropietario: datos.celularPropietario,
                   correoPropietario: datos.correoPropietario.toLowerCase(),
-                  placa: datos.placa.toUpperCase(),
+                  placaDesde: datos.placa.toUpperCase(),
+                  concepto: datos.concepto.toUpperCase(),
+                  servicio: datos.servicio.toUpperCase(),
+                  numPlacas: datos.numPlacas,
                   tipo: datos.tipo.toUpperCase(),
                   createdAt: new Date(),
                   userId: user.id,
@@ -136,7 +160,10 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                 nombrePropietario: datos.nombrePropietario.toUpperCase(),
                 celularPropietario: datos.celularPropietario,
                 correoPropietario: datos.correoPropietario.toLowerCase(),
-                placa: datos.placa.toUpperCase(),
+                placaDesde: datos.placa.toUpperCase(),
+                concepto: datos.concepto.toUpperCase(),
+                servicio: datos.servicio.toUpperCase(),
+                numPlacas: datos.numPlacas,
                 tipo: datos.tipo.toUpperCase(),
                 createdAt: new Date(),
                 userId: user.id,
@@ -168,7 +195,10 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
           nombrePropietario: datos.nombrePropietario.toUpperCase(),
           celularPropietario: datos.celularPropietario,
           correoPropietario: datos.correoPropietario.toLowerCase(),
-          placa: datos.placa.toUpperCase(),
+          placaDesde: datos.placa.toUpperCase(),
+          concepto: datos.concepto.toUpperCase(),
+          servicio: datos.servicio.toUpperCase(),
+          numPlacas: datos.numPlacas,
           tipo: datos.tipo.toUpperCase(),
           observations: datos.observations,
           createdAt: new Date(),
@@ -193,7 +223,10 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
       correoPropietario: "",
       placa: "",
       tipo:'',
-      observations:''
+      observations:'',
+      concepto:'',
+      numPlacas:'',
+      servicio:''
     });
   };
 
@@ -213,7 +246,7 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
         <div>
           <h6 className="fw-bold">AGREGAR SOLICITUD</h6>
           <form className=" mt-1" /* onSubmit={handlerSubmit} */>
-            <div className="row row-cols-sm-3">
+            <div className="row row-cols-sm-4">
               <div className="">
                 <label>No. Identificación:</label>
                 <input
@@ -255,8 +288,6 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                   className="form-control form-control-sm"
                 />
               </div>
-            </div>
-            <div className="row row-cols-sm-3 mt-2">
               <div className="">
                 <label>Correo electrónico:</label>
                 <input
@@ -268,6 +299,33 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                   className="form-control form-control-sm"
                   onChange={handlerChange}
                 />
+              </div>
+            </div>
+            <div className="row row-cols-sm-4 mt-2">
+              <div className="">
+                <label>Concepto de la solicitud:</label>
+                <select
+                  className="form-select form-select-sm w-100"
+                  value={datos.concepto}
+                  id="concepto"
+                  onChange={(e) => handleChangeConcepto(e)}
+                >
+                  <option selected value="" disabled>
+                    -- Seleccione el concepto de la solicitud --
+                  </option>
+                  <option id="NUEVA" value="NUEVA">
+                    NUEVA
+                  </option>
+                  <option id="DETERIORO" value="DETERIORO">
+                    DETERIORO
+                  </option>
+                  <option id="PERDIDA" value="PERDIDA">
+                    PERDIDA
+                  </option>
+                  <option id="ROBO" value="ROBO">
+                    ROBO
+                  </option>
+                </select>
               </div>
               <div className="">
                 <label>No. Placa:</label>
@@ -304,6 +362,32 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                   </option>
                   <option id="TRACTOMULA" value="TRACTOMULA">
                     TRACTOMULA
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label>Servicio:</label>
+                <select
+                  className="form-select form-select-sm w-100"
+                  value={datos.servicio}
+                  id="servicio"
+                  required
+                  onChange={(e) => handlerChange(e)}
+                >
+                  <option selected value="" disabled>
+                    -- Seleccione el servicio del vehículo --
+                  </option>
+                  <option id="PARTICULAR" value="PARTICULAR">
+                    PARTICULAR
+                  </option>
+                  <option id="PÚBLICO" value="PÚBLICO">
+                    PÚBLICO
+                  </option>
+                  <option id="DIPLOMÁTICO - CONSULAR" value="DIPLOMÁTICO - CONSULAR">
+                    DIPLOMÁTICO - CONSULAR
+                  </option>
+                  <option id="ANTIGUO - CLÁSICO" value="ANTIGUO - CLÁSICO">
+                    ANTIGUO - CLÁSICO
                   </option>
                 </select>
               </div>

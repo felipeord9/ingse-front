@@ -39,7 +39,7 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
           <div className="d-flex gap-0 p-0">
             <PDFDownloadLink
               document={<DocRequestrPDF request={row} />}
-              fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placa)}`}
+              fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placaDesde)}`}
             >
               <FaIcons.FaDownload />
             </PDFDownloadLink>
@@ -55,13 +55,13 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
             >
               <FaIcons.FaEye />
             </button>
-            {/* <PDFDownloadLink
+            <PDFDownloadLink
               className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
               document={<DocRequestrPDF request={row} />}
-              fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placa)}`}
+              fileName={`${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${row.nombrePropietario}-${(row?.placaDesde)}`}
             >
               <FaIcons.FaDownload />
-            </PDFDownloadLink> */}
+            </PDFDownloadLink>
           </div>
         ),
       width: "80px",
@@ -88,19 +88,55 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
     },
     {
       id: "cedulaPropietario",
-      name: "No. documento",
+      name: "ID",
       selector: (row) => row?.cedulaPropietario,
       sortable: true,
-      width: '160px'
+      width: '140px'
     },
     {
       id: "nombre",
       name: "Nombre",
       selector: (row) => row.nombrePropietario === null ? `${row.primerApellidoPropietario} ${row.segundoApellidoPropietario} ${row.primerNombrePropietario} ${row.segundoNombrePropietario}` : `${row.nombrePropietario}`,
       sortable: true,
-      width:'cell-name'
+      width:'300px'
     },
     {
+      id: "numPlacas",
+      name: "Cantidad",
+      selector: (row) => row?.numPlacas,
+      sortable: true,
+      width: '115px'
+    },
+    {
+      id: "desde",
+      name: "Desde",
+      selector: (row) => row?.placaDesde,
+      sortable: true,
+      width: 'cell-name'
+    },
+    {
+      id: "hasta",
+      name: "Hasta",
+      selector: (row) => row.placaHasta,
+      sortable: true,
+      class: 'cell-name'
+    },
+    {
+      id: "tipo",
+      name: "Tipo",
+      selector: (row) => row?.tipo,
+      sortable: true,
+      class: 'cell-name'
+    },
+    {
+      id: "servicio",
+      name: "Servicio",
+      selector: (row) => row?.servicio,
+      sortable: true,
+      class: 'cell-name'
+    },
+  ]
+  /* {
       id: "celularPropietario",
       name: "No. celular",
       selector: (row) => row?.celularPropietario,
@@ -113,15 +149,14 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       selector: (row) => row.correoPropietario,
       sortable: true,
       class: 'cell-name'
-    },
+    }, 
     {
       id: "placa",
       name: "Placa",
       selector: (row) => row?.placa,
       sortable: true,
       width: '130px'
-    }
-  ]
+    }*/
 
   return (
   <div

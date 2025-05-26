@@ -172,6 +172,24 @@ export default function Form() {
     });
   };
 
+  const handleChangeConcepto = (e) =>{
+    const { id, value } = e.target;
+    console.log(value);
+    if(value === 'NUEVA'){
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas: 2
+      });
+    }else{
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas:''
+      });
+    }
+  }
+
   const refreshForm = () => {
     Swal.fire({
       title: "¿Está seguro?",
@@ -203,7 +221,7 @@ export default function Form() {
     e.preventDefault();
     //funcion para comparar las placas, vin y chasis
     const filtroPorPlaca= clientes.filter((item)=>{
-      if(item.placa === search.placa.toUpperCase()){
+      if(item.placaDesde === search.placa.toUpperCase()){
         return item
       }
     })
@@ -245,7 +263,8 @@ export default function Form() {
                 setLoading(true)
                 if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                     search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                    search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                    search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                    search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
                 ){
                   if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                     const body = {
@@ -264,7 +283,8 @@ export default function Form() {
                       licenciaTransito: search.licenciaTransito,
                       vin: search.vin !== '' ? search.vin.toUpperCase():'',
                       chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-                      placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                      placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+                      /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
                       marca: search.marca !== '' ? search.marca.toUpperCase():'',
                       tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
                       servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -414,7 +434,8 @@ export default function Form() {
                 setLoading(true)
                 if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                     search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                    search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                    search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                    search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
                 ){
                   if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                     const body = {
@@ -433,7 +454,8 @@ export default function Form() {
                       licenciaTransito: search.licenciaTransito,
                       vin: search.vin !== '' ? search.vin.toUpperCase():'',
                       chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-                      placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                      placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+                      /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
                       marca: search.marca !== '' ? search.marca.toUpperCase():'',
                       tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
                       servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -569,7 +591,8 @@ export default function Form() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                 search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -588,7 +611,8 @@ export default function Form() {
                   licenciaTransito: search.licenciaTransito,
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+                  /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
                   tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
                   servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -737,7 +761,8 @@ export default function Form() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                 search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -756,7 +781,8 @@ export default function Form() {
                   licenciaTransito: search.licenciaTransito,
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+                  /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
                   tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
                   servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -906,7 +932,8 @@ export default function Form() {
             setLoading(true)
             if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
                 search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+                search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+                search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
             ){
               if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
                 const body = {
@@ -925,7 +952,8 @@ export default function Form() {
                   licenciaTransito: search.licenciaTransito,
                   vin: search.vin !== '' ? search.vin.toUpperCase():'',
                   chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-                  placa: search.placa !== '' ? search.placa.toUpperCase():'',
+                  placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+                  /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
                   marca: search.marca !== '' ? search.marca.toUpperCase():'',
                   tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
                   servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -1061,7 +1089,8 @@ export default function Form() {
         setLoading(true)
         if(search.cedulaPropietario !== '' && search.primerApellidoPropietario !== '' &&
             search.segundoApellidoPropietario !== '' && search.primerNombrePropietario !== '' &&
-            search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== ''
+            search.celularPropietario !== '' && search.correoPropietario !== '' && search.municipioPropietario !== '' &&
+            search.placa !== '' && search.tipo !== '' && search.servicio !== '' && search.ciudadPlaca !== ''
         ){
           if(search.correoPropietario !=='' && search.correoPropietario.includes('@') && search.correoPropietario.split('@')[1].includes('.')){
             const body = {
@@ -1080,7 +1109,8 @@ export default function Form() {
               licenciaTransito: search.licenciaTransito,
               vin: search.vin !== '' ? search.vin.toUpperCase():'',
               chasis: search.chasis !== '' ? search.chasis.toUpperCase():'',
-              placa: search.placa !== '' ? search.placa.toUpperCase():'',
+              placaDesde: search.placa !== '' ? search.placa.toUpperCase():'',
+              /* placaHasta: search.placa !== '' ? search.placa.toUpperCase():'', */
               marca: search.marca !== '' ? search.marca.toUpperCase():'',
               tipo: search.tipo !== '' ? search.tipo.toUpperCase():'',
               servicio: search.servicio !=='' ? search.servicio.toUpperCase():'',
@@ -1527,7 +1557,7 @@ export default function Form() {
                         className="form-select form-select-sm w-100"
                         value={search.concepto}
                         id="concepto"
-                        onChange={(e) => handlerChangeSearch(e)}
+                        onChange={(e) => handleChangeConcepto(e)}
                       >
                         <option selected value="" disabled>
                           -- Seleccione el concepto de la solicitud --
@@ -1556,6 +1586,7 @@ export default function Form() {
                         max="3"
                         className="form-control form-control-sm"
                         autoComplete="off"
+                        disabled = {search.concepto === 'NUEVA'}
                         /* onChange={(e) => {
                           handlerChangeSearch(e);
                         }} */
@@ -1633,6 +1664,8 @@ export default function Form() {
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
+                        required
+                        placeholder="*Campo obligatorio*"
                         style={{textTransform:'uppercase'}}
                       />
                   </div>
@@ -1647,6 +1680,8 @@ export default function Form() {
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
+                        required
+                        placeholder="*Campo obligatorio*"
                         style={{textTransform:'uppercase'}}
                       />
                   </div>
@@ -1661,6 +1696,8 @@ export default function Form() {
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
+                        required
+                        placeholder="*Campo obligatorio*"
                         style={{textTransform:'uppercase'}}
                       />
                   </div>
@@ -1693,6 +1730,8 @@ export default function Form() {
                       onChange={(e) => {
                         handlerChangeSearch(e);
                       }}
+                      required
+                      placeholder="*Campo obligatorio*"
                       style={{textTransform:'uppercase'}}
                     />
                   </div>
@@ -1707,6 +1746,8 @@ export default function Form() {
                         onChange={(e) => {
                           handlerChangeSearch(e);
                         }}
+                        required
+                        placeholder="*Campo obligatorio*"
                         style={{textTransform:'uppercase'}}
                       />
                   </div>
@@ -1725,6 +1766,8 @@ export default function Form() {
                       onChange={(e) => {
                         handleMaxCel(e);
                       }}
+                      required
+                        placeholder="*Campo obligatorio*"
                       min={0}
                     />
                   </div>
@@ -1739,6 +1782,8 @@ export default function Form() {
                       onChange={(e) => {
                         handlerChangeSearch(e);
                       }}
+                      required
+                        placeholder="*Campo obligatorio*"
                       style={{textTransform:'lowercase'}}
                     />
                   </div>
@@ -1777,6 +1822,8 @@ export default function Form() {
                               handlerChangeSearch(e);
                             }}
                             style={{textTransform:'uppercase'}}
+                            required
+                            placeholder="*CAMPO OBLIGATORIO*"
                           />
                       </div>
                       <div className="d-flex flex-column align-items-start">
@@ -1821,6 +1868,8 @@ export default function Form() {
                             handlerChangeSearch(e);
                           }}
                           style={{textTransform:'uppercase'}}
+                          required
+                          placeholder="*CAMPO OBLIGATORIO*"
                         />
                       </div>
                       <div className="d-flex flex-column align-items-start">
@@ -1892,11 +1941,11 @@ export default function Form() {
                           <option id="PÚBLICO" value="PÚBLICO">
                             PÚBLICO
                           </option>
-                          <option id="DIPLOMÁTICO" value="DIPLOMÁTICO">
-                            DIPLOMÁTICO
+                          <option id="DIPLOMÁTICO - CONSULAR" value="DIPLOMÁTICO - CONSULAR">
+                            DIPLOMÁTICO - CONSULAR
                           </option>
-                          <option id="OFICIAL" value="OFICIAL">
-                            OFICIAL
+                          <option id="ANTIGUO - CLÁSICO" value="ANTIGUO - CLÁSICO">
+                            ANTIGUO - CLÁSICO
                           </option>
                         </select>
                         {/* <input
