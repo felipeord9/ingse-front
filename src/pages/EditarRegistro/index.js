@@ -175,7 +175,25 @@ export default function EditarRegistro() {
   const handleChangeConcepto = (e) =>{
     const { id, value } = e.target;
     console.log(value);
-    if(value === 'NUEVA'){
+    if((value === 'NUEVA' && search.tipo === 'AUTOMOVILES') || (value === 'NUEVA' && search.tipo === 'TRACTOMULA')){
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas: 2
+      });
+    }else{
+      setSearch({
+        ...search,
+        [id]: value,
+        numPlacas:''
+      });
+    }
+  }
+
+  const handleChangeTipo = (e) =>{
+    const { id, value } = e.target;
+    console.log(value);
+    if((value === 'AUTOMOVILES' && search.concepto === 'NUEVA') || (value === 'TRACTOMULA' && search.concepto === 'NUEVA')){
       setSearch({
         ...search,
         [id]: value,
@@ -1110,7 +1128,7 @@ export default function EditarRegistro() {
           Swal.fire({
             icon:'warning',
             title:'¡ATENCION!',
-            text:'Por favor ingresa por lo menos los datos del propietario para llevar a cabo el registro de la solicitud.',
+            text:'Por favor ingresa los datos requeridos para llevar a cabo el registro de la solicitud.',
             showConfirmButton:true,
             showCancelButton:false,
             confirmButtonColor:'blue'
@@ -1459,7 +1477,7 @@ export default function EditarRegistro() {
                         max="3"
                         className="form-control form-control-sm"
                         autoComplete="off"
-                        disabled = {search.concepto === 'NUEVA'}
+                        disabled = {(search.concepto === 'NUEVA' && search.tipo === 'AUTOMOVILES') || (search.concepto === 'NUEVA' && search.tipo === 'TRACTOMULA')}
                         /* onChange={(e) => {
                           handlerChangeSearch(e);
                         }} */
@@ -1761,7 +1779,7 @@ export default function EditarRegistro() {
                           value={search.tipo}
                           id="tipo"
                           required
-                          onChange={(e) => handlerChangeSearch(e)}
+                          onChange={(e) => handleChangeTipo(e)}
                         >
                           <option selected value="" disabled>
                             -- Seleccione el tipo vehículo --
