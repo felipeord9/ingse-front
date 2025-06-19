@@ -276,13 +276,13 @@ export default function FormPlacasDiferentes() {
                 className="nav-menu-items"
                 onClick={(e) => setShowSidebar(!showSideBar)}
               >
-                {(user.role==='admin' || user.role==='superadmin') &&
+                {/* {(user.role==='admin' || user.role==='superadmin') && */}
                   <li className='nav-text fw-bold'>
                   <Link to='/registros' style={{backgroundColor:(ruta==='/registros') ? 'white' : 'black',color:(ruta==='/registros') ? 'black' : 'white'}} >
                     <GiBlackBook />
                     <span>Bitácora</span>
                   </Link>
-                </li>}
+                </li>{/* } */}
                 <li className='nav-text fw-bold'>
                   <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                     <TfiWrite />

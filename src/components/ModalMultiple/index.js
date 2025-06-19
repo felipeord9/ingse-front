@@ -28,7 +28,8 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
     tipo: "",
     servicio: '',
     concepto: '',
-    numPlacas: ''
+    numPlacas: '',
+    ciudadPlaca: '',
   });
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -215,6 +216,7 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
           numPlacas: multiple.numPlacas,
           concepto: multiple.concepto.toUpperCase(),
           servicio: multiple.servicio.toUpperCase(),
+          ciudadPlaca: multiple.ciudadPlaca.toUpperCase(),
           createdAt: new Date(),
           userId: user.id,
         };
@@ -267,7 +269,8 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
       letrasDesde: '',
       letrasHasta: '',
       numPlacas: '',
-      servicio: ''
+      servicio: '',
+      ciudadPlaca: '',
     });
     setEnviando(false);
   };
@@ -626,6 +629,20 @@ export default function ModalMultiple({ showModal, setShowModal, reloadInfo }) {
                         </div>
                       </div>
                     }
+                    <div>
+                    <label className="fw-bold">Ciudad placa</label>
+                      <input
+                        id="ciudadPlaca"
+                        type="text"
+                        value={multiple?.ciudadPlaca}
+                        style={{ textTransform: "uppercase" }}
+                        className="form-control form-control-sm"
+                        onChange={(e) => handleChange(e)}
+                        autoComplete="off"
+                        placeholder="-- Ciudad donde esta matriculada la placa --"
+                        required
+                      />
+                    </div>
                     <label className="fw-bold">Servicio del vehículo</label>
                     <select
                       className="form-select form-select-sm w-100 mt-2"

@@ -18,7 +18,7 @@ export default function Login() {
   useEffect(()=>{
     if(isLogged && user.role==='admin')navigate('/registros');
     if(isLogged && user.role==='superadmin')navigate('/registros');
-    if(isLogged && user.role==='usuario')navigate('/formulario');
+    if(isLogged && user.role==='usuario')navigate('/registros');
   },[isLogged,navigate]);
 
   const handleLogin=async(e)=>{

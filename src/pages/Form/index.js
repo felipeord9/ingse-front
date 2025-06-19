@@ -331,7 +331,7 @@ export default function Form() {
                       numeroFactura: search.numeroFactura,
                       concepto: search.concepto,
                       numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-                      ciudadPlaca: search.ciudadPlaca,
+                      ciudadPlaca: search.ciudadPlaca.toUpperCase(),
                       observations: 'La cédula y la placa ya se encontraban registrados al momento de hacer la solicitud (el número de chasis y número de vin SI COINCIDEN con el que ya estaba registrado), se le informó al usuario y este continuó con el registro.'
                     }
                     createSolicitud(body)
@@ -502,7 +502,7 @@ export default function Form() {
                       numeroFactura: search.numeroFactura,
                       concepto: search.concepto,
                       numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-                      ciudadPlaca: search.ciudadPlaca,
+                      ciudadPlaca: search.ciudadPlaca.toUpperCase(),
                       observations: 'La cédula y la placa ya se encontraban registrados al momento de hacer la solicitud (el número de chasis ó número de vin NO COINCIDEN con el que ya estaba registrado), se le informó al usuario y este continuó con el registro.'
                     }
                     createSolicitud(body)
@@ -659,7 +659,7 @@ export default function Form() {
                   numeroFactura: search.numeroFactura,
                   concepto: search.concepto,
                   numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-                  ciudadPlaca: search.ciudadPlaca,
+                  ciudadPlaca: search.ciudadPlaca.toUpperCase(),
                   observations: 'La cédula ya se encontraba registrada en otra solicitud, se le informó al usuario y este continuó con el registro.'
                 }
                 createSolicitud(body)
@@ -829,7 +829,7 @@ export default function Form() {
                   numeroFactura: search.numeroFactura,
                   concepto: search.concepto,
                   numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-                  ciudadPlaca: search.ciudadPlaca,
+                  ciudadPlaca: search.ciudadPlaca.toUpperCase(),
                   observations: 'La placa ya se encontraban registrados al momento de hacer la solicitud (el número de chasis y número de vin SI COINCIDEN con el que ya estaba registrado), se le informó al usuario y este continuó con el registro.'
                 }
                 createSolicitud(body)
@@ -1000,7 +1000,7 @@ export default function Form() {
                   numeroFactura: search.numeroFactura,
                   concepto: search.concepto,
                   numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-                  ciudadPlaca: search.ciudadPlaca,
+                  ciudadPlaca: search.ciudadPlaca.toUpperCase(),
                   observations: 'La placa ya se encontraban registrados al momento de hacer la solicitud (el número de chasis y número de vin NO COINCIDEN con el que ya estaba registrado), se le informó al usuario y este continuó con el registro.'
                 }
                 createSolicitud(body)
@@ -1157,7 +1157,7 @@ export default function Form() {
               numeroFactura: search.numeroFactura,
               concepto: search.concepto,
               numPlacas: search.numPlacas !== '' ? search.numPlacas : 1,
-              ciudadPlaca: search.ciudadPlaca,
+              ciudadPlaca: search.ciudadPlaca.toUpperCase(),
               observations: ''
 
             }
@@ -1456,13 +1456,14 @@ export default function Form() {
                 className="nav-menu-items"
                 onClick={(e) => setShowSidebar(!showSideBar)}
               >
-                {(user.role==='admin' || user.role==='superadmin') &&
+                {/* {(user.role==='admin' || user.role==='superadmin') && */}
                   <li className='nav-text fw-bold'>
                   <Link to='/registros' style={{backgroundColor:(ruta==='/registros') ? 'white' : 'black',color:(ruta==='/registros') ? 'black' : 'white'}} >
                     <GiBlackBook />
                     <span>Bitácora</span>
                   </Link>
-                </li>}
+                </li>
+                {/* } */}
                 <li className='nav-text fw-bold'>
                   <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                     <TfiWrite />

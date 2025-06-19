@@ -5,6 +5,10 @@ import useAlert from '../../hooks/useAlert';
 import { FaUserEdit } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { Modal } from "react-bootstrap";
+import useUser from "../../hooks/useUser";
+import AuthContext from "../../context/authContext";
+import { format } from "date-fns";
+import DocReqPdf from "../DocReqPdf";
 import DocRequestrPDF from "../../components/DocRequestPDF";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import './styles.css'
@@ -15,6 +19,7 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
   const [showModal,setShowModal] = useState('');
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(null);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 600px)");
@@ -55,13 +60,17 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
             >
               <FaIcons.FaEye />
             </button>
-            <PDFDownloadLink
-              className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
-              document={<DocRequestrPDF request={row} />}
-              fileName={`${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${row.nombrePropietario}-${(row?.placaDesde)}`}
-            >
-              <FaIcons.FaDownload />
-            </PDFDownloadLink>
+            {user.role === 'admin' &&
+              <PDFDownloadLink
+                className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
+                document={<DocReqPdf request={row} />}
+                fileName={`${format(new Date(row?.createdAt), 'yyyy/MM/dd')}-${row.nombrePropietario}-${(row?.placaDesde)}`}
+
+              >
+                <FaIcons.FaDownload />
+              </PDFDownloadLink>
+            }
+            
           </div>
         ),
       width: "80px",
@@ -70,7 +79,7 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       id: "editar",
       name: "",
       center: true,
-      cell: (row, index, column, id) => (
+      cell: (row, index, column, id) => user.role === 'admin' ? (
         <div className='d-flex gap-2 p-1'>
           <button 
             title="Editar registro" className='btn btn-sm'
@@ -83,6 +92,14 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
             <FaUserEdit />
           </button>
         </div>
+      ):(
+        <PDFDownloadLink
+          className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
+          document={<DocReqPdf request={row} />}
+          fileName={`${format(new Date(row?.createdAt), 'yyyy/MM/dd')}-${row.nombrePropietario}-${(row?.placaDesde)}`}
+        >
+          <FaIcons.FaDownload />
+        </PDFDownloadLink>
       ),
       width: '60px'
     },
@@ -183,6 +200,14 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
         dense
         striped
         fixedHeader
+        pagination
+        paginationComponentOptions={{
+          rowsPerPageText: "Filas por página:",
+          rangeSeparatorText: "de",
+          selectAllRowsItem: false,
+        }}
+        paginationPerPage={50}
+        paginationRowsPerPageOptions={[15, 25, 50, 100]}
         noDataComponent={
           <div style={{padding: 24}}>Ningún resultado encontrado...</div>}  
       />
@@ -199,7 +224,8 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
           }}
           showToolbar={true}
         >
-          <DocRequestrPDF request={selectedRequest} />
+          {/* <DocRequestrPDF request={selectedRequest} /> */}
+          <DocReqPdf request={selectedRequest} />
         </PDFViewer>
       </Modal>
     </div>

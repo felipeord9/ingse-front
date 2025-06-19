@@ -57,9 +57,9 @@ export default function Registros() {
     const { value } = e.target
     if(value !== "") {
       const filteredRegistros = registros.filter((elem) => {
-        const name = `${elem.primerApellidoPropietario} ${elem.segundoApellidoPropietario} ${elem.primerNombrePropietario} ${elem.segundoNombrePropietario}`
+        const name = elem.nombrePropietario === null ? ` ${elem.primerApellidoPropietario} ${elem.segundoApellidoPropietario} ${elem.primerNombrePropietario} ${elem.segundoNombrePropietario}` : `${elem.nombrePropietario}`;
         if(
-          elem.placa.toLowerCase().includes(value.toLowerCase()) ||
+          elem?.placaDesde?.toLowerCase().includes(value.toLowerCase()) ||
           name.toLowerCase().includes(value.toLowerCase()) ||
           elem.cedulaPropietario.includes(value)
         ) {
@@ -69,7 +69,7 @@ export default function Registros() {
       if(filteredRegistros.length > 0) {
         setSuggestions(filteredRegistros)
       } else {
-        setSuggestions(registros)
+        setSuggestions({})
      }
     } else {
       setSuggestions(registros)
@@ -122,14 +122,14 @@ export default function Registros() {
                 className="nav-menu-items"
                 onClick={(e) => setShowSidebar(!showSideBar)}
               >
-                {(user.role==='admin' || user.role==='superadmin') &&
+                {/* {(user.role==='admin' || user.role==='superadmin') && */}
                   <li className='nav-text fw-bold'>
                   <Link to='/registros' style={{backgroundColor:(ruta==='/registros') ? 'white' : 'black',color:(ruta==='/registros') ? 'black' : 'white'}} >
                     <GiBlackBook />
                     <span>Bitácora</span>
                   </Link>
                 </li>
-                }
+                {/* } */}
                 <li className='nav-text fw-bold'>
                 <Link to='/formulario' style={{backgroundColor:(ruta==='/formulario') ? 'white' : 'black',color:(ruta==='/formulario') ? 'black' : 'white'}} >
                   <TfiWrite />
@@ -197,7 +197,7 @@ export default function Registros() {
               className="d-flex w-100 mt-1 " size="small" 
               label='Buscar por cédula, nombre o placa' variant='outlined'
               type='search'
-              value={search}
+              value={search !== '' ? search?.toUpperCase() : search}
               style={{textTransform:'uppercase'}}
               onChange={searchRegistro}
             ></TextField>
