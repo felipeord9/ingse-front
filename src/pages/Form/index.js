@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef , Component } from "react";
 import Swal from "sweetalert2";
 import { Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +23,178 @@ import { findSolicitudes } from "../../services/solicitudService";
 import { FcDataBackup } from "react-icons/fc";
 import ModalBackUpBD from "../../components/ModalBackUpBD";
 import { FaListOl } from "react-icons/fa6";
+import { FingerprintSdk } from '../../fingerprint_reader/api/sdk_mod';
+
+/* logica de la huella */
+class Huella extends Component {
+  state = {}
+  foto = ''
+
+  componentDidMount() {
+    const Fingerprint = new FingerprintSdk()
+    this.setState({ Fingerprint },
+      () => {
+        this.state.Fingerprint.getDeviceList()
+        .then(devices => this.setState({ deviceId: devices[0] }), error => console.log(error))
+      }
+    )
+  }
+
+  clearImage() {
+    let vDiv = document.getElementById('imagediv')
+    if(vDiv){
+      vDiv.innerHTML = ""
+    }
+    localStorage.setItem("imageSrc", "")
+  } 
+
+  startCapturing = () => {
+    /* this.state.Fingerprint.startCapture() */
+    localStorage.setItem("imageSrc", "")
+    this.setState(
+      ()  => {
+        this.state.Fingerprint.startCapture()
+        Swal.fire({
+          title:'Lector de huella',
+          text:'Coloca el dedo en el lector para poder leerlo y presiona capturar.',
+          showCancelButton:false,
+          showConfirmButton:true,
+          confirmButtonText:'Capturar',
+          confirmButtonColor:'green'
+        }).then(({isConfirmed})=>{
+          if(isConfirmed){
+            if(localStorage.getItem('imageSrc') ){
+              this.foto = `${localStorage.getItem('imageSrc')}`
+              this.state.Fingerprint.stopCapture()
+              Swal.fire({
+                title:'Excelente',
+                text:'Captura de huella exitosa',
+                showCancelButton:false,
+                showConfirmButton:false,
+                timer:5000
+              })
+              this.setState({ status: 'success' })     
+            }else{
+              this.state.Fingerprint.stopCapture()
+              this.setState({ status: 'error' })
+              Swal.fire({
+                icon:'warning',
+                title:'¡ERROR',
+                text:'Hubo un error al momento de leer la huella. Vuelve a intentarlo. si el problema persiste comunícate con los programadores para darte una oportuna y rápida solucion.',
+                showCancelButton:false,
+                showConfirmButton:false,
+                timer:5000
+              })
+            }
+          }
+        })
+      }
+    )
+    }
+
+  stopCapturing = () => {
+    this.state.Fingerprint.stopCapture()
+  }
+
+  getInfo = () => {
+    this.state.Fingerprint.getDeviceList()
+    .then(devices => this.setState({ deviceId: devices[0] }), error => console.log(error))
+    
+    console.log(this.state.Fingerprint)
+  }
+
+  onImageDownload = () => {
+    if(localStorage.getItem("imageSrc") === "" || localStorage.getItem("imageSrc") === null || document.getElementById('imagediv').innerHTML === ""  ){
+      alert("No image to download");
+    }else{
+      //alert(localStorage.getItem("imageSrc"));
+      this.state.Fingerprint.stopCapture()
+      downloadURI(localStorage.getItem("imageSrc"), "huella.png", "image/png");
+    }
+  }
+
+  render() {
+    const { deviceId } = this.state
+
+    const connected = deviceId !== "" ? `Conectado a ${deviceId}` : "No hay lectores de huella conectados"
+
+    return (
+        <div
+          className="w-75"
+          style={{
+            width: "100%",
+            height: 200,
+            border: "2px solid #ccc",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            borderRadius:25
+          }}
+          id='start'
+          onClick={this.startCapturing}
+        >
+          {this.foto !== '' ? (
+            <img
+              className="w-75"
+              src={`${this.foto}`} 
+              style={{width:'100%', height:195, borderRadius:25}}
+            />
+            ):(
+            "Haz Click aquí activar el lector de huella"
+          )}
+      </div>
+    )
+  }
+}
+
+function downloadURI(uri, name, dataURIType) {
+  if (IeVersionInfo() > 0) {
+    //alert("This is IE " + IeVersionInfo())
+    const blob = dataURItoBlob(uri,dataURIType)
+    window.navigator.msSaveOrOpenBlob(blob, name)
+  } else {
+    //alert("This is not IE.");
+    let save = document.createElement('a')
+    save.href = uri
+    save.download = name
+    let event = document.createEvent("MouseEvents")
+      event.initMouseEvent(
+        "click", true, false, window, 0, 0, 0, 0, 0
+        , false, false, false, false, 0, null
+      )
+    save.dispatchEvent(event)
+  }
+}
+
+function dataURItoBlob (dataURI, dataURIType) {
+  const binary = atob(dataURI.split(',')[1])
+  let array = []
+  for(let i = 0; i < binary.length; i++) {
+    array.push(binary.charCodeAt(i))
+  }
+  return new Blob([new Uint8Array(array)], {type: dataURIType})
+}
+
+function IeVersionInfo() {
+  const sAgent = window.navigator.userAgent
+  const IEVersion = sAgent.indexOf("MSIE")
+
+  // If IE, return version number.
+  if (IEVersion > 0) 
+    return parseInt(sAgent.substring(IEVersion+ 5, sAgent.indexOf(".", IEVersion)), 10)
+
+  // If IE 11 then look for Updated user agent string.
+  else if (!!navigator.userAgent.match(/Trident\/7\./)) 
+    return 11
+
+  // Quick and dirty test for Microsoft Edge
+  else if (document.documentMode || /Edge/.test(navigator.userAgent))
+    return 12
+
+  else
+    return 0 //If not IE return 0
+}
 
 export default function Form() {
   const { isLogged, logout } = useUser();
@@ -108,6 +280,7 @@ export default function Form() {
     backCauth: null,
     productoDañado: null,
     impronta: null,
+    huella:null,
   });
   // Abrir el modal para un campo específico
   const openModal = (field,nameField) => {
@@ -345,7 +518,7 @@ export default function Form() {
                       .then(()=>{
                         const info2 = {
                           cedulaPersonAuthTrasera: photos.backCauth,
-                    
+                          huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                           firma: sigImageFirma !== '' ? sigImageFirma : '',
                         }
                         updateSolicitud(data.id,info2)
@@ -365,6 +538,9 @@ export default function Form() {
                               showConfirmButton:true,
                               showCancelButton:false,
                               confirmButtonColor:'green'
+                            })
+                            .then(()=>{
+                              window.location.reload()
                             })
                           })
                           .catch((error)=>{
@@ -516,7 +692,7 @@ export default function Form() {
                       .then(()=>{
                         const info2 = {
                           cedulaPersonAuthTrasera: photos.backCauth,
-                    
+                          huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                           firma: sigImageFirma !== '' ? sigImageFirma : '',
                         }
                         updateSolicitud(data.id,info2)
@@ -536,6 +712,9 @@ export default function Form() {
                               showConfirmButton:true,
                               showCancelButton:false,
                               confirmButtonColor:'green'
+                            })
+                            .then(()=>{
+                              window.location.reload()
                             })
                           })
                           .catch((error)=>{
@@ -673,7 +852,7 @@ export default function Form() {
                   .then(()=>{
                     const info2 = {
                       cedulaPersonAuthTrasera: photos.backCauth,
-                
+                      huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                       firma: sigImageFirma !== '' ? sigImageFirma : '',
                     }
                     updateSolicitud(data.id,info2)
@@ -693,6 +872,9 @@ export default function Form() {
                           showConfirmButton:true,
                           showCancelButton:false,
                           confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          window.location.reload()
                         })
                       })
                       .catch((error)=>{
@@ -843,7 +1025,7 @@ export default function Form() {
                   .then(()=>{
                     const info2 = {
                       cedulaPersonAuthTrasera: photos.backCauth,
-                
+                      huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                       firma: sigImageFirma !== '' ? sigImageFirma : '',
                     }
                     updateSolicitud(data.id,info2)
@@ -863,6 +1045,9 @@ export default function Form() {
                           showConfirmButton:true,
                           showCancelButton:false,
                           confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          window.location.reload()
                         })
                       })
                       .catch((error)=>{
@@ -1014,7 +1199,7 @@ export default function Form() {
                   .then(()=>{
                     const info2 = {
                       cedulaPersonAuthTrasera: photos.backCauth,
-                
+                      huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                       firma: sigImageFirma !== '' ? sigImageFirma : '',
                     }
                     updateSolicitud(data.id,info2)
@@ -1034,6 +1219,9 @@ export default function Form() {
                           showConfirmButton:true,
                           showCancelButton:false,
                           confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          window.location.reload()
                         })
                       })
                       .catch((error)=>{
@@ -1172,7 +1360,7 @@ export default function Form() {
               .then(()=>{
                 const info2 = {
                   cedulaPersonAuthTrasera: photos.backCauth,
-            
+                  huella: localStorage.getItem('imageSrc') ? localStorage.getItem('imageSrc') : '',
                   firma: sigImageFirma !== '' ? sigImageFirma : '',
                 }
                 updateSolicitud(data.id,info2)
@@ -1192,6 +1380,9 @@ export default function Form() {
                       showConfirmButton:true,
                       showCancelButton:false,
                       confirmButtonColor:'green'
+                    })
+                    .then(()=>{
+                      window.location.reload()
                     })
                   })
                   .catch((error)=>{
@@ -1317,6 +1508,7 @@ export default function Form() {
       productoDañado: null,
     })
     setTypeClient('propietario')
+    localStorage.setItem("imageSrc", "")
   }
 
   const handleCedula = (e) => {
@@ -2358,10 +2550,7 @@ export default function Form() {
                 </div>
                 <div className="d-flex flex-column align-items-center w-50">
                   <label style={{fontSize:12}}>Huella:</label>
-                  <img
-                    className="border border-2 w-75"
-                    style={{width:'100%', height:200, borderRadius:25}}
-                  />
+                  <Huella/>
                 </div>
               </div>
             </div>
