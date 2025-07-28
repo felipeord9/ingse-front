@@ -4,6 +4,7 @@ import AuthContext from "../../context/authContext";
 import { findSolicitudes } from "../../services/solicitudService";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import Swal from "sweetalert2";
+import * as XLSX from 'xlsx';
 import './styles.css'
 
 function AddPlacas({ placasAgr, setPlacasAgr }) {
@@ -20,6 +21,7 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
     observations:''
   });
   const [clientes, setClientes] = useState();
+  const [errors, setErrors] = useState([]);
   const { user } = useContext(AuthContext);
 
   /* logica para obtener los datos y poder compararlos con los ingresados */
@@ -239,6 +241,80 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
     return Array.from(conjunto)
   }
 
+  const handleFileUpload = (e) => {
+  const file = e.target.files[0];
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const bstr = event.target.result;
+    const workbook = XLSX.read(bstr, { type: 'binary' });
+
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' }); // defval evita undefined
+
+    const newErrors = [];
+    const list = [];
+
+    jsonData.forEach((datos, rowIndex) => {
+      const requiredFields = [
+        'id',
+        'nombre',
+        'celular',
+        'correo',
+        'placa',
+        'concepto',
+        'servicio',
+        'noPlacas',
+        'tipo'
+      ];
+
+      // Validar campos vacíos
+      requiredFields.forEach((field) => {
+        if (!datos[field] || datos[field].toString().trim() === '') {
+          newErrors.push(`Fila ${rowIndex + 2} - Columna "${field}" está vacía.`);
+        }
+      });
+
+      // Si no hay errores en esta fila, agregar a la lista
+      if (!newErrors.length) {
+        const newPlaca = {
+          cedulaPropietario: datos.id,
+          nombrePropietario: datos.nombre.toUpperCase(),
+          celularPropietario: datos.celular,
+          correoPropietario: datos.correo.toLowerCase(),
+          placaDesde: datos.placa.toUpperCase(),
+          concepto: datos.concepto.toUpperCase(),
+          servicio: datos.servicio.toUpperCase(),
+          numPlacas: datos.noPlacas,
+          tipo: datos.tipo.toUpperCase(),
+          createdAt: new Date(),
+          userId: user.id,
+          observations: 'El número de identidad y la placa ya se encontraban registrado al momento de hacer la solicitud. Se le informó al usuario y este continuó con el registro.'
+        };
+
+        list.push(newPlaca);
+      }
+    });
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      /* setData([]); */ // No mostrar la tabla si hay errores
+      setPlacasAgr({ agregados: [], total: 0 });
+    } else {
+      setErrors([]);
+      /* setData(jsonData); */ // Puedes mostrar el json original si gustas
+      setPlacasAgr({
+        agregados: list,
+        total: list.length
+      });
+    }
+  };
+
+  reader.readAsBinaryString(file);
+};
+
 
   return (
     <>
@@ -391,6 +467,47 @@ function AddPlacas({ placasAgr, setPlacasAgr }) {
                   </option>
                 </select>
               </div>
+            </div>
+            <div className="mt-2">
+              <h6>Subir Excel</h6>
+              <input 
+                type="file" 
+                accept=".xlsx, .xls" 
+                className="d-flex w-100"
+                onChange={handleFileUpload} 
+              />
+
+              {errors.length > 0 && (
+                <div style={{ color: 'red', marginTop: '10px' }}>
+                  <h4>Errores encontrados:</h4>
+                  <ul>
+                    {errors.map((err, idx) => (
+                      <li key={idx}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {placasAgr.length > 0 && (
+                <table border="1" style={{ marginTop: '20px', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      {Object.keys(placasAgr[0]).map((key) => (
+                        <th key={key} style={{ padding: '5px' }}>{key}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {placasAgr.map((row, idx) => (
+                      <tr key={idx}>
+                        {Object.values(row).map((val, i) => (
+                          <td key={i} style={{ padding: '5px' }}>{val}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
             <div className="d-flex justify-content-center w-100 mt-3">
               <button
