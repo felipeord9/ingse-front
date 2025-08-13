@@ -10,7 +10,7 @@ import AuthContext from "../../context/authContext";
 import { format } from "date-fns";
 import DocReqPdf from "../DocReqPdf";
 import DocRequestrPDF from "../../components/DocRequestPDF";
-import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFViewer, PDFDownloadLink , pdf } from "@react-pdf/renderer";
 import './styles.css'
 
 export default function TableRegistros({ registros, loading , getAllRegistros , selectedRequest , setSelectedRequest}) {
@@ -33,6 +33,25 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       );
   }, []);
 
+  const handleDownload = async (row) => {
+    try {
+      // Generar PDF en el momento
+      const blob = await pdf(<DocRequestrPDF request={row} />).toBlob();
+
+      // Crear enlace temporal
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placaDesde)}.pdf`;
+      a.click();
+
+      // Liberar memoria
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error al generar el PDF", error);
+    }
+  };
+
   const columns = [
     {
       id: "ver",
@@ -42,12 +61,22 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
       cell: (row, index, column, id) =>
         isMobile ? (
           <div className="d-flex gap-0 p-0">
-            <PDFDownloadLink
+            <button
+                className="btn btn-sm btn-primary"
+                onClick={() => handleDownload(row)}
+                style={{
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <FaIcons.FaDownload />
+              </button>
+            {/* <PDFDownloadLink
               document={<DocRequestrPDF request={row} />}
               fileName={`${row?.numeroFactura}-${new Date(row?.createdAt).getDay()}/${new Date(row?.createdAt).getMonth()}/${new Date(row?.createdAt).getFullYear()}-${(row?.placaDesde)}`}
             >
               <FaIcons.FaDownload />
-            </PDFDownloadLink>
+            </PDFDownloadLink> */}
           </div>
         ) : (
           <div className="d-flex gap-2 p-1">
@@ -61,15 +90,25 @@ export default function TableRegistros({ registros, loading , getAllRegistros , 
               <FaIcons.FaEye />
             </button>
             {user.role === 'admin' &&
-              <PDFDownloadLink
-                className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
-                document={<DocReqPdf request={row} />}
-                fileName={`${format(new Date(row?.createdAt), 'yyyy/MM/dd')}-${row.nombrePropietario}-${(row?.placaDesde)}`}
-
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => handleDownload(row)}
+                style={{
+                  border: "none",
+                  cursor: "pointer",
+                }}
               >
                 <FaIcons.FaDownload />
-              </PDFDownloadLink>
+              </button>
             }
+            {/* <PDFDownloadLink
+              className="d-flex h-100 w-100 justify-content-center align-items-center m-2"
+              document={<DocReqPdf request={row} />}
+              fileName={`${format(new Date(row?.createdAt), 'yyyy/MM/dd')}-${row.nombrePropietario}-${(row?.placaDesde)}`}
+
+            >
+              <FaIcons.FaDownload />
+            </PDFDownloadLink> */}
             
           </div>
         ),
